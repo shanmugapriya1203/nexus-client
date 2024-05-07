@@ -2,14 +2,15 @@
 import React from 'react';
 import { TextInput, Label, Button, Select } from 'flowbite-react';
 
-const VolunteerSignUp = ({ formData, onBack, onChange }) => {
+const VolunteerSignUp = ({ formData, onBack, onChange,onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData)
+    onSubmit()
+    
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center">
       <div className="max-w-md w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         <form className="px-8 py-6" onSubmit={handleSubmit}>
           <div className="space-y-4">

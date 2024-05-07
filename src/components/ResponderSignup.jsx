@@ -1,10 +1,10 @@
 import React from 'react';
 import { TextInput, Label, Button } from 'flowbite-react';
 
-const EmergencyResponderSignUp = ({ formData, onBack, onChange }) => {
+const EmergencyResponderSignUp = ({ formData, onBack, onChange,onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+   onSubmit()
   };
 
   return (

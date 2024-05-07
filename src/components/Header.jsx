@@ -9,7 +9,7 @@ const Header = () => {
   const renderSignupButton = () => {
     if (location.pathname === '/signup') {
       return (
-        <Link to="/signin" className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors">Sign In</Link>
+        <Link to="/login" className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors">Sign In</Link>
       );
     } else {
       return (
