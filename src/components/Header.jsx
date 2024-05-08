@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import Logo from '/Nexus.png';
 
 const Header = () => {
   const location = useLocation();
+  const { currentUser } = useSelector((state) => state.user);
 
   const renderSignupButton = () => {
-    if (location.pathname === '/signup') {
+    if (currentUser) {
+      return null; // No button if currentUser is present
+    } else if (location.pathname === '/signup') {
       return (
         <Link to="/login" className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors">Sign In</Link>
       );
