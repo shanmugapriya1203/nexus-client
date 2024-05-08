@@ -42,7 +42,7 @@ const Login = () => {
       if (res.status === 200) {
         const { token, user, ...rest } = data;
         if (token) {
-          document.cookie = `access_token=${token}; HttpOnly=true;`;
+          localStorage.setItem('token', token);
         }
         dispatch(signInSuccess({ user, ...rest }));
         navigate('/dashboard'); 
