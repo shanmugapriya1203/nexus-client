@@ -218,7 +218,7 @@ const handleCertificationChange = (index, event) => {
               </div>
             )}
 
-            {/* Remaining form fields */}
+{currentUser.user.role === 'volunteer' && (
             <div className="mb-4">
               <Label htmlFor="skills">Skills</Label>
               <Select
@@ -235,7 +235,10 @@ const handleCertificationChange = (index, event) => {
                 <option value="organization">Organization</option>
               </Select>
             </div>
-            <div className="mb-4">
+          )}
+          {
+            currentUser.user.role=== 'volunteer ' || currentUser.user.role ==='emergencyresponder' && (
+<div className="mb-4">
               <Label htmlFor="availabilityDropdown">Availability Dropdown</Label>
               <Select
                 id="availabilityDropdown"
@@ -249,6 +252,9 @@ const handleCertificationChange = (index, event) => {
                 <option value="part-time">Part Time</option>
               </Select>
             </div>
+            )
+          }
+            
           </div>
           <div className="text-right mt-6">
             <Button type="submit" className="bg-green-400 text-white">
