@@ -23,4 +23,4 @@ export const store = configureStore({
     getDefaultMiddleware({ serializableCheck: false }),
 });
 
-export const persistor = persistStore(store); // exporting persistor here
+export const persistor = persistStore(store);

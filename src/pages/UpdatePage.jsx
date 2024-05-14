@@ -82,7 +82,7 @@ const UpdateProfile = () => {
     setFormData({ ...formData, certifications: updatedCertifications });
   };
 
- // Function to handle changes in certification fields
+// Function to handle changes in certification fields
 const handleCertificationChange = (index, event) => {
     const { name, value } = event.target;
     const updatedCertifications = [...formData.certifications];
@@ -95,6 +95,7 @@ const handleCertificationChange = (index, event) => {
       certifications: updatedCertifications
     }));
   };
+  
   
 
   return (
@@ -186,37 +187,38 @@ const handleCertificationChange = (index, event) => {
 
             {/* Certifications */}
             {currentUser.user.role === 'emergencyresponder' && (
-              <div>
-                <Label htmlFor="certifications">Certifications</Label>
-                {formData.certifications.map((certification, index) => (
-                  <div key={index} className="flex space-x-2">
-                    <TextInput
-                      name={`certificationName${index}`}
-                      type='text'
-                      placeholder="Certification Name"
-                      value={certification.certificationName}
-                      onChange={(e) => handleCertificationChange(index, e)}
-                    />
-                    <TextInput
-                      name={`certificationDate${index}`}
-                      type="date"
-                      placeholder="Certification Date"
-                      value={certification.certificationDate}
-                      onChange={(e) => handleCertificationChange(index, e)}
-                    />
-                    <TextInput
-                      name={`expirationDate${index}`}
-                      type="date"
-                      placeholder="Expiration Date"
-                      value={certification.expirationDate}
-                      onChange={(e) => handleCertificationChange(index, e)}
-                    />
-                    <Button type="button" className='mt-2' onClick={() => removeCertification(index)}>Remove</Button>
-                  </div>
-                ))}
-                <Button type="button" onClick={addCertification}>Add Certification</Button>
-              </div>
-            )}
+  <div>
+    <Label htmlFor="certifications">Certifications</Label>
+    {formData.certifications.map((certification, index) => (
+      <div key={index} className="flex space-x-2">
+        <TextInput
+          name={`certificationName${index}`} // Corrected the name attribute
+          type='text'
+          placeholder="Certification Name"
+          value={certification.certificationName}
+          onChange={(e) => handleCertificationChange(index, e)}
+        />
+        <TextInput
+          name={`certificationDate${index}`}
+          type="date"
+          placeholder="Certification Date"
+          value={certification.certificationDate}
+          onChange={(e) => handleCertificationChange(index, e)}
+        />
+        <TextInput
+          name={`expirationDate${index}`}
+          type="date"
+          placeholder="Expiration Date"
+          value={certification.expirationDate}
+          onChange={(e) => handleCertificationChange(index, e)}
+        />
+        <Button type="button" className='mt-2' onClick={() => removeCertification(index)}>Remove</Button>
+      </div>
+    ))}
+    <Button type="button" onClick={addCertification}>Add Certification</Button>
+  </div>
+)}
+
 
 {currentUser.user.role === 'volunteer' && (
             <div className="mb-4">
