@@ -58,7 +58,9 @@ const UpdateProfile = () => {
         dispatch(updateFailure(data.message));
       }
     } catch (error) {
+      console.log(error);
       dispatch(updateFailure('An error occurred while updating profile'));
+
     }
   };
 
@@ -82,29 +84,28 @@ const UpdateProfile = () => {
     setFormData({ ...formData, certifications: updatedCertifications });
   };
 
-// Function to handle changes in certification fields
-const handleCertificationChange = (index, event) => {
+  const handleCertificationChange = (index, event) => {
     const { name, value } = event.target;
+    const fieldName = name.split('_')[0];
     const updatedCertifications = [...formData.certifications];
     updatedCertifications[index] = {
       ...updatedCertifications[index],
-      [name]: value
+      [fieldName]: value
     };
     setFormData((prevState) => ({
       ...prevState,
       certifications: updatedCertifications
     }));
   };
-  
-  
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-3xl font-extrabold text-gray-900 my-4">Update Profile</h2>
-      <p className="text-lg text-center text-gray-700 mb-8">
+      <h2 className="text-3xl font-extrabold text-gray-900 my-8">Update Profile</h2>
+      <p className="text-lg text-center text-gray-700 mb-8 ml-10">
         "Every crisis offers you extra desired power to overcome the challenges." - Amit Ray
       </p>
-      <div className="w-full md:w-3/4 lg:w-1/2 p-4">
+      <div className="w-full md:w-5/6 lg:w-2/4 xl:w-2/3 p-4">
+
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             {/* Existing form fields */}
@@ -187,76 +188,78 @@ const handleCertificationChange = (index, event) => {
 
             {/* Certifications */}
             {currentUser.user.role === 'emergencyresponder' && (
-  <div>
-    <Label htmlFor="certifications">Certifications</Label>
-    {formData.certifications.map((certification, index) => (
-      <div key={index} className="flex space-x-2">
-        <TextInput
-          name={`certificationName${index}`} // Corrected the name attribute
-          type='text'
-          placeholder="Certification Name"
-          value={certification.certificationName}
-          onChange={(e) => handleCertificationChange(index, e)}
-        />
-        <TextInput
-          name={`certificationDate${index}`}
-          type="date"
-          placeholder="Certification Date"
-          value={certification.certificationDate}
-          onChange={(e) => handleCertificationChange(index, e)}
-        />
-        <TextInput
-          name={`expirationDate${index}`}
-          type="date"
-          placeholder="Expiration Date"
-          value={certification.expirationDate}
-          onChange={(e) => handleCertificationChange(index, e)}
-        />
-        <Button type="button" className='mt-2' onClick={() => removeCertification(index)}>Remove</Button>
-      </div>
-    ))}
-    <Button type="button" onClick={addCertification}>Add Certification</Button>
-  </div>
-)}
+              <div>
+                <Label htmlFor="certifications">Certifications</Label>
+                {formData.certifications.map((certification, index) => (
+                  <div key={index} className="">
+                    <TextInput
+                      name={`certificationName_${index}`}
+                      type='text'
+                      placeholder="Certification Name"
+                      value={certification.certificationName}
+                      onChange={(e) => handleCertificationChange(index, e)}
+                    />
+                    <div className='flex space-x-2 mt-2'>
+                    <TextInput
+                      name={`certificationDate_${index}`}
+                      type="date"
+                      placeholder="Certification Date"
+                      value={certification.certificationDate}
+                      onChange={(e) => handleCertificationChange(index, e)}
+                    />
+                    <TextInput
+                      name={`expirationDate_${index}`}
+                      type="date"
+                      placeholder="Expiration Date"
+                      value={certification.expirationDate}
+                      onChange={(e) => handleCertificationChange(index, e)}
+                    />
+                           <Button type="button" onClick={() => removeCertification(index)}>Remove</Button>
+                    </div>
+              
+             
+                  </div>
+                ))}
+                <Button type="button" className='mt-1' onClick={addCertification}>Add Certification</Button>
+              </div>
+            )}
 
+            {currentUser.user.role === 'volunteer' && (
+              <div className="mb-4">
+                <Label htmlFor="skills">Skills</Label>
+                <Select
+                  id="skills"
+                  name="skills"
+                  className="input-field"
+                  value={formData.skills || ''}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Skill</option>
+                  <option value="communication">Communication</option>
+                  <option value="teamwork">Teamwork</option>
+                  <option value="leadership">Leadership</option>
+                  <option value="organization">Organization</option>
+                </Select>
+              </div>
+            )}
 
-{currentUser.user.role === 'volunteer' && (
-            <div className="mb-4">
-              <Label htmlFor="skills">Skills</Label>
-              <Select
-                id="skills"
-                name="skills"
-                className="input-field"
-                value={formData.skills || ''}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Skill</option>
-                <option value="communication">Communication</option>
-                <option value="teamwork">Teamwork</option>
-                <option value="leadership">Leadership</option>
-                <option value="organization">Organization</option>
-              </Select>
-            </div>
-          )}
-          {
-            currentUser.user.role=== 'volunteer ' || currentUser.user.role ==='emergencyresponder' && (
-<div className="mb-4">
-              <Label htmlFor="availabilityDropdown">Availability Dropdown</Label>
-              <Select
-                id="availabilityDropdown"
-                name="availabilityDropdown"
-                className="input-field"
-                value={formData.availabilityDropdown || ''}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Availability</option>
-                <option value="full-time">Full Time</option>
-                <option value="part-time">Part Time</option>
-              </Select>
-            </div>
-            )
-          }
-            
+            {(currentUser.user.role === 'volunteer' || currentUser.user.role === 'emergencyresponder') && (
+              <div className="mb-4">
+                <Label htmlFor="availabilityDropdown">Availability Dropdown</Label>
+                <Select
+                  id="availabilityDropdown"
+                  name="availabilityDropdown"
+                  className="input-field"
+                  value={formData.availabilityDropdown || ''}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Availability</option>
+                  <option value="full-time">Full Time</option>
+                  <option value="part-time">Part Time</option>
+                </Select>
+              </div>
+            )}
+
           </div>
           <div className="text-right mt-6">
             <Button type="submit" className="bg-green-400 text-white">
