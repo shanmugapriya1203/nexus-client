@@ -5,6 +5,7 @@ import UpdateProfile from "./UpdatePage";
 import DashShelters from "../components/DashShelters";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import AddShelter from "../components/AddShelter";
 
 const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
