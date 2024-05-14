@@ -108,7 +108,6 @@ const UpdateProfile = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
-            {/* Existing form fields */}
             <div className="mb-4">
               <Label htmlFor="username">Username</Label>
               <TextInput

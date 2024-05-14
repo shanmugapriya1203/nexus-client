@@ -1,27 +1,38 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
+import DashSidebar from "../components/DashSidebar";
+import UpdateProfile from "./UpdatePage";
+import DashShelters from "../components/DashShelters";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const location = useLocation();
+  const [tab, setTab] = useState("");
+  useEffect(() => {
+    const urlParms = new URLSearchParams(location.search);
+    const tabFormUrl = urlParms.get("tab");
+    if (tabFormUrl) {
+      setTab(tabFormUrl);
+    }
+  }, [location.search]);
 
   if (!currentUser) {
     return <div>Loading...</div>;
   }
 
-  let dashboardContent;
-  if (currentUser.isAdmin) {
-    dashboardContent = <h1>Welcome Admin!</h1>;
-  } else if (currentUser.role === 'volunteer') {
-    dashboardContent = <h1>Welcome Volunteer!</h1>;
-  } else if (currentUser.role === 'emergencyresponder') {
-    dashboardContent = <h1>Welcome Emergency Responder!</h1>;
-  } else {
-    dashboardContent = <h1>Welcome </h1>;
-  }
-  
   return (
     <div>
-      {dashboardContent}
+      <div className="min-h-screen flex flex-col md:flex-row">
+        <div className="">
+          <DashSidebar />
+        </div>
+        <div>
+          {tab === "profile" && <UpdateProfile />}
+          {tab === "shelters" && <DashShelters />}
+        </div>
+      </div>
     </div>
   );
 };

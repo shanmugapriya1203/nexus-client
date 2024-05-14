@@ -4,7 +4,6 @@ import { HiArrowSmRight, HiDocumentText, HiUser, HiOutlineUserGroup, HiAnnotatio
 import { Link } from 'react-router-dom';
 import { signoutSuccess } from '../redux/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { BASE_URL } from '../api/apiservice';
 
 const DashSidebar = () => {
   const [activeTab, setActiveTab] = useState('');
