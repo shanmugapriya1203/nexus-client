@@ -28,7 +28,7 @@ const Dashboard = () => {
         <div className="">
           <DashSidebar />
         </div>
-        <div>
+        <div className="mx-auto">
           {tab === "profile" && <UpdateProfile />}
           {tab === "shelters" && <DashShelters />}
         </div>
