@@ -55,12 +55,14 @@ const DashShelters = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 ml-4">
         {shelters.map((shelter) => (
           <div className="max-w-md" key={shelter._id}>
-            <Card imgSrc={shelter.photos[0]} imgAlt={shelter.name}>
-              <h5 className="text-xl font-bold tracking-tight text-gray-900">
-                {shelter.name}
-              </h5>
-              <p className="text-sm text-gray-600">{shelter.location}</p>
-            </Card>
+            <Link to={`/shelter/${shelter._id}`}>
+              <Card imgSrc={shelter.photos[0]} imgAlt={shelter.name}>
+                <h5 className="text-xl font-bold tracking-tight text-gray-900">
+                  {shelter.name}
+                </h5>
+                <p className="text-sm text-gray-600">{shelter.location}</p>
+              </Card>
+            </Link>
           </div>
         ))}
       </div>

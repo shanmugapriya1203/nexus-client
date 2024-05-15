@@ -87,6 +87,10 @@ const AddShelter = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
+      <blockquote className="italic text-lg text-center text-gray-700 mt-8 max-w-lg p-4">
+        "Success is not final, failure is not fatal: It is the courage to
+        continue that counts." - Winston Churchill
+      </blockquote>
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-lg p-8 bg-gray-100 rounded-lg shadow-md"
@@ -161,7 +165,7 @@ const AddShelter = () => {
               <Button
                 type="button"
                 onClick={() => removePhoto(index)}
-                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md"
+                className="bg-red-500 hover:bg-red-600 text-white rounded-md mb-1"
               >
                 Remove
               </Button>
@@ -170,7 +174,7 @@ const AddShelter = () => {
           <Button
             type="button"
             onClick={addPhoto}
-            className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mt-2"
+            className="bg-green-500 hover:bg-green-600 text-white  rounded-md mt-2"
           >
             Add Photo
           </Button>
@@ -195,15 +199,11 @@ const AddShelter = () => {
         />
         <Button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+          className="bg-green-500 hover:bg-green-600 text-white  rounded-md"
         >
           Add Shelter
         </Button>
       </form>
-      <blockquote className="italic text-lg text-center text-gray-700 mt-8 max-w-lg p-4 bg-gray-200 rounded-lg shadow-md">
-        "Success is not final, failure is not fatal: It is the courage to
-        continue that counts." - Winston Churchill
-      </blockquote>
     </div>
   );
 };
