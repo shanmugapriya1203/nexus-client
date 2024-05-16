@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import DashSidebar from "../components/DashSidebar";
 import UpdateProfile from "./UpdatePage";
 import DashShelters from "../components/DashShelters";
+import AdminDashboard from "../components/AdminDashboard"; // Import the AdminDashboard component
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import AddShelter from "../components/AddShelter";
@@ -32,6 +33,7 @@ const Dashboard = () => {
         <div className="mx-auto">
           {tab === "profile" && <UpdateProfile />}
           {tab === "shelters" && <DashShelters />}
+          {currentUser.user.role === "admin" && <AdminDashboard />}{" "}
         </div>
       </div>
     </div>
