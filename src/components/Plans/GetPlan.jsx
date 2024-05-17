@@ -81,8 +81,6 @@ const GetPlan = () => {
                         <strong>Name:</strong> {member.name},{" "}
                         <strong>Age:</strong> {member.age},{" "}
                         <strong>Gender:</strong> {member.gender},{" "}
-                        <strong>Relationship:</strong> {member.relationship},{" "}
-                        <strong>Special Needs:</strong> {member.specialNeeds}
                       </li>
                     ))}
                   </ul>
