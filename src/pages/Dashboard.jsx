@@ -1,22 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import DashSidebar from "../components/DashSidebar";
 import UpdateProfile from "./UpdatePage";
 import DashShelters from "../components/DashShelters";
-import AdminDashboard from "../components/AdminDashboard"; // Import the AdminDashboard component
+import AdminDashboard from "../components/AdminDashboard";
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import AddShelter from "../components/AddShelter";
+import GetPlan from "../components/Plans/GetPlan";
 
 const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
   const [tab, setTab] = useState("");
+
   useEffect(() => {
-    const urlParms = new URLSearchParams(location.search);
-    const tabFormUrl = urlParms.get("tab");
-    if (tabFormUrl) {
-      setTab(tabFormUrl);
+    const urlParams = new URLSearchParams(location.search);
+    const tabFromUrl = urlParams.get("tab");
+    if (tabFromUrl) {
+      setTab(tabFromUrl);
     }
   }, [location.search]);
 
@@ -33,7 +33,8 @@ const Dashboard = () => {
         <div className="mx-auto">
           {tab === "profile" && <UpdateProfile />}
           {tab === "shelters" && <DashShelters />}
-          {currentUser.user.role === "admin" && <AdminDashboard />}{" "}
+          {tab === "plans" && <GetPlan />}
+          {currentUser.user.role === "admin" && <AdminDashboard />}
         </div>
       </div>
     </div>

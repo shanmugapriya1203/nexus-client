@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import SignUp from "./components/SignUp";
 import Login from "./pages/Login";
@@ -15,6 +16,9 @@ import ShowTask from "./components/VolunteerComponent/ShowTask";
 import AllTasks from "./components/VolunteerComponent/AllTasks";
 import CreateTask from "./components/VolunteerComponent/CreateTask";
 import EditTask from "./components/VolunteerComponent/EditTask";
+import GetPlan from "./components/Plans/GetPlan";
+import CreatePlan from "./components/Plans/CreatePlan";
+import UpdatePlan from "./components/Plans/UpdatePlan";
 
 function App() {
   return (
@@ -35,6 +39,9 @@ function App() {
         <Route path="/tasks" element={<ShowTask />} />
         <Route path="/create-task" element={<CreateTask />} />
         <Route path="/update-task/:taskId" element={<EditTask />} />
+        <Route path="/plans" element={<GetPlan />} />
+        <Route path="/createplan" element={<CreatePlan />} />
+        <Route path="/updateplan" element={<UpdatePlan />} />
       </Routes>
     </BrowserRouter>
   );

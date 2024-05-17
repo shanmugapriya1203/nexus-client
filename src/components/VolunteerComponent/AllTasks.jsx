@@ -1,8 +1,8 @@
-// AllTasks.jsx
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal } from "flowbite-react";
 import { BASE_URL } from "../../api/apiservice";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify"; // Import toast
 
 const AllTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -35,6 +35,27 @@ const AllTasks = () => {
     fetchTasks();
   }, []);
 
+  const fetchTasks = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/volunteers/tasks`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setTasks(data.tasks);
+        toast.success("Task deleted successfully!"); // Toast notification after deleting task
+      } else {
+        console.error("Failed to fetch tasks:", res.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error.message);
+    }
+  };
+
   const handleDeleteClick = (task) => {
     setSelectedTask(task);
     setShowDeleteModal(true);
@@ -54,9 +75,10 @@ const AllTasks = () => {
       );
       if (res.ok) {
         console.log("Task deleted successfully");
-        fetchTasks(); // Refresh tasks after deletion
+        fetchTasks();
       } else {
         console.error("Failed to delete task:", res.statusText);
+        toast.error("Failed to delete task. Please try again.");
       }
     } catch (error) {
       console.error("Error deleting task:", error.message);
@@ -104,6 +126,8 @@ const AllTasks = () => {
 
                     <Button
                       gradientMonochrome="failure"
+                      size="sm"
+                      className="mb-2 mr-2"
                       onClick={() => handleDeleteClick(task)}
                     >
                       Delete

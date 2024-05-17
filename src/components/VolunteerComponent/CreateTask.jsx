@@ -34,6 +34,7 @@ const CreateTask = () => {
 
       if (res.ok) {
         toast.success("Task created successfully!");
+        history("/admin/tasks");
       } else {
         console.error("Failed to create task:", res.statusText);
         toast.error("Failed to create task. Please try again.");
