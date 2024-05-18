@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Label, TextInput, Button, Select } from "flowbite-react";
 import { BASE_URL } from "../../api/apiservice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { IoIosArrowBack } from "react-icons/io";
 const CreateTask = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -52,6 +52,12 @@ const CreateTask = () => {
         onSubmit={handleSubmit}
       >
         <h2 className="text-2xl font-bold mb-4">Create Task</h2>
+        <div className="w-full flex justify-end mt-4">
+          <Link to="/dashboard?tab=/" className="flex items-center">
+            <span className="mr-2">Back</span>
+            <IoIosArrowBack className="text-blue-500 text-2xl cursor-pointer" />
+          </Link>
+        </div>
         <div className="mb-4">
           <Label htmlFor="name" value="Name" />
           <TextInput

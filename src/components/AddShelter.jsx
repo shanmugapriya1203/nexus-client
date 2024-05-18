@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { TextInput, Button } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
-
+import { IoIosArrowBack } from "react-icons/io";
 const AddShelter = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -87,6 +87,12 @@ const AddShelter = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
+      <div className="w-full flex justify-end mt-4">
+        <Link to="/dashboard?tab=/" className="flex items-center">
+          <span className="mr-2">Back</span>
+          <IoIosArrowBack className="text-blue-500 text-2xl cursor-pointer" />
+        </Link>
+      </div>
       <blockquote className="italic text-lg text-center text-gray-700 mt-8 max-w-lg p-4">
         "Success is not final, failure is not fatal: It is the courage to
         continue that counts." - Winston Churchill
