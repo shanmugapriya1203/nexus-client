@@ -34,7 +34,9 @@ const Dashboard = () => {
           {tab === "profile" && <UpdateProfile />}
           {tab === "shelters" && <DashShelters />}
           {tab === "plans" && <GetPlan />}
-          {currentUser.user.role === "admin" && <AdminDashboard />}
+          {currentUser.user.role === "admin" && (!tab || tab === "/") && (
+            <AdminDashboard />
+          )}
         </div>
       </div>
     </div>

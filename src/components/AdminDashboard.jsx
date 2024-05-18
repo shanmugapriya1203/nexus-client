@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux"; // Import your Button component
+import { useSelector } from "react-redux";
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.user);

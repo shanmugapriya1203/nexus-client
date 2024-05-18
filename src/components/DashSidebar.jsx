@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Sidebar, SidebarItem, Label } from "flowbite-react";
-import { HiArrowSmRight, HiDocumentText, HiUser } from "react-icons/hi";
+import {
+  HiArrowSmRight,
+  HiDocumentText,
+  HiOutlineAnnotation,
+  HiUser,
+} from "react-icons/hi";
 import { HiAnnotation } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { signoutSuccess } from "../redux/userSlice";
@@ -59,6 +64,9 @@ const DashSidebar = () => {
               <Sidebar.Item icon={HiAnnotation}>Plans</Sidebar.Item>
             </Link>
           )}
+          <Link to="/emergencies">
+            <Sidebar.Item icon={HiOutlineAnnotation}>Emergencies</Sidebar.Item>
+          </Link>
 
           <Sidebar.Item
             icon={HiArrowSmRight}

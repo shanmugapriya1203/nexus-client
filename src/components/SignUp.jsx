@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextInput, Label, Button, Select } from 'flowbite-react';
-import VolunteerSignUp from './VolunteerSignup';
-import EmergencyResponderSignUp from './ResponderSignup';
-import NormalUserSignUp from './NormalUserSignup';
-import { BASE_URL } from '../api/apiservice';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TextInput, Label, Button, Select } from "flowbite-react";
+import EmergencyResponderSignUp from "./ResponderSignup";
+import { BASE_URL } from "../api/apiservice";
+import NormalUserSignUp from "./../pages/NormalUserSignup";
+import VolunteerSignUp from "./../pages/VolunteerSignup";
 
 const SignUp = ({}) => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    role: '',
-    fullName: '',
-    city: '',
-    age: '',
-    profession: '',
-    experience: '',
-    availabilityDropdown: '',
-    mobileNumber: '' // Add mobileNumber field to formData
+    username: "",
+    email: "",
+    password: "",
+    role: "",
+    fullName: "",
+    city: "",
+    age: "",
+    profession: "",
+    experience: "",
+    availabilityDropdown: "",
+    mobileNumber: "", // Add mobileNumber field to formData
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -31,7 +31,6 @@ const SignUp = ({}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitted(true);
-   
   };
 
   const handleBack = () => {
@@ -41,35 +40,33 @@ const SignUp = ({}) => {
   const handleSignupSubmit = async () => {
     try {
       const response = await fetch(`${BASE_URL}/api/auth/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-  
-      if (!response.ok) {
-        throw new Error('Registration failed');
-      }
-      navigate('/login'); 
-    } catch (error) {
-      console.error('Registration error:', error);
 
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
     }
   };
-  
 
   return (
     <div className="flex flex-col lg:flex-row items-stretch lg:h-screen mt-10">
       <div
         className="w-full lg:w-1/2 bg-center lg:block hidden"
         style={{
-          backgroundImage: 'url(/1.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          minHeight: '100vh',
-          height: 'auto'
+          backgroundImage: "url(/1.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          minHeight: "100vh",
+          height: "auto",
         }}
       ></div>
       <div className="w-full lg:w-1/2 flex items-center justify-center">
@@ -78,21 +75,21 @@ const SignUp = ({}) => {
             Sign Up
           </h2>
           {submitted ? (
-            formData.role === 'volunteer' ? (
+            formData.role === "volunteer" ? (
               <VolunteerSignUp
                 formData={formData}
                 onBack={handleBack}
                 onChange={handleInputChange}
                 onSubmit={handleSignupSubmit}
               />
-            ) : formData.role === 'emergencyresponder' ? (
+            ) : formData.role === "emergencyresponder" ? (
               <EmergencyResponderSignUp
                 formData={formData}
                 onBack={handleBack}
                 onChange={handleInputChange}
                 onSubmit={handleSignupSubmit}
               />
-            ) : formData.role === 'user' ? (
+            ) : formData.role === "user" ? (
               <NormalUserSignUp
                 formData={formData}
                 onBack={handleBack}
@@ -152,7 +149,9 @@ const SignUp = ({}) => {
                   >
                     <option value="">Select Role</option>
                     <option value="volunteer">Volunteer</option>
-                    <option value="emergencyresponder">Emergency Responder</option>
+                    <option value="emergencyresponder">
+                      Emergency Responder
+                    </option>
                     <option value="user">Normal User</option>
                   </Select>
                 </div>

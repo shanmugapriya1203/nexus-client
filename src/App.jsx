@@ -19,6 +19,7 @@ import EditTask from "./components/VolunteerComponent/EditTask";
 import GetPlan from "./components/Plans/GetPlan";
 import CreatePlan from "./components/Plans/CreatePlan";
 import UpdatePlan from "./components/Plans/UpdatePlan";
+import EmergencyPage from "./pages/EmergencyPage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/plans" element={<GetPlan />} />
         <Route path="/createplan" element={<CreatePlan />} />
         <Route path="/updateplan" element={<UpdatePlan />} />
+        <Route path="/emergencies" element={<EmergencyPage />} />
       </Routes>
     </BrowserRouter>
   );
