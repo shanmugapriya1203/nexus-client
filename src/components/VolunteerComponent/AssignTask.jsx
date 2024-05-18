@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../../api/apiservice";
 import { Button, Table, Modal } from "flowbite-react";
-import { Link } from "react-router-dom";
-import { IoIosArrowBack } from "react-icons/io";
 const AssignTask = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -133,12 +131,6 @@ const AssignTask = () => {
         <p>Loading tasks...</p>
       ) : (
         <>
-          <div className="w-full flex justify-end mt-4">
-            <Link to="/admin/volunteers" className="flex items-center ">
-              <span className="mr-2 mb-2">Back</span>
-              <IoIosArrowBack className="text-blue-500 text-2xl cursor-pointer" />
-            </Link>
-          </div>
           <Table hoverable className="shadow-md">
             <Table.Head>
               <Table.HeadCell>Name</Table.HeadCell>
