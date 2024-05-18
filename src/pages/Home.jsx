@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { RiArrowRightSLine } from "react-icons/ri"; // Importing the right arrow icon
 import { RiMailLine, RiPhoneLine, RiMapPinLine } from "react-icons/ri";
 const Home = () => {
