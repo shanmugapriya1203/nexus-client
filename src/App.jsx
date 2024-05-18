@@ -21,6 +21,7 @@ import GetPlan from "./components/Plans/GetPlan";
 import CreatePlan from "./components/Plans/CreatePlan";
 import UpdatePlan from "./components/Plans/UpdatePlan";
 import EmergencyPage from "./pages/EmergencyPage";
+import AllocateResponder from "./components/Emergency/AllocateResponder";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -49,6 +50,7 @@ function App() {
         <Route path="/tasks" element={<ShowTask />} />
         <Route path="/create-task" element={<CreateTask />} />
         <Route path="/update-task/:taskId" element={<EditTask />} />
+        <Route path="/allocate/:incidentId" element={<AllocateResponder />} />
         <Route path="/plans" element={<GetPlan />} />
         <Route path="/createplan" element={<CreatePlan />} />
         <Route path="/updateplan" element={<UpdatePlan />} />

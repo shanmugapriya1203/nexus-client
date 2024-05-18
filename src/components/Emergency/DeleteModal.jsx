@@ -14,7 +14,7 @@ const DeleteModal = ({
       popup
       className="my-custom-modal"
     >
-      <ModalHeader closeButton>
+      <ModalHeader closebutton>
         <h3>Are you sure you want to delete this incident?</h3>
       </ModalHeader>
       <ModalFooter>

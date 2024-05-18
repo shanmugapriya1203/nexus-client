@@ -228,6 +228,7 @@ const EmergencyPage = () => {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           handleUpdate={handleUpdate}
+          currentUser={currentUser}
         />
 
         <DeleteModal

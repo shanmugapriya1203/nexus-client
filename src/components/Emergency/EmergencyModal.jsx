@@ -9,6 +9,7 @@ import {
   Select,
   Button,
 } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 const EmergencyModal = ({
   showModal,
@@ -19,6 +20,7 @@ const EmergencyModal = ({
   handleChange,
   handleSubmit,
   handleUpdate,
+  currentUser,
 }) => {
   return (
     <Modal
@@ -30,7 +32,7 @@ const EmergencyModal = ({
     >
       {modalType === "readMore" && selectedIncident && (
         <>
-          <ModalHeader closeButton>
+          <ModalHeader closebutton>
             <h3>{selectedIncident.type}</h3>
           </ModalHeader>
           <ModalBody>
@@ -57,11 +59,20 @@ const EmergencyModal = ({
               </p>
             </div>
           </ModalBody>
+          <ModalFooter>
+            {currentUser.user.role === "admin" && (
+              <Link to={`/allocate/${selectedIncident._id}`}>
+                <Button className="w-auto mx-auto" link>
+                  Allocate
+                </Button>
+              </Link>
+            )}
+          </ModalFooter>
         </>
       )}
       {(modalType === "addIncident" || modalType === "editIncident") && (
         <>
-          <ModalHeader closeButton>
+          <ModalHeader closebutton>
             <h3>
               {modalType === "addIncident"
                 ? "Add New Incident"
