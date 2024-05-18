@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
@@ -22,6 +23,14 @@ import UpdatePlan from "./components/Plans/UpdatePlan";
 import EmergencyPage from "./pages/EmergencyPage";
 
 function App() {
+  const { currentUser } = useSelector((state) => state.user);
+
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     window.location.href = "/"; // Redirect to home page if user is not logged in
+  //   }
+  // }, [currentUser]);
+
   return (
     <BrowserRouter>
       <Header />

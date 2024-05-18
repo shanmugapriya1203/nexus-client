@@ -7,7 +7,7 @@ import {
   HiUser,
 } from "react-icons/hi";
 import { HiAnnotation } from "react-icons/hi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signoutSuccess } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { BASE_URL } from "../api/apiservice";
@@ -16,7 +16,7 @@ const DashSidebar = () => {
   const [activeTab, setActiveTab] = useState("");
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   useEffect(() => {}, []);
 
   const handleSignout = async () => {
@@ -30,12 +30,12 @@ const DashSidebar = () => {
       } else {
         console.log("Sign-out successful:", data);
         dispatch(signoutSuccess(data));
+        navigate("/");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
-
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
