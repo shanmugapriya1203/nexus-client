@@ -30,10 +30,11 @@ const Home = () => {
             <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
               Learn More
             </button>
-            <button className="bg-white text-black py-2 px-4 rounded flex items-center">
-              Sign Up <RiArrowRightSLine className="ml-2" />{" "}
-              {/* Right arrow icon */}
-            </button>
+            <Link to="/signup">
+              <button className="bg-white text-black py-2 px-4 rounded flex items-center">
+                Sign Up <RiArrowRightSLine className="ml-2" />{" "}
+              </button>
+            </Link>
           </div>
         </div>
       </div>
