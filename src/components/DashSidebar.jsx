@@ -49,6 +49,15 @@ const DashSidebar = () => {
               Profile
             </Sidebar.Item>
           </Link>
+          <Link to="/dashboard?tab=alerts">
+            <Sidebar.Item
+              active={activeTab === "profile"}
+              icon={HiUser}
+              as="div"
+            >
+              Alerts
+            </Sidebar.Item>
+          </Link>
 
           <Link to="/dashboard?tab=shelters">
             <Sidebar.Item

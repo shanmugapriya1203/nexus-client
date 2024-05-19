@@ -6,6 +6,7 @@ import DashShelters from "../components/DashShelters";
 import AdminDashboard from "../components/AdminDashboard";
 import { useLocation } from "react-router-dom";
 import GetPlan from "../components/Plans/GetPlan";
+import AlertPage from "./AlertPage";
 
 const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -34,6 +35,7 @@ const Dashboard = () => {
           {tab === "profile" && <UpdateProfile />}
           {tab === "shelters" && <DashShelters />}
           {tab === "plans" && <GetPlan />}
+          {tab === "alerts" && <AlertPage />}
           {currentUser.user.role === "admin" && (!tab || tab === "/") && (
             <AdminDashboard />
           )}

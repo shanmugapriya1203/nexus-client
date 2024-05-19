@@ -32,10 +32,9 @@ const Header = () => {
         <div className="relative">
           <button onClick={toggleDropdown} className="text-green-800 relative">
             <FaUserCircle className="text-2xl" />
-            {hasAssignedTasks &&
-              !isNewTaskClicked && ( // Check if isNewTaskClicked is false
-                <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
-              )}
+            {hasAssignedTasks && !isNewTaskClicked && (
+              <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
+            )}
           </button>
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
@@ -54,7 +53,7 @@ const Header = () => {
               {hasAssignedTasks && (
                 <Link
                   to="/tasks"
-                  onClick={handleNewTaskClick} // Call handleNewTaskClick when the "New Task" link is clicked
+                  onClick={handleNewTaskClick}
                   className="block px-4 py-2 text-red-500 hover:bg-gray-200"
                 >
                   {newTaskCount} New Task{newTaskCount > 1 && "s"}
@@ -86,11 +85,11 @@ const Header = () => {
   };
 
   return (
-    <header className="text-gray-800 p-4 flex items-center justify-between sticky top-0 bg-white z-10 shadow-md">
-      <div className="flex items-center">
+    <header className="text-gray-800 p-4 flex flex-wrap justify-between items-center sticky top-0 bg-white z-10 shadow-md">
+      <div className="flex items-center flex-shrink-0">
         <img src={Logo} alt="Logo" className="h-10 mr-2" />
       </div>
-      <nav className="space-x-4  items-center hidden lg:flex">
+      <nav className="space-x-4  items-center hidden lg:flex flex-grow">
         <Link to="/" className="hover:text-gray-400">
           Home
         </Link>
