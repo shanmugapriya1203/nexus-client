@@ -75,6 +75,9 @@ const DashSidebar = () => {
           <Link to="/emergencies">
             <Sidebar.Item icon={HiOutlineAnnotation}>Emergencies</Sidebar.Item>
           </Link>
+          <Link to="/community">
+            <Sidebar.Item icon={HiOutlineAnnotation}>Community</Sidebar.Item>
+          </Link>
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"

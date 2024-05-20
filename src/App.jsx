@@ -24,6 +24,7 @@ import UpdatePlan from "./components/Plans/UpdatePlan";
 import EmergencyPage from "./pages/EmergencyPage";
 import AllocateResponder from "./components/Emergency/AllocateResponder";
 import AlertPage from "./pages/AlertPage";
+import CommunityPage from "./pages/CommunityPage";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -59,6 +60,7 @@ function App() {
           <Route path="/updateplan" element={<UpdatePlan />} />
           <Route path="/emergencies" element={<EmergencyPage />} />
           <Route path="/alerts" element={<AlertPage />} />
+          <Route path="/community" element={<CommunityPage />} />
         </Routes>
       </BrowserRouter>
     </SocketProvider>
