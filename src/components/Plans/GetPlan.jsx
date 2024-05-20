@@ -4,7 +4,7 @@ import { BASE_URL } from "../../api/apiservice";
 import { Button } from "flowbite-react";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaArrowLeft } from "react-icons/fa";
 
 const GetPlan = () => {
   const [plans, setPlans] = useState([]);
@@ -66,6 +66,13 @@ const GetPlan = () => {
             className="bg-green-100 rounded-lg shadow-lg mb-8"
           >
             <div className="p-6 space-y-8 relative">
+              <Button
+                color="primary"
+                className="flex items-center"
+                onClick={() => window.history.back()}
+              >
+                <FaArrowLeft className="mr-2" /> Back
+              </Button>
               <h2 className="text-xl font-semibold mb-4 inline-block">
                 My Details
               </h2>

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Sidebar, SidebarItem, Label } from "flowbite-react";
+import { Sidebar, SidebarItem } from "flowbite-react";
 import {
   HiArrowSmRight,
   HiDocumentText,
   HiOutlineAnnotation,
   HiUser,
 } from "react-icons/hi";
-import { HiAnnotation } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { signoutSuccess } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,6 +16,7 @@ const DashSidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {}, []);
 
   const handleSignout = async () => {
@@ -36,6 +36,7 @@ const DashSidebar = () => {
       console.error("Error:", error);
     }
   };
+
   return (
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
@@ -51,32 +52,29 @@ const DashSidebar = () => {
           </Link>
           <Link to="/dashboard?tab=alerts">
             <Sidebar.Item
-              active={activeTab === "profile"}
-              icon={HiUser}
+              active={activeTab === "alerts"}
+              icon={HiDocumentText}
               as="div"
             >
               Alerts
             </Sidebar.Item>
           </Link>
-
           <Link to="/dashboard?tab=shelters">
             <Sidebar.Item
               active={activeTab === "shelters"}
-              icon={HiDocumentText}
+              icon={HiOutlineAnnotation}
             >
               Shelters
             </Sidebar.Item>
           </Link>
-
           {currentUser.user.role !== "admin" && (
             <Link to="/plans">
-              <Sidebar.Item icon={HiAnnotation}>Plans</Sidebar.Item>
+              <Sidebar.Item icon={HiArrowSmRight}>Plans</Sidebar.Item>
             </Link>
           )}
           <Link to="/emergencies">
             <Sidebar.Item icon={HiOutlineAnnotation}>Emergencies</Sidebar.Item>
           </Link>
-
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"

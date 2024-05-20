@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import DashSidebar from "../components/DashSidebar";
 import UpdateProfile from "./UpdatePage";
-import DashShelters from "../components/DashShelters";
+import DashShelters from "../components/Shelters/DashShelters";
 import AdminDashboard from "../components/AdminDashboard";
 import { useLocation } from "react-router-dom";
 import GetPlan from "../components/Plans/GetPlan";

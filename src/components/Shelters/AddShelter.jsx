@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TextInput, Button } from "flowbite-react";
-import { BASE_URL } from "../api/apiservice";
+import { BASE_URL } from "../../api/apiservice";
 import { IoIosArrowBack } from "react-icons/io";
 import {
   getStorage,
@@ -9,7 +9,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { app } from "../firebase";
+import { app } from "../../firebase";
 
 const AddShelter = () => {
   const [formData, setFormData] = useState({

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { BASE_URL } from "../api/apiservice";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { BASE_URL } from "../../api/apiservice";
+import { FaEdit, FaTrash, FaShare } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,6 +53,20 @@ const ShowShelter = () => {
     }
   };
 
+  const shareShelter = () => {
+    const deepLink = `${window.location.origin}/shelter/${shelterId}`;
+    if (navigator.share) {
+      navigator.share({
+        title: "Check out this shelter",
+        text: "I found this shelter and thought you might be interested.",
+        url: deepLink,
+      });
+    } else {
+      // Fallback for browsers that do not support Web Share API
+      alert(`Shareable URL: ${deepLink}`);
+    }
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -75,6 +89,16 @@ const ShowShelter = () => {
               </button>
             </div>
           )}
+
+          {/* Share icon at the top right corner */}
+          <div className="absolute top-0 right-0 mt-2 mr-2">
+            <button
+              className="text-gray-600 hover:text-gray-800"
+              onClick={shareShelter}
+            >
+              <FaShare size={"1.5em"} />
+            </button>
+          </div>
 
           <h1 className="text-3xl font-semibold mb-6 text-center text-gray-800">
             {shelterData.name}
