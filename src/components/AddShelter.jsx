@@ -3,6 +3,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { TextInput, Button } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
 import { IoIosArrowBack } from "react-icons/io";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { app } from "../firebase";
+
 const AddShelter = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -62,6 +70,26 @@ const AddShelter = () => {
       ...formData,
       photos: updatedPhotos,
     });
+  };
+
+  const handleFileUpload = async (index, file) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + "-" + (file.name || "unnamed");
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.error("Error uploading file:", error.message);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          handlePhotoChange(index, downloadURL);
+        });
+      }
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -159,12 +187,11 @@ const AddShelter = () => {
             Photos:
           </label>
           {formData.photos.map((photo, index) => (
-            <div key={index} className="flex items-center">
-              <TextInput
-                type="url"
-                placeholder="Photo URL"
-                value={photo}
-                onChange={(e) => handlePhotoChange(index, e.target.value)}
+            <div key={index} className="flex items-center mb-2">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileUpload(index, e.target.files[0])}
                 required
                 className="mr-2"
               />
@@ -180,7 +207,7 @@ const AddShelter = () => {
           <Button
             type="button"
             onClick={addPhoto}
-            className="bg-green-500 hover:bg-green-600 text-white  rounded-md mt-2"
+            className="bg-green-500 hover:bg-green-600 text-white rounded-md mt-2"
           >
             Add Photo
           </Button>
@@ -205,7 +232,7 @@ const AddShelter = () => {
         />
         <Button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white  rounded-md"
+          className="bg-green-500 hover:bg-green-600 text-white rounded-md"
         >
           Add Shelter
         </Button>

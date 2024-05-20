@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { SocketContext } from "../context/SocketContext"; // Import SocketContext
+import { toast } from "react-toastify";
 import Logo from "/Nexus.png";
 
 const Header = () => {
@@ -9,6 +11,23 @@ const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isNewTaskClicked, setIsNewTaskClicked] = useState(false);
+  const socket = useContext(SocketContext); // Access SocketContext
+
+  useEffect(() => {
+    if (socket) {
+      // Listen for new alerts and display toast notifications
+      socket.on("newAlert", () => {
+        toast.info("New alert received!");
+      });
+    }
+
+    return () => {
+      if (socket) {
+        // Clean up socket listener
+        socket.off("newAlert");
+      }
+    };
+  }, [socket]);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);

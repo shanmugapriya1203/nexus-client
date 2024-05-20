@@ -1,34 +1,102 @@
-import React, { useState } from 'react';
-import { TextInput, Label, Button, Select } from 'flowbite-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateFailure, updateStart, updateSuccess } from '../redux/userSlice';
-import { BASE_URL } from '../api/apiservice';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { TextInput, Label, Button, Select } from "flowbite-react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateFailure, updateStart, updateSuccess } from "../redux/userSlice";
+import { BASE_URL } from "../api/apiservice";
+import { useNavigate } from "react-router-dom";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const UpdateProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
-    username: currentUser.user.username || '',
-    password: '',
-    fullName: currentUser.user.fullName || '',
-    mobileNumber: currentUser.user.mobileNumber || '',
-    email: currentUser.user.email || '',
-    bloodGroup: currentUser.user.bloodGroup || '',
-    skills: currentUser.user.skills || '',
-    certifications: currentUser.user.certifications || [], // Changed to an array
-    availabilityDropdown: currentUser.user.availabilityDropdown || ''
+    username: currentUser.user.username || "",
+    password: "",
+    fullName: currentUser.user.fullName || "",
+    mobileNumber: currentUser.user.mobileNumber || "",
+    email: currentUser.user.email || "",
+    bloodGroup: currentUser.user.bloodGroup || "",
+    skills: currentUser.user.skills || "",
+    certifications: currentUser.user.certifications || [],
+    availabilityDropdown: currentUser.user.availabilityDropdown || "",
+    profilePicture:
+      currentUser.user.profilePicture ||
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
   });
+
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileUrl, setImageFileUrl] = useState(
+    currentUser.user.profilePicture || ""
+  );
+  const [imageFileUploadingProgress, setImageFileUploadingProgress] =
+    useState(null);
+  const [imageFileError, setImageFileError] = useState(null);
+  const [imageFileUploading, setImageFileUploading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const fileInputRef = useRef();
 
-  // Function to handle changes in form fields
+  useEffect(() => {
+    if (imageFile) {
+      uploadImage();
+    }
+  }, [imageFile]);
+
+  const uploadImage = async () => {
+    setImageFileUploading(true);
+    setImageFileError(null);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + "-" + (imageFile.name || "unnamed");
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageFileUploadingProgress(progress.toFixed(0));
+      },
+      (error) => {
+        setImageFileError(
+          "Could not upload image (File must be less than 2MB)"
+        );
+        setImageFileUploadingProgress(null);
+        setImageFile(null);
+        setImageFileUrl(null);
+        setImageFileUploading(false);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageFileUrl(downloadURL);
+          setFormData({ ...formData, profilePicture: downloadURL });
+          setImageFileUploading(false);
+        });
+      }
+    );
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImageFileUrl(URL.createObjectURL(file));
+    }
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,27 +108,29 @@ const UpdateProfile = () => {
         delete dataToSend.password;
       }
 
-      const res = await fetch(`${BASE_URL}/api/user/update/${currentUser.user._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(dataToSend)
-      });
+      const res = await fetch(
+        `${BASE_URL}/api/user/update/${currentUser.user._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
 
       const data = await res.json();
 
       if (res.status === 200) {
         dispatch(updateSuccess(data));
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
         dispatch(updateFailure(data.message));
       }
     } catch (error) {
       console.log(error);
-      dispatch(updateFailure('An error occurred while updating profile'));
-
+      dispatch(updateFailure("An error occurred while updating profile"));
     }
   };
 
@@ -70,11 +140,11 @@ const UpdateProfile = () => {
       certifications: [
         ...formData.certifications,
         {
-          certificationName: '',
-          certificationDate: '',
-          expirationDate: ''
-        }
-      ]
+          certificationName: "",
+          certificationDate: "",
+          expirationDate: "",
+        },
+      ],
     });
   };
 
@@ -86,28 +156,77 @@ const UpdateProfile = () => {
 
   const handleCertificationChange = (index, event) => {
     const { name, value } = event.target;
-    const fieldName = name.split('_')[0];
+    const fieldName = name.split("_")[0];
     const updatedCertifications = [...formData.certifications];
     updatedCertifications[index] = {
       ...updatedCertifications[index],
-      [fieldName]: value
+      [fieldName]: value,
     };
     setFormData((prevState) => ({
       ...prevState,
-      certifications: updatedCertifications
+      certifications: updatedCertifications,
     }));
   };
-
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-3xl font-extrabold text-gray-900 my-8">Update Profile</h2>
+      <h2 className="text-3xl font-extrabold text-gray-900 my-8">
+        Update Profile
+      </h2>
       <p className="text-lg text-center text-gray-700 mb-8 ml-10">
-        "Every crisis offers you extra desired power to overcome the challenges." - Amit Ray
+        "Every crisis offers you extra desired power to overcome the
+        challenges." - Amit Ray
       </p>
       <div className="w-full md:w-5/6 lg:w-2/4 xl:w-2/3 p-4">
-
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
+            <div className="mb-4 text-center">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                ref={fileInputRef}
+                hidden
+              />
+              <div
+                className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full mx-auto"
+                onClick={() => fileInputRef.current.click()}
+              >
+                {imageFileUploadingProgress !== null && (
+                  <CircularProgressbar
+                    value={imageFileUploadingProgress || 0}
+                    text={`${imageFileUploadingProgress}%`}
+                    strokeWidth={5}
+                    styles={{
+                      root: {
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      },
+                      path: {
+                        stroke:
+                          imageFileUploadingProgress < 50
+                            ? `rgba(62, 152, 199, ${
+                                imageFileUploadingProgress / 100
+                              })`
+                            : `rgba(28, 200, 138, ${
+                                imageFileUploadingProgress / 100
+                              })`,
+                      },
+                      text: {
+                        fill: "#333",
+                      },
+                    }}
+                  />
+                )}
+                <img
+                  src={imageFileUrl || currentUser.user.profilePicture}
+                  alt="user"
+                  className="rounded-full w-full h-full object-cover border-8 border-[lightgray]"
+                />
+              </div>
+            </div>
             <div className="mb-4">
               <Label htmlFor="username">Username</Label>
               <TextInput
@@ -170,7 +289,7 @@ const UpdateProfile = () => {
                 id="bloodGroup"
                 name="bloodGroup"
                 className="input-field"
-                value={formData.bloodGroup || ''}
+                value={formData.bloodGroup || ""}
                 onChange={handleInputChange}
               >
                 <option value="">Select Blood Group</option>
@@ -184,27 +303,52 @@ const UpdateProfile = () => {
                 <option value="O-">O-</option>
               </Select>
             </div>
-
-            {/* Certifications */}
-            {currentUser.user.role === 'emergencyresponder' && (
-              <div>
-                <Label htmlFor="certifications">Certifications</Label>
-                {formData.certifications.map((certification, index) => (
-                  <div key={index} className="">
+            <div className="mb-4">
+              <Label htmlFor="skills">Skills</Label>
+              <TextInput
+                id="skills"
+                name="skills"
+                type="text"
+                placeholder="Skills"
+                value={formData.skills}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="availabilityDropdown">Availability</Label>
+              <Select
+                id="availabilityDropdown"
+                name="availabilityDropdown"
+                className="input-field"
+                value={formData.availabilityDropdown || ""}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Availability</option>
+                <option value="full-time">Full-time</option>
+                <option value="part-time">Part-time</option>
+                <option value="freelance">Freelance</option>
+              </Select>
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="certifications">Certifications</Label>
+              {formData.certifications.map((certification, index) => (
+                <div key={index} className="mb-2">
+                  <div className="flex space-x-2">
                     <TextInput
                       name={`certificationName_${index}`}
-                      type='text'
+                      type="text"
                       placeholder="Certification Name"
                       value={certification.certificationName}
                       onChange={(e) => handleCertificationChange(index, e)}
+                      className="w-1/3"
                     />
-                    <div className='flex space-x-2 mt-2'>
                     <TextInput
                       name={`certificationDate_${index}`}
                       type="date"
                       placeholder="Certification Date"
                       value={certification.certificationDate}
                       onChange={(e) => handleCertificationChange(index, e)}
+                      className="w-1/3"
                     />
                     <TextInput
                       name={`expirationDate_${index}`}
@@ -212,58 +356,34 @@ const UpdateProfile = () => {
                       placeholder="Expiration Date"
                       value={certification.expirationDate}
                       onChange={(e) => handleCertificationChange(index, e)}
+                      className="w-1/3"
                     />
-                           <Button type="button" onClick={() => removeCertification(index)}>Remove</Button>
-                    </div>
-              
-             
+                    <Button
+                      color="failure"
+                      className="ml-2"
+                      onClick={() => removeCertification(index)}
+                    >
+                      Remove
+                    </Button>
                   </div>
-                ))}
-                <Button type="button" className='mt-1' onClick={addCertification}>Add Certification</Button>
-              </div>
+                </div>
+              ))}
+              <Button
+                color="success"
+                className="mt-2"
+                onClick={addCertification}
+              >
+                Add Certification
+              </Button>
+            </div>
+            <div className="mb-4">
+              <Button type="submit" gradientDuoTone="cyanToBlue" fullSized>
+                Update Profile
+              </Button>
+            </div>
+            {imageFileError && (
+              <div className="text-red-500 text-sm">{imageFileError}</div>
             )}
-
-            {currentUser.user.role === 'volunteer' && (
-              <div className="mb-4">
-                <Label htmlFor="skills">Skills</Label>
-                <Select
-                  id="skills"
-                  name="skills"
-                  className="input-field"
-                  value={formData.skills || ''}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select Skill</option>
-                  <option value="communication">Communication</option>
-                  <option value="teamwork">Teamwork</option>
-                  <option value="leadership">Leadership</option>
-                  <option value="organization">Organization</option>
-                </Select>
-              </div>
-            )}
-
-            {(currentUser.user.role === 'volunteer' || currentUser.user.role === 'emergencyresponder') && (
-              <div className="mb-4">
-                <Label htmlFor="availabilityDropdown">Availability Dropdown</Label>
-                <Select
-                  id="availabilityDropdown"
-                  name="availabilityDropdown"
-                  className="input-field"
-                  value={formData.availabilityDropdown || ''}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select Availability</option>
-                  <option value="full-time">Full Time</option>
-                  <option value="part-time">Part Time</option>
-                </Select>
-              </div>
-            )}
-
-          </div>
-          <div className="text-right mt-6">
-            <Button type="submit" className="bg-green-400 text-white">
-              Update
-            </Button>
           </div>
         </form>
       </div>
