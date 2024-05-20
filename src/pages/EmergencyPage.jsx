@@ -199,7 +199,8 @@ const EmergencyPage = () => {
           />
         </div>
         {(currentUser.user.role === "emergencyresponder" ||
-          currentUser.user.role === "admin") && (
+          currentUser.user.role === "admin" ||
+          currentUser.user.role === "volunteer") && (
           <div className="flex justify-end mb-2">
             <Button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded"

@@ -14,11 +14,6 @@ const SocketProvider = ({ children }) => {
       console.log("Connected to socket server");
     });
 
-    newSocket.on("newAlert", (alert) => {
-      console.log("New alert received:", alert);
-      setAlert(alert);
-    });
-
     newSocket.on("disconnect", () => {
       console.log("Disconnected from socket server");
     });

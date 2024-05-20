@@ -15,9 +15,8 @@ const Header = () => {
 
   useEffect(() => {
     if (socket) {
-      // Listen for new alerts and display toast notifications
       socket.on("newAlert", () => {
-        toast.info("New alert received!");
+        toast.info("New alert received ");
       });
     }
 

@@ -14,6 +14,7 @@ import {
   Legend,
 } from "chart.js";
 import { Table, Modal, TextInput, Button, Label, Select } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -38,13 +39,13 @@ const AlertPage = () => {
   const chartInstance = useRef(null);
 
   const socket = useContext(SocketContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAlerts();
 
     socket.on("newAlert", (alert) => {
       setAlerts((prevAlerts) => [alert, ...prevAlerts]);
-      toast.info("New alert received!");
     });
 
     return () => {
