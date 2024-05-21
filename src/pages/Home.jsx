@@ -1,17 +1,23 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { RiArrowRightSLine } from "react-icons/ri"; // Importing the right arrow icon
-import { RiMailLine, RiPhoneLine, RiMapPinLine } from "react-icons/ri";
+import {
+  RiArrowRightSLine,
+  RiMailLine,
+  RiPhoneLine,
+  RiMapPinLine,
+} from "react-icons/ri";
+
 const Home = () => {
   return (
     <div>
-      <div className="h-full sm:h-72 xl:h-96 2xl:h-120 overflow-hidden">
+      <div className="relative h-72 sm:h-96 xl:h-auto overflow-hidden">
         <img
           src="/banner.png"
           alt="banner"
-          className="object-cover w-full h-full"
+          className="object-contain w-full h-full"
         />
       </div>
+
       {/* first section */}
       <div className="flex flex-col sm:flex-row mt-10 h-full">
         <div className="w-full sm:w-1/2 p-6 sm:p-8">
@@ -21,7 +27,6 @@ const Home = () => {
             </h2>
           </div>
         </div>
-
         <div className="w-full sm:w-1/2 p-6 sm:p-8 flex flex-col justify-center items-center">
           <p className="text-lg text-center mb-4">
             Stay safe, informed, and supported during disaster with the power of
@@ -33,7 +38,7 @@ const Home = () => {
             </button>
             <Link to="/signup">
               <button className="bg-white text-black py-2 px-4 rounded flex items-center">
-                Sign Up <RiArrowRightSLine className="ml-2" />{" "}
+                Sign Up <RiArrowRightSLine className="ml-2" />
               </button>
             </Link>
           </div>
@@ -74,9 +79,11 @@ const Home = () => {
                 <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
                   Learn More
                 </button>
-                <button className="bg-white text-black py-2 px-4 rounded flex items-center">
-                  Sign Up <RiArrowRightSLine className="ml-2" />{" "}
-                </button>
+                <Link to="/signup">
+                  <button className="bg-white text-black py-2 px-4 rounded flex items-center">
+                    Sign Up <RiArrowRightSLine className="ml-2" />
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -128,10 +135,9 @@ const Home = () => {
             </p>
             <p className="text-lg mb-4">
               The Nexus provides a comprehensive resource management system that
-              ensures efficient organization of emergency supplies and
-              shelters.With our platform,you can easily and manage essential
-              resources,making disaster management more effetive and
-              streamlined.
+              ensures efficient organization of emergency supplies and shelters.
+              With our platform, you can easily and manage essential resources,
+              making disaster management more effective and streamlined.
             </p>
             <div className="flex flex-col">
               <div className="flex mb-4"></div>
@@ -139,9 +145,11 @@ const Home = () => {
                 <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
                   Learn More
                 </button>
-                <button className="bg-white text-black py-2 px-4 rounded flex items-center">
-                  Sign Up <RiArrowRightSLine className="ml-2" />{" "}
-                </button>
+                <Link to="/signup">
+                  <button className="bg-white text-black py-2 px-4 rounded flex items-center">
+                    Sign Up <RiArrowRightSLine className="ml-2" />
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -171,9 +179,11 @@ const Home = () => {
             keeping you informed and prepared for any emergency
           </p>
           <div className="flex flex-col sm:flex-row">
-            <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
-              Sign Up
-            </button>
+            <Link to="/signup">
+              <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
+                Sign Up
+              </button>
+            </Link>
             <button className="bg-white text-black py-2 px-4 rounded flex items-center">
               Learn More
             </button>
@@ -202,49 +212,50 @@ const Home = () => {
 
           <div className="mb-4 flex flex-col items-center">
             <h3 className="text-xl font-bold mb-2">
-              How to prepare for disasters ?
+              How to prepare for disasters?
             </h3>
             <p className="text-sm text-center">
-              Disaster preaparedness involves creating an emergency plan,
+              Disaster preparedness involves creating an emergency plan,
               assembling a disaster supply kit, and staying informed about
-              potenctial risks in your area
+              potential risks in your area.
             </p>
           </div>
           <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
 
           <div className="mb-4 flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">How can i contribute ?</h3>
+            <h3 className="text-xl font-bold mb-2">How can I contribute?</h3>
             <p className="text-sm text-center">
-              You can contribute by donating to disaster relief
-              efforts,volunteering your time and skills, and spreading awareness
-              about the platform to help more people stay during disasters
+              You can contribute by donating to disaster relief efforts,
+              volunteering your time and skills, and spreading awareness about
+              the platform to help more people stay safe during disasters.
             </p>
           </div>
           <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
 
           <div className="mb-4 flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">Is the platform free ?</h3>
+            <h3 className="text-xl font-bold mb-2">Is the platform free?</h3>
             <p className="text-sm text-center">
-              Yes,the platform is free to use for both community members and
-              emergency responders.We believe in providing accessible tools for
-              disaster management
+              Yes, the platform is free to use for both community members and
+              emergency responders. We believe in providing accessible tools for
+              disaster management.
             </p>
           </div>
           <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
 
           <div className="flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">How can i sign up ?</h3>
+            <h3 className="text-xl font-bold mb-2">How can I sign up?</h3>
             <p className="text-sm text-center">
-              To sign up,simply visit our website and follow the registration
-              process it only takes a few minutes
+              To sign up, simply visit our website and follow the registration
+              process. It only takes a few minutes.
             </p>
           </div>
         </div>
-        <h2 className="text-3xl font-bold mb-6 mt-10">
-          Still Have Questions ?
-        </h2>
+        <h2 className="text-3xl font-bold mb-6 mt-10">Still Have Questions?</h2>
         <p className="mb-8">Contact us for further assistance</p>
-        <button className="bg-white text-black py-2 px-4 rounded flex items-center border-2">
+        <button
+          className="bg-white text-black py-2 px-4 rounded flex items-center border-2"
+          onClick={() => (window.location.href = "mailto:contact@example.com")}
+        >
           Contact
         </button>
       </div>
@@ -253,7 +264,7 @@ const Home = () => {
           <div className="rounded-lg p-8 h-full">
             <h2 className="text-sm mb-4">Contact</h2>
             <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
-            <p>Have a question or want to get involved ? Contact us today !</p>
+            <p>Have a question or want to get involved? Contact us today!</p>
           </div>
         </div>
 
@@ -273,22 +284,21 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="mt-10 h-full bg-gray-200">
+      <footer className="mt-10 bg-gray-200">
         <div className="p-6 sm:p-8 flex justify-center items-center">
           <img src="/Nexus.png" alt="logo" className="h-16" />
         </div>
-
-        <div className="p-6 sm:p-8 flex flex-col justify-center items-center">
-          <div className="text-lg text-center mb-4">
+        <div className="p-6 sm:p-8 flex flex-col sm:flex-row justify-around items-center text-center">
+          <div className="text-lg mb-4 sm:mb-0">
             <RiPhoneLine className="text-2xl mb-2" />
-            <p className="mb-2">+1 123 456 7890</p>
+            <p>+1 123 456 7890</p>
           </div>
-          <div className="text-lg text-center mb-4">
+          <div className="text-lg mb-4 sm:mb-0">
             <RiMapPinLine className="text-2xl mb-2" />
-            <p className="mb-2">123 Main Street, City, Country</p>
+            <p>123 Main Street, City, Country</p>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
