@@ -25,6 +25,8 @@ import EmergencyPage from "./pages/EmergencyPage";
 import AllocateResponder from "./components/Emergency/AllocateResponder";
 import AlertPage from "./pages/AlertPage";
 import CommunityPage from "./pages/CommunityPage";
+import DonateMoney from "./pages/DonateMoney";
+import DonateSupplies from "./pages/DonateSupplies";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -61,6 +63,8 @@ function App() {
           <Route path="/emergencies" element={<EmergencyPage />} />
           <Route path="/alerts" element={<AlertPage />} />
           <Route path="/community" element={<CommunityPage />} />
+          <Route path="/donatemoney" element={<DonateMoney />} />
+          <Route path="/donatesupplies" element={<DonateSupplies />} />
         </Routes>
       </BrowserRouter>
     </SocketProvider>

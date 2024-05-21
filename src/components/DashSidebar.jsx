@@ -5,6 +5,9 @@ import {
   HiDocumentText,
   HiOutlineAnnotation,
   HiUser,
+  HiHeart,
+  HiCash,
+  HiGift,
 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { signoutSuccess } from "../redux/userSlice";
@@ -78,6 +81,17 @@ const DashSidebar = () => {
           <Link to="/community">
             <Sidebar.Item icon={HiOutlineAnnotation}>Community</Sidebar.Item>
           </Link>
+          <Sidebar.ItemGroup title="Donate" className="flex flex-col gap-1">
+            <Link to="/donatemoney">
+              <Sidebar.Item icon={HiCash}>Donate Money</Sidebar.Item>
+            </Link>
+            <Link to="/donatesupplies">
+              <Sidebar.Item icon={HiGift}>Donate Supplies</Sidebar.Item>
+            </Link>
+            <Link to="/tasks">
+              <Sidebar.Item icon={HiHeart}>Volunteer</Sidebar.Item>
+            </Link>
+          </Sidebar.ItemGroup>
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"
