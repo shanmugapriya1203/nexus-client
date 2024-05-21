@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "axios";
 import { BASE_URL } from "../api/apiservice";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { SocketContext } from "../context/SocketContext";
 import {
   Chart as ChartJS,
@@ -13,8 +12,17 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Table, Modal, TextInput, Button, Label, Select } from "flowbite-react";
+import {
+  Table,
+  Modal,
+  TextInput,
+  Button,
+  Label,
+  Select,
+  Pagination,
+} from "flowbite-react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -27,6 +35,7 @@ ChartJS.register(
 
 const AlertPage = () => {
   const [alerts, setAlerts] = useState([]);
+  const { currentUser } = useSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     type: "",
@@ -37,6 +46,10 @@ const AlertPage = () => {
   });
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [alertsPerPage] = useState(5);
+
+  const onPageChange = (page) => setCurrentPage(page);
 
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
@@ -176,15 +189,24 @@ const AlertPage = () => {
     }
   };
 
+  // Logic for pagination
+  const indexOfLastAlert = currentPage * alertsPerPage;
+  const indexOfFirstAlert = indexOfLastAlert - alertsPerPage;
+  const currentAlerts = alerts.slice(indexOfFirstAlert, indexOfLastAlert);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="flex flex-col p-8">
       <div className="relative">
-        <Button
-          className="absolute top-0 right-0 mt-4 mr-4"
-          onClick={handleOpenModal}
-        >
-          Add Alert
-        </Button>
+        {currentUser.user.role === "admin" && (
+          <Button
+            className="absolute top-0 right-0 mt-4 mr-4"
+            onClick={handleOpenModal}
+          >
+            Add Alert
+          </Button>
+        )}
       </div>
       <h1 className="text-2xl font-semibold mb-4">Alerts</h1>
       <div className="chart-container" style={{ maxWidth: "100%" }}>
@@ -200,7 +222,7 @@ const AlertPage = () => {
           <Table.HeadCell>Time</Table.HeadCell>
         </Table.Head>
         <Table.Body>
-          {alerts.map((alert) => (
+          {currentAlerts.map((alert) => (
             <Table.Row key={alert.id} className="hover:bg-gray-100">
               <Table.Cell className="font-bold">{alert.type}</Table.Cell>
               <Table.Cell>{alert.message}</Table.Cell>
@@ -212,6 +234,14 @@ const AlertPage = () => {
           ))}
         </Table.Body>
       </Table>
+      <div className="flex justify-center mt-5">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(alerts.length / alertsPerPage)}
+          onPageChange={onPageChange}
+        />
+      </div>
+
       <Modal show={isModalOpen} onClose={handleCloseModal} size="md">
         <form onSubmit={handleSubmit}>
           <Modal.Header>Add Alert</Modal.Header>
