@@ -3,7 +3,7 @@ import { Table, Button, Modal } from "flowbite-react";
 import { BASE_URL } from "../../api/apiservice";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify"; // Import toast
-
+import { FaArrowLeft } from "react-icons/fa";
 const AllTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,6 +89,13 @@ const AllTasks = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Button
+        color="primary"
+        className="flex items-center mb-4"
+        onClick={() => window.history.back()}
+      >
+        <FaArrowLeft className="mr-2" /> Back
+      </Button>
       <div className="flex justify-between mb-4">
         <h2 className="text-2xl font-bold">All Tasks</h2>
         <Link to="/create-task">

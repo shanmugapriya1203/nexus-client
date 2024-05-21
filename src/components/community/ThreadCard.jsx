@@ -21,11 +21,40 @@ const ThreadCard = ({ thread, fetchThreads }) => {
     thread.likes.some((like) => like._id === currentUser.user.id)
   );
   const [showReplies, setShowReplies] = useState(false);
+  const [replies, setReplies] = useState([]);
 
   useEffect(() => {
     setLiked(thread.likes.includes(currentUser.user.id));
     setLikeCount(thread.likes.length);
   }, [thread.likes, currentUser.user.id]);
+
+  const fetchReplies = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/threads/${thread._id}/replies`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setReplies(data);
+      } else {
+        throw new Error("Failed to fetch replies");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const toggleReplies = () => {
+    setShowReplies(!showReplies);
+    if (!showReplies) {
+      fetchReplies();
+    }
+  };
 
   const toggleLike = async () => {
     try {
@@ -77,6 +106,9 @@ const ThreadCard = ({ thread, fetchThreads }) => {
         setReplyContent("");
         setShowReplyModal(false);
         fetchThreads();
+        if (showReplies) {
+          fetchReplies();
+        }
       } else {
         throw new Error("Failed to submit reply");
       }
@@ -123,7 +155,7 @@ const ThreadCard = ({ thread, fetchThreads }) => {
             </p>
             <p
               className="text-xs text-gray-500 cursor-pointer"
-              onClick={() => setShowReplies(!showReplies)}
+              onClick={toggleReplies}
             >
               {showReplies ? "Hide" : "Replies"}
             </p>
@@ -133,24 +165,38 @@ const ThreadCard = ({ thread, fetchThreads }) => {
 
           {showReplies && (
             <div className="mt-2 border border-gray-200 p-2 rounded">
-              {thread.comments
+              {replies
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .slice(0, 2)
                 .map((comment) => (
                   <div key={comment._id} className="flex items-center mt-2">
-                    <Avatar
-                      img={comment.author.profilePicture}
-                      className="mr-2"
-                    />
-                    <div>
-                      <p className="text-sm font-semibold">
-                        {comment.author.name}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {moment(comment.createdAt).fromNow()}
-                      </p>
-                      <p className="text-sm">{comment.content}</p>
-                    </div>
+                    {comment.author ? (
+                      <>
+                        <Avatar
+                          img={comment.author.profilePicture}
+                          className="mr-2"
+                        />
+                        <div>
+                          <p className="text-sm font-semibold">
+                            {comment.author.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {moment(comment.createdAt).fromNow()}
+                          </p>
+                          <p className="text-sm">{comment.content}</p>
+                        </div>
+                      </>
+                    ) : (
+                      <div>
+                        <p className="text-sm">{comment.content}</p>
+                        <p className="text-xs text-gray-500">
+                          {moment(comment.createdAt).fromNow()}
+                        </p>
+                        <p className="text-xs text-gray-500 italic">
+                          Anonymous
+                        </p>
+                      </div>
+                    )}
                   </div>
                 ))}
             </div>

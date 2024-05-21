@@ -49,7 +49,11 @@ const Header = () => {
       return (
         <div className="relative">
           <button onClick={toggleDropdown} className="text-green-800 relative">
-            <FaUserCircle className="text-2xl" />
+            <img
+              src={currentUser.user.profilePicture}
+              alt="Avatar"
+              className="w-8 h-8 rounded-full"
+            />
             {hasAssignedTasks && !isNewTaskClicked && (
               <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
             )}
@@ -107,15 +111,22 @@ const Header = () => {
       <div className="flex items-center flex-shrink-0">
         <img src={Logo} alt="Logo" className="h-10 mr-2" />
       </div>
-      <nav className="space-x-4  items-center hidden lg:flex flex-grow">
-        <Link to="/" className="hover:text-gray-400">
+      <nav className="flex-grow flex justify-center lg:justify-center">
+        {" "}
+        <Link to="/" className="hover:text-gray-400 font-bold px-4">
           Home
         </Link>
-        <Link to="/alerts" className="hover:text-gray-400">
+        <Link
+          to="dashboard?tab=alerts"
+          className="hover:text-gray-400 font-bold px-4"
+        >
           Alerts
         </Link>
-        <Link to="/maps" className="hover:text-gray-400">
-          Maps
+        <Link
+          to="dashboard?tab=shelters"
+          className="hover:text-gray-400 font-bold px-4"
+        >
+          Shelters
         </Link>
       </nav>
       <div className="flex items-center gap-2 lg:gap-4">

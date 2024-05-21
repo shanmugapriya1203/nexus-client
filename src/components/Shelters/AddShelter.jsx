@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TextInput, Button } from "flowbite-react";
 import { BASE_URL } from "../../api/apiservice";
-import { IoIosArrowBack } from "react-icons/io";
+import { FaArrowLeft } from "react-icons/fa";
 import {
   getStorage,
   ref,
@@ -114,130 +114,134 @@ const AddShelter = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <div className="w-full flex justify-end mt-4">
-        <Link to="/dashboard?tab=/" className="flex items-center">
-          <span className="mr-2">Back</span>
-          <IoIosArrowBack className="text-blue-500 text-2xl cursor-pointer" />
-        </Link>
-      </div>
-      <blockquote className="italic text-lg text-center text-gray-700 mt-8 max-w-lg p-4">
-        "Success is not final, failure is not fatal: It is the courage to
-        continue that counts." - Winston Churchill
-      </blockquote>
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-lg p-8 bg-gray-100 rounded-lg shadow-md"
+    <>
+      <Button
+        color="primary"
+        className="flex items-center mb-4"
+        onClick={() => window.history.back()}
       >
-        <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
-          Add Shelter
-        </h2>
-        <TextInput
-          name="name"
-          type="text"
-          placeholder="Shelter Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          className="mb-4"
-        />
-        <TextInput
-          name="location"
-          type="text"
-          placeholder="Location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-          className="mb-4"
-        />
-        <TextInput
-          name="capacity"
-          type="number"
-          placeholder="Capacity"
-          value={formData.capacity}
-          onChange={handleChange}
-          required
-          className="mb-4"
-        />
-        <TextInput
-          name="description"
-          type="text"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-          className="mb-4"
-        />
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Availability:
-          </label>
-          <select
-            name="availability"
-            value={formData.availability}
-            onChange={handleChange}
-            className="w-full bg-white border border-gray-300 rounded px-4 py-2"
-          >
-            <option value={true}>Available</option>
-            <option value={false}>Not Available</option>
-          </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Photos:
-          </label>
-          {formData.photos.map((photo, index) => (
-            <div key={index} className="flex items-center mb-2">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileUpload(index, e.target.files[0])}
-                required
-                className="mr-2"
-              />
-              <Button
-                type="button"
-                onClick={() => removePhoto(index)}
-                className="bg-red-500 hover:bg-red-600 text-white rounded-md mb-1"
-              >
-                Remove
-              </Button>
-            </div>
-          ))}
-          <Button
-            type="button"
-            onClick={addPhoto}
-            className="bg-green-500 hover:bg-green-600 text-white rounded-md mt-2"
-          >
-            Add Photo
-          </Button>
-        </div>
-        <TextInput
-          name="email"
-          type="email"
-          placeholder="Contact Email"
-          value={formData.contact.email}
-          onChange={handleChange}
-          required
-          className="mb-4"
-        />
-        <TextInput
-          name="phone"
-          type="tel"
-          placeholder="Contact Phone"
-          value={formData.contact.phone}
-          onChange={handleChange}
-          required
-          className="mb-4"
-        />
-        <Button
-          type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white rounded-md"
+        <FaArrowLeft className="mr-2" /> Back
+      </Button>
+
+      <div className="flex flex-col items-center justify-center h-full">
+        <blockquote className="italic text-lg text-center text-gray-700 mt-8 max-w-lg p-4">
+          "Success is not final, failure is not fatal: It is the courage to
+          continue that counts." - Winston Churchill
+        </blockquote>
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-lg p-8 bg-gray-100 rounded-lg shadow-md"
         >
-          Add Shelter
-        </Button>
-      </form>
-    </div>
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
+            Add Shelter
+          </h2>
+          <TextInput
+            name="name"
+            type="text"
+            placeholder="Shelter Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="mb-4"
+          />
+          <TextInput
+            name="location"
+            type="text"
+            placeholder="Location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+            className="mb-4"
+          />
+          <TextInput
+            name="capacity"
+            type="number"
+            placeholder="Capacity"
+            value={formData.capacity}
+            onChange={handleChange}
+            required
+            className="mb-4"
+          />
+          <TextInput
+            name="description"
+            type="text"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+            className="mb-4"
+          />
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Availability:
+            </label>
+            <select
+              name="availability"
+              value={formData.availability}
+              onChange={handleChange}
+              className="w-full bg-white border border-gray-300 rounded px-4 py-2"
+            >
+              <option value={true}>Available</option>
+              <option value={false}>Not Available</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Photos:
+            </label>
+            {formData.photos.map((photo, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleFileUpload(index, e.target.files[0])}
+                  required
+                  className="mr-2"
+                />
+                <Button
+                  type="button"
+                  onClick={() => removePhoto(index)}
+                  className="bg-red-500 hover:bg-red-600 text-white rounded-md mb-1"
+                >
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <Button
+              type="button"
+              onClick={addPhoto}
+              className="bg-green-500 hover:bg-green-600 text-white rounded-md mt-2"
+            >
+              Add Photo
+            </Button>
+          </div>
+          <TextInput
+            name="email"
+            type="email"
+            placeholder="Contact Email"
+            value={formData.contact.email}
+            onChange={handleChange}
+            required
+            className="mb-4"
+          />
+          <TextInput
+            name="phone"
+            type="tel"
+            placeholder="Contact Phone"
+            value={formData.contact.phone}
+            onChange={handleChange}
+            required
+            className="mb-4"
+          />
+          <Button
+            type="submit"
+            className="bg-green-500 hover:bg-green-600 text-white rounded-md"
+          >
+            Add Shelter
+          </Button>
+        </form>
+      </div>
+    </>
   );
 };
 

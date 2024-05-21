@@ -203,7 +203,7 @@ const EmergencyPage = () => {
           currentUser.user.role === "volunteer") && (
           <div className="flex justify-end mb-2">
             <Button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded"
+              className="bg-green-500  text-white font-bold py-1 px-1 rounded"
               onClick={handleAddIncident}
             >
               <HiOutlinePlus className="mr-2" />

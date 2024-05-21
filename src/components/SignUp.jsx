@@ -5,9 +5,8 @@ import EmergencyResponderSignUp from "./ResponderSignup";
 import { BASE_URL } from "../api/apiservice";
 import NormalUserSignUp from "./../pages/NormalUserSignup";
 import VolunteerSignUp from "./../pages/VolunteerSignup";
-import { toast, ToastContainer } from "react-toastify";
 
-const SignUp = () => {
+const SignUp = ({}) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -21,66 +20,22 @@ const SignUp = () => {
     experience: "",
     availabilityDropdown: "",
     mobileNumber: "",
-    otp: "",
+    profilePicture: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [otpRequested, setOtpRequested] = useState(false);
-  const [otpVerified, setOtpVerified] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const requestOtp = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/api/auth/request-otp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mobileNumber: "+91" + formData.mobileNumber }),
-      });
-
-      if (!response.ok) {
-        throw new Error("OTP request failed");
-      }
-      setOtpRequested(true);
-      toast.success("OTP requested successfully!");
-    } catch (error) {
-      console.error("OTP request error:", error);
-      toast.error("Failed to request OTP. Please try again.");
-    }
-  };
-
-  const verifyOtp = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/api/auth/verify-otp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          mobileNumber: "+91" + formData.mobileNumber,
-          otp: formData.otp,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("OTP verification failed");
-      }
-      setOtpVerified(true);
-      toast.success("OTP verified successfully!");
-    } catch (error) {
-      console.error("OTP verification error:", error);
-      toast.error("Failed to verify OTP. Please try again.");
-    }
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmitted(true);
-    requestOtp();
+  };
+
+  const handleBack = () => {
+    setSubmitted(false);
   };
 
   const handleSignupSubmit = async () => {
@@ -97,17 +52,9 @@ const SignUp = () => {
         throw new Error("Registration failed");
       }
       navigate("/login");
-      toast.success("Registration successful!");
     } catch (error) {
       console.error("Registration error:", error);
-      toast.error("Failed to register. Please try again.");
     }
-  };
-
-  const handleBack = () => {
-    setSubmitted(false);
-    setOtpRequested(false);
-    setOtpVerified(false);
   };
 
   return (
@@ -128,56 +75,28 @@ const SignUp = () => {
           <h2 className="text-3xl font-extrabold text-gray-900 text-center py-4">
             Sign Up
           </h2>
-          <ToastContainer />
           {submitted ? (
-            otpRequested && !otpVerified ? (
-              <form className="px-8 py-6" onSubmit={(e) => e.preventDefault()}>
-                <div className="space-y-4">
-                  <div className="mb-4">
-                    <Label htmlFor="otp">Enter OTP</Label>
-                    <TextInput
-                      id="otp"
-                      name="otp"
-                      type="text"
-                      required
-                      placeholder="OTP"
-                      value={formData.otp}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                <div className="text-right mt-6">
-                  <Button
-                    onClick={verifyOtp}
-                    className="bg-green-400 text-white"
-                  >
-                    Verify OTP
-                  </Button>
-                </div>
-              </form>
-            ) : otpVerified ? (
-              formData.role === "volunteer" ? (
-                <VolunteerSignUp
-                  formData={formData}
-                  onBack={handleBack}
-                  onChange={handleInputChange}
-                  onSubmit={handleSignupSubmit}
-                />
-              ) : formData.role === "emergencyresponder" ? (
-                <EmergencyResponderSignUp
-                  formData={formData}
-                  onBack={handleBack}
-                  onChange={handleInputChange}
-                  onSubmit={handleSignupSubmit}
-                />
-              ) : formData.role === "user" ? (
-                <NormalUserSignUp
-                  formData={formData}
-                  onBack={handleBack}
-                  onChange={handleInputChange}
-                  onSubmit={handleSignupSubmit}
-                />
-              ) : null
+            formData.role === "volunteer" ? (
+              <VolunteerSignUp
+                formData={formData}
+                onBack={handleBack}
+                onChange={handleInputChange}
+                onSubmit={handleSignupSubmit}
+              />
+            ) : formData.role === "emergencyresponder" ? (
+              <EmergencyResponderSignUp
+                formData={formData}
+                onBack={handleBack}
+                onChange={handleInputChange}
+                onSubmit={handleSignupSubmit}
+              />
+            ) : formData.role === "user" ? (
+              <NormalUserSignUp
+                formData={formData}
+                onBack={handleBack}
+                onChange={handleInputChange}
+                onSubmit={handleSignupSubmit}
+              />
             ) : null
           ) : (
             <form className="px-8 py-6" onSubmit={handleSubmit}>
@@ -221,18 +140,6 @@ const SignUp = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <Label htmlFor="mobileNumber">Mobile Number</Label>
-                  <TextInput
-                    id="mobileNumber"
-                    name="mobileNumber"
-                    type="text"
-                    required
-                    placeholder="Mobile Number"
-                    value={formData.mobileNumber}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="mb-4">
                   <Label htmlFor="role">Role</Label>
                   <Select
                     id="role"
@@ -252,7 +159,7 @@ const SignUp = () => {
               </div>
               <div className="text-right mt-6">
                 <Button type="submit" className="bg-green-400 text-white">
-                  Request OTP
+                  Next
                 </Button>
               </div>
             </form>

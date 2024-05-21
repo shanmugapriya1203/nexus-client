@@ -5,7 +5,7 @@ import { FaEdit, FaTrash, FaShare } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { FaArrowLeft } from "react-icons/fa";
 const ShowShelter = () => {
   const { shelterId } = useParams();
   const [shelterData, setShelterData] = useState(null);
@@ -74,6 +74,14 @@ const ShowShelter = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <ToastContainer />
+      <div className="mb-4">
+        <button
+          className="flex items-center text-gray-600 hover:text-gray-800"
+          onClick={() => window.history.back()}
+        >
+          <FaArrowLeft className="mr-2" /> Back
+        </button>
+      </div>
       {shelterData ? (
         <div className="bg-gray-100 rounded-lg shadow-md p-8 relative">
           {currentUser.user.role === "admin" && (
@@ -89,9 +97,7 @@ const ShowShelter = () => {
               </button>
             </div>
           )}
-
-          {/* Share icon at the top right corner */}
-          <div className="absolute top-0 right-0 mt-2 mr-2">
+          <div className="absolute top-0 right-0 mt-2 mr-2 flex items-center space-x-4">
             <button
               className="text-gray-600 hover:text-gray-800"
               onClick={shareShelter}

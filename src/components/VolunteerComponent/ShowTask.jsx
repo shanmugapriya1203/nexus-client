@@ -97,7 +97,7 @@ const ShowTask = () => {
         {loading ? (
           <p>Loading task details...</p>
         ) : (
-          <div>
+          <div className="mt-10">
             {tasks.map((task) => (
               <div
                 key={task._id}

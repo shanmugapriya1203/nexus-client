@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import GetPlan from "../components/Plans/GetPlan";
 import AlertPage from "./AlertPage";
 import CommunityPage from "./CommunityPage";
+import VolunteerDashBoard from "./VolunteerDashBoard";
 
 const Dashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -40,6 +41,9 @@ const Dashboard = () => {
 
           {currentUser.user.role === "admin" && (!tab || tab === "/") && (
             <AdminDashboard />
+          )}
+          {currentUser.user.role === "volunteer" && (!tab || tab === "/") && (
+            <VolunteerDashBoard />
           )}
         </div>
       </div>

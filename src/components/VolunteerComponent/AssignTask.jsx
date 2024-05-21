@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../../api/apiservice";
 import { Button, Table, Modal } from "flowbite-react";
+import { FaArrowLeft } from "react-icons/fa";
 const AssignTask = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -125,6 +126,13 @@ const AssignTask = () => {
 
   return (
     <div>
+      <Button
+        color="primary"
+        className="flex items-center mb-4"
+        onClick={() => window.history.back()}
+      >
+        <FaArrowLeft className="mr-2" /> Back
+      </Button>
       <h2 className="text-2xl font-bold mb-10 text-center mt-5">Assign Task</h2>
 
       {loading ? (

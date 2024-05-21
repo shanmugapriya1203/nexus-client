@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../../api/apiservice";
 import { Table, Modal, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { IoIosArrowBack } from "react-icons/io";
+import { FaArrowLeft } from "react-icons/fa";
 const AllVolunteers = () => {
   const [volunteers, setVolunteers] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -33,13 +33,15 @@ const AllVolunteers = () => {
 
   return (
     <div className="p-4">
+      <Button
+        color="primary"
+        className="flex items-center mb-4"
+        onClick={() => window.history.back()}
+      >
+        <FaArrowLeft className="mr-2" /> Back
+      </Button>
+
       <h2 className="text-2xl font-bold mb-4">All Volunteers</h2>
-      <div className="w-full flex justify-end mt-4">
-        <Link to="/dashboard?tab=/" className="flex items-center ">
-          <span className="mr-2 mb-2">Back</span>
-          <IoIosArrowBack className="text-blue-500 text-2xl cursor-pointer" />
-        </Link>
-      </div>
       <Table hoverable className="shadow-md">
         <Table.Head>
           <Table.HeadCell>Name</Table.HeadCell>
@@ -53,7 +55,7 @@ const AllVolunteers = () => {
           {volunteers.map((volunteer) => (
             <Table.Row key={volunteer._id} className="hover:bg-gray-100">
               <Table.Cell className="bg-gray-50 dark:bg-gray-700 font-bold">
-                {volunteer.fullName.toUpperCase()}
+                {volunteer.fullName}
               </Table.Cell>
               <Table.Cell className="bg-gray-50 dark:bg-gray-700">
                 {volunteer.email}
@@ -65,7 +67,7 @@ const AllVolunteers = () => {
                 {volunteer.profession}
               </Table.Cell>
               <Table.Cell className="bg-gray-50 dark:bg-gray-700">
-                {volunteer.availabilityDropdown.toUpperCase()}
+                {volunteer.availabilityDropdown}
               </Table.Cell>
               <Table.Cell className="bg-gray-50 dark:bg-gray-700">
                 {volunteer.assignedTasks.length > 0 &&
