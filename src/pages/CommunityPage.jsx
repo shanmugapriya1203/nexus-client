@@ -66,8 +66,8 @@ const CommunityPage = () => {
         </div>
         <div className="flex flex-col w-full p-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-green-500">
-              Emergency Management Community Hub
+            <h1 className="text-3xl font-bold text-green-500 mb-5">
+              Community Hub
             </h1>
             <Button color="success" onClick={() => setShowModal(true)}>
               Ask Yours

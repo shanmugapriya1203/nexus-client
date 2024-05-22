@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,21 +27,15 @@ import AlertPage from "./pages/AlertPage";
 import CommunityPage from "./pages/CommunityPage";
 import DonateMoney from "./pages/DonateMoney";
 import DonateSupplies from "./pages/DonateSupplies";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
-  const { currentUser } = useSelector((state) => state.user);
-
-  // useEffect(() => {
-  //   if (!currentUser) {
-  //     window.location.href = "/"; // Redirect to home page if user is not logged in
-  //   }
-  // }, [currentUser]);
-
   return (
     <SocketProvider>
-      <BrowserRouter>
+      <Router>
         <Header />
         <ToastContainer />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
@@ -65,8 +59,9 @@ function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/donatemoney" element={<DonateMoney />} />
           <Route path="/donatesupplies" element={<DonateSupplies />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
     </SocketProvider>
   );
 }

@@ -8,7 +8,7 @@ import { BASE_URL } from "../api/apiservice";
 import EmergencyList from "./../components/Emergency/EmergencyList";
 import EmergencyModal from "./../components/Emergency/EmergencyModal";
 import DeleteModal from "./../components/Emergency/DeleteModal";
-
+import { HiOutlineSearch } from "react-icons/hi";
 const EmergencyPage = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [incidents, setIncidents] = useState([]);
@@ -26,20 +26,49 @@ const EmergencyPage = () => {
   });
   const [incidentToDelete, setIncidentToDelete] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [searchLocation, setSearchLocation] = useState("");
 
   useEffect(() => {
-    fetchData();
+    fetchIncidents();
   }, []);
 
-  const fetchData = async () => {
+  const fetchIncidents = async () => {
     try {
       const response = await fetch(`${BASE_URL}/api/incident/`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch incidents");
+      }
       const data = await response.json();
       setIncidents(data);
     } catch (error) {
       console.error(error);
     }
   };
+
+  const fetchIncidentsByLocation = async (location) => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/incident/incidents?location=${encodeURIComponent(
+          location
+        )}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch incidents by location");
+      }
+      const data = await response.json();
+      setIncidents(data.incidents);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (searchLocation.trim() !== "") {
+      fetchIncidentsByLocation(searchLocation);
+    } else {
+      fetchIncidents();
+    }
+  }, [searchLocation]);
 
   const handleReadMore = (incident) => {
     setSelectedIncident(incident);
@@ -77,35 +106,24 @@ const EmergencyPage = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    const newValue =
-      name === "requiredResponderTypes" ? value.split(",") : value;
-    setNewIncident({
-      ...newIncident,
-      [name]: newValue,
-    });
+    setSearchLocation(e.target.value);
   };
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/api/incident/${currentUser.user._id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            ...newIncident,
-          }),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/api/incident/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(newIncident),
+      });
 
       if (response.ok) {
         toast.success("Incident created successfully");
         setShowModal(false);
-        fetchData();
+        fetchIncidents();
       } else {
         toast.error("Failed to create incident");
       }
@@ -125,16 +143,14 @@ const EmergencyPage = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({
-            ...newIncident,
-          }),
+          body: JSON.stringify(newIncident),
         }
       );
 
       if (response.ok) {
         toast.success("Incident updated successfully");
         setShowModal(false);
-        fetchData();
+        fetchIncidents();
       } else {
         toast.error("Failed to update incident");
       }
@@ -165,7 +181,7 @@ const EmergencyPage = () => {
         toast.success("Incident deleted successfully");
         setIncidentToDelete(null);
         setShowDeleteModal(false);
-        fetchData();
+        fetchIncidents();
       } else {
         toast.error("Failed to delete incident");
       }
@@ -191,13 +207,22 @@ const EmergencyPage = () => {
         </div>
 
         <div className="mb-2" style={{ maxWidth: "300px" }}>
-          <TextInput
-            id="small"
-            type="text"
-            sizing="sm"
-            placeholder="Search by location"
-          />
+          <div className="relative">
+            <TextInput
+              id="small"
+              type="text"
+              sizing="sm"
+              placeholder="Search by location"
+              value={searchLocation}
+              onChange={handleChange}
+            />
+            <HiOutlineSearch
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+              onClick={() => fetchIncidentsByLocation(searchLocation)}
+            />
+          </div>
         </div>
+
         {(currentUser.user.role === "emergencyresponder" ||
           currentUser.user.role === "admin" ||
           currentUser.user.role === "volunteer") && (

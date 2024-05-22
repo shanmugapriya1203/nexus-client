@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaArrowLeft } from "react-icons/fa";
+
 const ShowShelter = () => {
   const { shelterId } = useParams();
   const [shelterData, setShelterData] = useState(null);
@@ -62,7 +63,6 @@ const ShowShelter = () => {
         url: deepLink,
       });
     } else {
-      // Fallback for browsers that do not support Web Share API
       alert(`Shareable URL: ${deepLink}`);
     }
   };
@@ -86,9 +86,6 @@ const ShowShelter = () => {
         <div className="bg-gray-100 rounded-lg shadow-md p-8 relative">
           {currentUser.user.role === "admin" && (
             <div className="absolute top-0 right-0 flex items-center space-x-4">
-              <button className="text-gray-600 hover:text-gray-800">
-                <FaEdit size={"1.5em"} color="green" />
-              </button>
               <button
                 className="text-gray-600 hover:text-gray-800"
                 onClick={handleDelete}
@@ -99,7 +96,7 @@ const ShowShelter = () => {
           )}
           <div className="absolute top-0 right-0 mt-2 mr-2 flex items-center space-x-4">
             <button
-              className="text-gray-600 hover:text-gray-800"
+              className="text-gray-600 hover:text-gray-800 mt-10"
               onClick={shareShelter}
             >
               <FaShare size={"1.5em"} />
@@ -158,6 +155,19 @@ const ShowShelter = () => {
               <span className="font-semibold">Availability:</span>{" "}
               {shelterData.availability ? "Available" : "Unavailable"}
             </p>
+          </div>
+
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-2">Map</h2>
+            <iframe
+              src={shelterData.mapUrl}
+              width="100%"
+              height="450"
+              frameBorder="0"
+              style={{ border: 0 }}
+              allowFullScreen
+              title="Shelter Map"
+            ></iframe>
           </div>
         </div>
       ) : (

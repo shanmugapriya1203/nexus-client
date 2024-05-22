@@ -3,7 +3,7 @@ import { TextInput, Label, Button } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/userSlice";
 import { BASE_URL } from "../api/apiservice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -110,6 +110,14 @@ const Login = () => {
               </Button>
             </div>
           </form>
+          <div className="text-center mt-4">
+            <Link
+              to="/forgot-password"
+              className="text-blue-500 hover:underline"
+            >
+              Forgot Password?
+            </Link>
+          </div>
         </div>
       </div>
     </div>

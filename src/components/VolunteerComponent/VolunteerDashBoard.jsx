@@ -7,7 +7,7 @@ import {
   FiPhone,
 } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
-import { BASE_URL } from "../api/apiservice";
+import { BASE_URL } from "../../api/apiservice";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 const VolunteerDashboard = () => {
@@ -73,7 +73,7 @@ const VolunteerDashboard = () => {
       <div className="flex items-center mb-6">
         <FaUserCircle className="text-4xl mr-2 text-blue-500" />
         <h2 className="text-2xl font-semibold text-gray-700">
-          Welcome, Nexus Volunteer!
+          Welcome, {currentUser.user.fullName}!
         </h2>
       </div>
 

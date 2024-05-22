@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "flowbite-react";
 import DashSidebar from "../DashSidebar";
 import { BASE_URL } from "../../api/apiservice";
-import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { toast } from "react-toastify";
+import ResponderTable from "./ResponderTable";
 
 const AllocateResponder = () => {
   const [responders, setResponders] = useState([]);
@@ -35,28 +33,23 @@ const AllocateResponder = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ responderId }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Failed to allocate incident to responder");
+      if (response.ok) {
+        console.log("Incident assigned to responder successfully");
+        console.error(
+          "Failed to assign incident to responder:",
+          response.statusText
+        );
       }
-
-      // Update responders state to mark the allocated responder
-      setResponders((prevResponders) =>
-        prevResponders.map((responder) =>
-          responder._id === responderId
-            ? { ...responder, allocated: true }
-            : responder
-        )
-      );
-
-      toast.success("Incident assigned to responder successfully");
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to allocate incident to responder");
+      console.error("Error assigning incident to responder:", error.message);
+    } finally {
+      setShowConfirmationModal(false);
     }
   };
 
@@ -67,43 +60,10 @@ const AllocateResponder = () => {
       </div>
       <div className="flex-grow p-8">
         <h1 className="text-2xl font-semibold mb-4">Allocate Responder</h1>
-        <Table hoverable className="shadow-md">
-          <Table.Head>
-            <Table.HeadCell>Full name</Table.HeadCell>
-            <Table.HeadCell>Area</Table.HeadCell>
-            <Table.HeadCell>City</Table.HeadCell>
-            <Table.HeadCell>Profession</Table.HeadCell>
-            <Table.HeadCell>Availability</Table.HeadCell>
-            <Table.HeadCell>Actions</Table.HeadCell>
-          </Table.Head>
-          <Table.Body>
-            {responders.map((responder) => (
-              <Table.Row key={responder._id} className="hover:bg-gray-100">
-                <Table.Cell className="bg-gray-50 dark:bg-gray-700 font-bold">
-                  {responder.user.fullName.toUpperCase()}
-                </Table.Cell>
-                <Table.Cell>{responder.user.area}</Table.Cell>
-                <Table.Cell>{responder.user.city}</Table.Cell>
-                <Table.Cell>{responder.responderType}</Table.Cell>
-                <Table.Cell>
-                  {responder.availability ? (
-                    <AiOutlineCheck className="text-green-500" />
-                  ) : (
-                    <AiOutlineClose className="text-red-500" />
-                  )}
-                </Table.Cell>
-                <Table.Cell>
-                  <Button
-                    disabled={responder.allocated}
-                    onClick={() => handleAllocate(responder._id)}
-                  >
-                    {responder.allocated ? "Allocated" : "Allocate"}
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+        <ResponderTable
+          responders={responders}
+          handleAllocate={handleAllocate}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
+import { MdMenu } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { SocketContext } from "../context/SocketContext"; // Import SocketContext
+import { SocketContext } from "../context/SocketContext";
 import { toast } from "react-toastify";
 import Logo from "/Nexus.png";
 
@@ -11,18 +12,18 @@ const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isNewTaskClicked, setIsNewTaskClicked] = useState(false);
-  const socket = useContext(SocketContext); // Access SocketContext
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     if (socket) {
       socket.on("newAlert", () => {
-        toast.info("New alert received ");
+        toast.info("New alert received");
       });
     }
 
     return () => {
       if (socket) {
-        // Clean up socket listener
         socket.off("newAlert");
       }
     };
@@ -36,6 +37,26 @@ const Header = () => {
     setIsNewTaskClicked(true);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+  const handleSignout = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/user/signout`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log("Error:", data.message);
+      } else {
+        console.log("Sign-out successful:", data);
+        dispatch(signoutSuccess(data));
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   const renderSignupButton = () => {
     const hasAssignedTasks =
       currentUser &&
@@ -52,7 +73,7 @@ const Header = () => {
             <img
               src={currentUser.user.profilePicture}
               alt="Avatar"
-              className="w-8 h-8 rounded-full"
+              className="w-8 h-8 rounded-full mt-1"
             />
             {hasAssignedTasks && !isNewTaskClicked && (
               <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
@@ -68,7 +89,8 @@ const Header = () => {
               </Link>
               <Link
                 to="/signout"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer"
+                onClick={handleSignout}
               >
                 Sign Out
               </Link>
@@ -108,29 +130,41 @@ const Header = () => {
 
   return (
     <header className="text-gray-800 p-4 flex flex-wrap justify-between items-center sticky top-0 bg-white z-10 shadow-md">
-      <div className="flex items-center flex-shrink-0">
+      <div className="flex items-center">
         <img src={Logo} alt="Logo" className="h-10 mr-2" />
       </div>
-      <nav className="flex-grow flex justify-center lg:justify-center">
-        {" "}
-        <Link to="/" className="hover:text-gray-400 font-bold px-4">
+      <nav
+        className={`${
+          isMobileMenuOpen ? "block" : "hidden"
+        } lg:flex lg:items-center lg:w-auto w-full`}
+      >
+        <Link
+          to="/"
+          className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+        >
           Home
         </Link>
         <Link
-          to="dashboard?tab=alerts"
-          className="hover:text-gray-400 font-bold px-4"
+          to="/alerts"
+          className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
         >
           Alerts
         </Link>
         <Link
-          to="dashboard?tab=shelters"
-          className="hover:text-gray-400 font-bold px-4"
+          to="/dashboard?tab=shelters"
+          className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
         >
           Shelters
         </Link>
       </nav>
       <div className="flex items-center gap-2 lg:gap-4">
         {renderSignupButton()}
+        <button
+          className="lg:hidden text-2xl focus:outline-none"
+          onClick={toggleMobileMenu}
+        >
+          <MdMenu />
+        </button>
       </div>
     </header>
   );

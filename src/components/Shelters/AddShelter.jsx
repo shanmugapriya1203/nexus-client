@@ -23,6 +23,7 @@ const AddShelter = () => {
       phone: "",
     },
     photos: [""],
+    mapUrl: "",
   });
 
   const navigate = useNavigate();
@@ -185,6 +186,16 @@ const AddShelter = () => {
               <option value={false}>Not Available</option>
             </select>
           </div>
+          <TextInput
+            name="mapUrl"
+            type="text"
+            placeholder="Map URL (iframe source)"
+            value={formData.mapUrl}
+            onChange={handleChange}
+            required
+            className="mb-4"
+          />
+
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Photos:

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextInput, Label, Button, Select } from "flowbite-react";
-import EmergencyResponderSignUp from "./ResponderSignup";
 import { BASE_URL } from "../api/apiservice";
 import NormalUserSignUp from "./../pages/NormalUserSignup";
 import VolunteerSignUp from "./../pages/VolunteerSignup";
+import EmergencyResponderSignUp from "./Emergency/ResponderSignup";
 
 const SignUp = ({}) => {
   const navigate = useNavigate();
@@ -21,6 +21,7 @@ const SignUp = ({}) => {
     availabilityDropdown: "",
     mobileNumber: "",
     profilePicture: "",
+    area: "",
   });
   const [submitted, setSubmitted] = useState(false);
 
