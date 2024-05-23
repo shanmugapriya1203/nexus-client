@@ -40,6 +40,7 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
   const handleSignout = async () => {
     try {
       const res = await fetch(`${BASE_URL}/api/user/signout`, {
@@ -57,16 +58,19 @@ const Header = () => {
       console.error("Error:", error);
     }
   };
-  const renderSignupButton = () => {
-    const hasAssignedTasks =
-      currentUser &&
-      currentUser.user.assignedTasks &&
-      currentUser.user.assignedTasks.length > 0;
-    const newTaskCount = hasAssignedTasks
-      ? currentUser.user.assignedTasks.length
-      : 0;
 
+  const renderSignupButton = () => {
     if (currentUser) {
+      const isVolunteerWithAssignedTasks =
+        currentUser.user.role === "volunteer" &&
+        currentUser.user.assignedTasks &&
+        currentUser.user.assignedTasks.length > 0;
+
+      const isEmergencyResponderWithAssignedIncidents =
+        currentUser.user.role === "emergencyresponder" &&
+        currentUser.user.assignedIncidents &&
+        currentUser.user.assignedIncidents.length > 0;
+
       return (
         <div className="relative">
           <button onClick={toggleDropdown} className="text-green-800 relative">
@@ -75,15 +79,18 @@ const Header = () => {
               alt="Avatar"
               className="w-8 h-8 rounded-full mt-1"
             />
-            {hasAssignedTasks && !isNewTaskClicked && (
-              <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
-            )}
+            {(isVolunteerWithAssignedTasks ||
+              isEmergencyResponderWithAssignedIncidents) &&
+              !isNewTaskClicked && (
+                <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
+              )}
           </button>
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
               <Link
                 to="/profile"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                onClick={toggleDropdown}
               >
                 Profile
               </Link>
@@ -94,37 +101,55 @@ const Header = () => {
               >
                 Sign Out
               </Link>
-              {hasAssignedTasks && (
+              {(isVolunteerWithAssignedTasks ||
+                isEmergencyResponderWithAssignedIncidents) && (
                 <Link
-                  to="/tasks"
+                  to={
+                    currentUser.user.role === "volunteer"
+                      ? "/tasks"
+                      : "/incidents"
+                  }
                   onClick={handleNewTaskClick}
                   className="block px-4 py-2 text-red-500 hover:bg-gray-200"
                 >
-                  {newTaskCount} New Task{newTaskCount > 1 && "s"}
+                  {currentUser.user.role === "volunteer"
+                    ? currentUser.user.assignedTasks.length
+                    : currentUser.user.assignedIncidents.length}{" "}
+                  New{" "}
+                  {currentUser.user.role === "volunteer" ? "Task" : "Incident"}
+                  {currentUser.user.role === "volunteer"
+                    ? currentUser.user.assignedTasks.length > 1
+                      ? "s"
+                      : ""
+                    : currentUser.user.assignedIncidents.length > 1
+                    ? "s"
+                    : ""}
                 </Link>
               )}
             </div>
           )}
         </div>
       );
-    } else if (location.pathname === "/signup") {
-      return (
-        <Link
-          to="/login"
-          className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors"
-        >
-          Sign In
-        </Link>
-      );
     } else {
-      return (
-        <Link
-          to="/signup"
-          className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors"
-        >
-          Sign Up
-        </Link>
-      );
+      if (location.pathname === "/signup") {
+        return (
+          <Link
+            to="/login"
+            className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors"
+          >
+            Sign In
+          </Link>
+        );
+      } else {
+        return (
+          <Link
+            to="/signup"
+            className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors"
+          >
+            Sign Up
+          </Link>
+        );
+      }
     }
   };
 

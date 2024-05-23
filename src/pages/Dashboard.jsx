@@ -30,24 +30,18 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div className="min-h-screen flex flex-col md:flex-row">
-        <div className="">
-          <DashSidebar />
-        </div>
-        <div className="mx-auto">
-          {tab === "profile" && <UpdateProfile />}
-          {tab === "shelters" && <DashShelters />}
-          {tab === "plans" && <GetPlan />}
+      <div className="mx-auto">
+        {tab === "shelters" && <DashShelters />}
+        {tab === "plans" && <GetPlan />}
 
-          {currentUser.user.role === "admin" && (!tab || tab === "/") && (
-            <AdminDashboard />
-          )}
-          {currentUser.user.role === "volunteer" && (!tab || tab === "/") && (
-            <VolunteerDashBoard />
-          )}
-          {currentUser.user.role === "emergencyresponder" &&
-            (!tab || tab === "/") && <EmergencyDashBoard />}
-        </div>
+        {currentUser.user.role === "admin" && (!tab || tab === "/") && (
+          <AdminDashboard />
+        )}
+        {currentUser.user.role === "volunteer" && (!tab || tab === "/") && (
+          <VolunteerDashBoard />
+        )}
+        {currentUser.user.role === "emergencyresponder" &&
+          (!tab || tab === "/") && <EmergencyDashBoard />}
       </div>
     </div>
   );

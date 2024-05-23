@@ -19,7 +19,8 @@ const EmergencyResponderDashboard = () => {
   const [recentActivities, setRecentActivities] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [emergencyAlerts, setEmergencyAlerts] = useState([]);
-  const [alersWithoutSlice, setAlertsWithoutSlice] = useState(0);
+  const [alertsWithoutSlice, setAlertsWithoutSlice] = useState(0);
+  const [donations, setDonations] = useState([]);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -31,7 +32,7 @@ const EmergencyResponderDashboard = () => {
         ) {
           const taskIds = currentUser.user.assignedIncidents;
           const promises = taskIds.map((taskId) =>
-            fetch(`${BASE_URL}/api/volunteers/task/${taskId}`).then((res) =>
+            fetch(`${BASE_URL}/api/incident/${taskId}`).then((res) =>
               res.json()
             )
           );
@@ -39,7 +40,7 @@ const EmergencyResponderDashboard = () => {
 
           setTotalTasks(tasks.length);
           const completedTaskCount = tasks.filter(
-            (task) => task.status === "completed"
+            (task) => task.status === "Closed"
           ).length;
           setCompletedTasks(completedTaskCount);
           setTotalPoints(completedTaskCount * 10);
@@ -59,6 +60,7 @@ const EmergencyResponderDashboard = () => {
         console.error("Error fetching alerts:", error);
       }
     };
+
     const fetchEmergencies = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/incident/`);
@@ -69,9 +71,20 @@ const EmergencyResponderDashboard = () => {
       }
     };
 
+    const fetchDonations = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/donations`);
+        const data = await response.json();
+        setDonations(data);
+      } catch (error) {
+        console.error("Error fetching donations:", error);
+      }
+    };
+
     fetchTasks();
     fetchAlerts();
     fetchEmergencies();
+    fetchDonations();
   }, [currentUser]);
 
   useEffect(() => {
@@ -117,7 +130,7 @@ const EmergencyResponderDashboard = () => {
           <FiAlertCircle className="text-white text-3xl mr-4" />
           <div>
             <h5 className="text-white text-lg">Emergency Alerts</h5>
-            <p className="text-white text-xl font-bold">{alersWithoutSlice}</p>
+            <p className="text-white text-xl font-bold">{alertsWithoutSlice}</p>
           </div>
         </div>
       </div>
@@ -180,6 +193,49 @@ const EmergencyResponderDashboard = () => {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <Link to="/community">
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+              Ask Your Questions
+            </h3>
+            <div>
+              <h4 className="text-lg font-semibold text-gray-800">
+                What should I do during an earthquake?
+              </h4>
+              <p className="text-gray-700">
+                Stay indoors and take cover under sturdy furniture or against an
+                inside wall. Avoid windows.
+              </p>
+            </div>
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold text-gray-800">
+                How can I prepare for a hurricane?
+              </h4>
+              <p className="text-gray-700">
+                Create an emergency kit, have a family evacuation plan, and stay
+                informed about weather updates.
+              </p>
+            </div>
+          </div>
+        </Link>
+
+        <div className="bg-white p-4 rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold mb-2 text-gray-700">
+            Donations
+          </h3>
+          <ul className="list-disc pl-5 text-gray-700">
+            {donations.map((donation) => (
+              <li key={donation._id} className="mb-1">
+                <strong>Type:</strong> {donation.type} <br />
+                <strong>Quantity:</strong> {donation.quantity} <br />
+                <strong>Description:</strong> {donation.description}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
       <div className="bg-white p-4 rounded-lg shadow-md mb-6">
         <h3 className="text-xl font-semibold mb-2 text-gray-700">Progress</h3>
         <div className="w-full bg-gray-200 rounded-full h-4 mb-2">
@@ -188,8 +244,8 @@ const EmergencyResponderDashboard = () => {
             style={{ width: `${(completedTasks / totalTasks) * 100}%` }}
           ></div>
         </div>
-        <p className="text-gray-700">
-          {completedTasks} out of {totalTasks} tasks completed
+        <p className="text-gray-600">
+          {completedTasks} of {totalTasks} tasks completed
         </p>
       </div>
     </div>

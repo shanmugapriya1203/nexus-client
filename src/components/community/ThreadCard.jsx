@@ -20,6 +20,7 @@ const ThreadCard = ({ thread, fetchThreads }) => {
   const [liked, setLiked] = useState(
     thread.likes.some((like) => like._id === currentUser.user.id)
   );
+  console.log(liked);
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState([]);
 
@@ -71,7 +72,10 @@ const ThreadCard = ({ thread, fetchThreads }) => {
 
       if (response.ok) {
         const updatedThread = await response.json();
-        setLiked(updatedThread.likes.includes(currentUser.user.id));
+        const isLiked = updatedThread.likes.some(
+          (like) => like._id === currentUser.user.id
+        );
+        setLiked(isLiked);
         setLikeCount(updatedThread.likes.length);
       } else {
         throw new Error("Failed to toggle like");

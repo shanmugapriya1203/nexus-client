@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextInput, Label, Button, Select } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
+import { toast } from "react-toastify";
 import NormalUserSignUp from "./../pages/NormalUserSignup";
 import VolunteerSignUp from "./../pages/VolunteerSignup";
 import EmergencyResponderSignUp from "./Emergency/ResponderSignup";
@@ -53,8 +54,10 @@ const SignUp = ({}) => {
         throw new Error("Registration failed");
       }
       navigate("/login");
+      toast.success("Registration successful! Please login.");
     } catch (error) {
       console.error("Registration error:", error);
+      toast.error("Registration failed. Please try again.");
     }
   };
 

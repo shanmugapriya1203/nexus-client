@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -28,8 +28,12 @@ import CommunityPage from "./pages/CommunityPage";
 import DonateMoney from "./pages/DonateMoney";
 import DonateSupplies from "./pages/DonateSupplies";
 import ForgotPassword from "./pages/ForgotPassword";
+import ShowEmergencies from "./components/Emergency/ShowEmergencies";
+import HeroPage from "./pages/HeroPage";
 
 function App() {
+  const currentUser = useSelector((state) => state.user.currentUser);
+
   return (
     <SocketProvider>
       <Router>
@@ -40,26 +44,34 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<UpdatePage />} />
-          <Route path="/add-shelter" element={<AddShelter />} />
-          <Route path="/shelter/:shelterId" element={<ShowShelter />} />
-          <Route path="/admin/volunteers" element={<AllVolunteers />} />
-          <Route path="/admin/assign-task/:id" element={<AssignTask />} />
-          <Route path="/admin/tasks" element={<AllTasks />} />
-          <Route path="/tasks" element={<ShowTask />} />
-          <Route path="/create-task" element={<CreateTask />} />
-          <Route path="/update-task/:taskId" element={<EditTask />} />
-          <Route path="/allocate/:incidentId" element={<AllocateResponder />} />
-          <Route path="/plans" element={<GetPlan />} />
-          <Route path="/createplan" element={<CreatePlan />} />
-          <Route path="/updateplan" element={<UpdatePlan />} />
-          <Route path="/emergencies" element={<EmergencyPage />} />
-          <Route path="/alerts" element={<AlertPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/donatemoney" element={<DonateMoney />} />
-          <Route path="/donatesupplies" element={<DonateSupplies />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          {currentUser ? (
+            <Route path="/" element={<HeroPage />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<UpdatePage />} />
+              <Route path="/add-shelter" element={<AddShelter />} />
+              <Route path="/shelter/:shelterId" element={<ShowShelter />} />
+              <Route path="/admin/volunteers" element={<AllVolunteers />} />
+              <Route path="/admin/assign-task/:id" element={<AssignTask />} />
+              <Route path="/admin/tasks" element={<AllTasks />} />
+              <Route path="/tasks" element={<ShowTask />} />
+              <Route path="/incidents" element={<ShowEmergencies />} />
+              <Route path="/create-task" element={<CreateTask />} />
+              <Route path="/update-task/:taskId" element={<EditTask />} />
+              <Route
+                path="/allocate/:incidentId"
+                element={<AllocateResponder />}
+              />
+              <Route path="/plans" element={<GetPlan />} />
+              <Route path="/createplan" element={<CreatePlan />} />
+              <Route path="/updateplan" element={<UpdatePlan />} />
+              <Route path="/emergencies" element={<EmergencyPage />} />
+              <Route path="/alerts" element={<AlertPage />} />
+              <Route path="/community" element={<CommunityPage />} />
+              <Route path="/donatemoney" element={<DonateMoney />} />
+              <Route path="/donatesupplies" element={<DonateSupplies />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+            </Route>
+          ) : null}
         </Routes>
       </Router>
     </SocketProvider>

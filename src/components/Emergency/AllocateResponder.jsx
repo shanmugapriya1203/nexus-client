@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import DashSidebar from "../DashSidebar";
 import { BASE_URL } from "../../api/apiservice";
 import ResponderTable from "./ResponderTable";
@@ -41,23 +42,18 @@ const AllocateResponder = () => {
 
       if (response.ok) {
         console.log("Incident assigned to responder successfully");
-        console.error(
-          "Failed to assign incident to responder:",
-          response.statusText
-        );
+        toast.success("Incident assigned to responder successfully");
+      } else {
+        throw new Error("Failed to assign incident to responder");
       }
     } catch (error) {
       console.error("Error assigning incident to responder:", error.message);
-    } finally {
-      setShowConfirmationModal(false);
+      toast.error("Error assigning incident to responder");
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="">
-        <DashSidebar />
-      </div>
+    <div className="">
       <div className="flex-grow p-8">
         <h1 className="text-2xl font-semibold mb-4">Allocate Responder</h1>
         <ResponderTable

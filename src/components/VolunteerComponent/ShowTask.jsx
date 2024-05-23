@@ -3,13 +3,16 @@ import { useSelector } from "react-redux";
 import DashSidebar from "../DashSidebar";
 import { BASE_URL } from "../../api/apiservice";
 import { Button, Modal } from "flowbite-react";
+import { FaCoins } from "react-icons/fa"; // Import the gold coin icon
 
 const ShowTask = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [completed, setCompleted] = useState(false);
-  const [selectedTaskId, setSelectedTaskId] = useState(null); // New state variable
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [showCompletionNotification, setShowCompletionNotification] =
+    useState(false);
   const currentUser = useSelector((state) => state.user.currentUser);
   const userId = currentUser.user._id;
 
@@ -38,7 +41,7 @@ const ShowTask = () => {
   }, [userId]);
 
   const handleCompleteTask = (taskId) => {
-    setSelectedTaskId(taskId); // Set the selected task ID
+    setSelectedTaskId(taskId);
     setShowModal(true);
   };
 
@@ -55,7 +58,6 @@ const ShowTask = () => {
           }
         );
         if (res.ok) {
-          // Fetch updated task details
           const updatedRes = await fetch(
             `${BASE_URL}/api/volunteers/tasks/${userId}`,
             {
@@ -69,6 +71,10 @@ const ShowTask = () => {
             const updatedData = await updatedRes.json();
             setTasks(updatedData);
             setCompleted(true);
+            setShowCompletionNotification(true);
+            setTimeout(() => {
+              setShowCompletionNotification(false);
+            }, 10000);
           } else {
             console.error(
               "Failed to fetch updated tasks:",
@@ -89,10 +95,7 @@ const ShowTask = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="">
-        <DashSidebar />
-      </div>
+    <>
       <div className="flex-grow p-6">
         {loading ? (
           <p>Loading task details...</p>
@@ -149,7 +152,12 @@ const ShowTask = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+      {showCompletionNotification && (
+        <div className="absolute top-0 right-0 mt-4 mr-4 flex items-center bg-yellow-400 text-white p-2 rounded-md">
+          <FaCoins className="mr-2" /> You got 10 points!
+        </div>
+      )}
+    </>
   );
 };
 

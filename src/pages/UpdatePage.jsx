@@ -169,229 +169,224 @@ const UpdateProfile = () => {
     }));
   };
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="">
-        <DashSidebar />
-      </div>
-      <div className="flex flex-col items-center">
-        <h2 className="text-3xl font-extrabold text-gray-900 my-8">
-          Update Profile
-        </h2>
-        <p className="text-lg text-center text-gray-700 mb-8 ml-10">
-          "Every crisis offers you extra desired power to overcome the
-          challenges." - Amit Ray
-        </p>
-        <div className="w-full md:w-5/6 lg:w-2/4 xl:w-2/3 p-4">
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-4">
-              <div className="mb-4 text-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  ref={fileInputRef}
-                  hidden
-                />
-                <div
-                  className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full mx-auto"
-                  onClick={() => fileInputRef.current.click()}
-                >
-                  {imageFileUploadingProgress !== null && (
-                    <CircularProgressbar
-                      value={imageFileUploadingProgress || 0}
-                      text={`${imageFileUploadingProgress}%`}
-                      strokeWidth={5}
-                      styles={{
-                        root: {
-                          width: "100%",
-                          height: "100%",
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                        },
-                        path: {
-                          stroke:
-                            imageFileUploadingProgress < 50
-                              ? `rgba(62, 152, 199, ${
-                                  imageFileUploadingProgress / 100
-                                })`
-                              : `rgba(28, 200, 138, ${
-                                  imageFileUploadingProgress / 100
-                                })`,
-                        },
-                        text: {
-                          fill: "#333",
-                        },
-                      }}
-                    />
-                  )}
-                  <img
-                    src={imageFileUrl || currentUser.user.profilePicture}
-                    alt="user"
-                    className="rounded-full w-full h-full object-cover border-8 border-[lightgray]"
+    <div className="flex flex-col items-center">
+      <h2 className="text-3xl font-extrabold text-gray-900 my-8">
+        Update Profile
+      </h2>
+      <p className="text-lg text-center text-gray-700 mb-8 ml-10">
+        "Every crisis offers you extra desired power to overcome the
+        challenges." - Amit Ray
+      </p>
+      <div className="w-full md:w-5/6 lg:w-2/4 xl:w-2/3 p-4">
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div className="mb-4 text-center">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                ref={fileInputRef}
+                hidden
+              />
+              <div
+                className="relative w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full mx-auto"
+                onClick={() => fileInputRef.current.click()}
+              >
+                {imageFileUploadingProgress !== null && (
+                  <CircularProgressbar
+                    value={imageFileUploadingProgress || 0}
+                    text={`${imageFileUploadingProgress}%`}
+                    strokeWidth={5}
+                    styles={{
+                      root: {
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                      },
+                      path: {
+                        stroke:
+                          imageFileUploadingProgress < 50
+                            ? `rgba(62, 152, 199, ${
+                                imageFileUploadingProgress / 100
+                              })`
+                            : `rgba(28, 200, 138, ${
+                                imageFileUploadingProgress / 100
+                              })`,
+                      },
+                      text: {
+                        fill: "#333",
+                      },
+                    }}
                   />
-                </div>
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="username">Username</Label>
-                <TextInput
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="Username"
-                  value={formData.username}
-                  onChange={handleInputChange}
+                )}
+                <img
+                  src={imageFileUrl || currentUser.user.profilePicture}
+                  alt="user"
+                  className="rounded-full w-full h-full object-cover border-8 border-[lightgray]"
                 />
               </div>
-              <div className="mb-4">
-                <Label htmlFor="fullName">Full Name</Label>
-                <TextInput
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  placeholder="Full Name"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="password">Password</Label>
-                <TextInput
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="mobileNumber">Mobile Number</Label>
-                <TextInput
-                  id="mobileNumber"
-                  name="mobileNumber"
-                  type="text"
-                  placeholder="Mobile Number"
-                  value={formData.mobileNumber}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="email">Email</Label>
-                <TextInput
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="bloodGroup">Blood Group</Label>
-                <Select
-                  id="bloodGroup"
-                  name="bloodGroup"
-                  className="input-field"
-                  value={formData.bloodGroup || ""}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select Blood Group</option>
-                  <option value="A+">A+</option>
-                  <option value="A-">A-</option>
-                  <option value="B+">B+</option>
-                  <option value="B-">B-</option>
-                  <option value="AB+">AB+</option>
-                  <option value="AB-">AB-</option>
-                  <option value="O+">O+</option>
-                  <option value="O-">O-</option>
-                </Select>
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="skills">Skills</Label>
-                <TextInput
-                  id="skills"
-                  name="skills"
-                  type="text"
-                  placeholder="Skills"
-                  value={formData.skills}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="mb-4">
-                <Label htmlFor="availabilityDropdown">Availability</Label>
-                <Select
-                  id="availabilityDropdown"
-                  name="availabilityDropdown"
-                  className="input-field"
-                  value={formData.availabilityDropdown || ""}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select Availability</option>
-                  <option value="full-time">Full-time</option>
-                  <option value="part-time">Part-time</option>
-                  <option value="freelance">Freelance</option>
-                </Select>
-              </div>
-              <div className="mb-4 col-span-full">
-                <Label htmlFor="certifications">Certifications</Label>
-                {formData.certifications.map((certification, index) => (
-                  <div key={index} className="mb-2 grid grid-cols-3 gap-2">
-                    <TextInput
-                      name={`certificationName_${index}`}
-                      type="text"
-                      placeholder="Certification Name"
-                      value={certification.certificationName}
-                      onChange={(e) => handleCertificationChange(index, e)}
-                      className="w-full"
-                    />
-                    <TextInput
-                      name={`certificationDate_${index}`}
-                      type="date"
-                      placeholder="Certification Date"
-                      value={certification.certificationDate}
-                      onChange={(e) => handleCertificationChange(index, e)}
-                      className="w-full"
-                    />
-                    <TextInput
-                      name={`expirationDate_${index}`}
-                      type="date"
-                      placeholder="Expiration Date"
-                      value={certification.expirationDate}
-                      onChange={(e) => handleCertificationChange(index, e)}
-                      className="w-full"
-                    />
-                    <Button
-                      color="failure"
-                      className="col-span-full"
-                      onClick={() => removeCertification(index)}
-                    >
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-                <Button
-                  color="success"
-                  className="mt-2"
-                  onClick={addCertification}
-                >
-                  Add Certification
-                </Button>
-              </div>
-              <div className="mb-4 col-span-full">
-                <Button type="submit" gradientDuoTone="cyanToBlue" fullSized>
-                  Update Profile
-                </Button>
-              </div>
-              {imageFileError && (
-                <div className="text-red-500 text-sm col-span-full">
-                  {imageFileError}
-                </div>
-              )}
             </div>
-          </form>
-        </div>
+            <div className="mb-4">
+              <Label htmlFor="username">Username</Label>
+              <TextInput
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="fullName">Full Name</Label>
+              <TextInput
+                id="fullName"
+                name="fullName"
+                type="text"
+                placeholder="Full Name"
+                value={formData.fullName}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="password">Password</Label>
+              <TextInput
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="mobileNumber">Mobile Number</Label>
+              <TextInput
+                id="mobileNumber"
+                name="mobileNumber"
+                type="text"
+                placeholder="Mobile Number"
+                value={formData.mobileNumber}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="email">Email</Label>
+              <TextInput
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="bloodGroup">Blood Group</Label>
+              <Select
+                id="bloodGroup"
+                name="bloodGroup"
+                className="input-field"
+                value={formData.bloodGroup || ""}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Blood Group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </Select>
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="skills">Skills</Label>
+              <TextInput
+                id="skills"
+                name="skills"
+                type="text"
+                placeholder="Skills"
+                value={formData.skills}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="availabilityDropdown">Availability</Label>
+              <Select
+                id="availabilityDropdown"
+                name="availabilityDropdown"
+                className="input-field"
+                value={formData.availabilityDropdown || ""}
+                onChange={handleInputChange}
+              >
+                <option value="">Select Availability</option>
+                <option value="full-time">Full-time</option>
+                <option value="part-time">Part-time</option>
+                <option value="freelance">Freelance</option>
+              </Select>
+            </div>
+            <div className="mb-4 col-span-full">
+              <Label htmlFor="certifications">Certifications</Label>
+              {formData.certifications.map((certification, index) => (
+                <div key={index} className="mb-2 grid grid-cols-3 gap-2">
+                  <TextInput
+                    name={`certificationName_${index}`}
+                    type="text"
+                    placeholder="Certification Name"
+                    value={certification.certificationName}
+                    onChange={(e) => handleCertificationChange(index, e)}
+                    className="w-full"
+                  />
+                  <TextInput
+                    name={`certificationDate_${index}`}
+                    type="date"
+                    placeholder="Certification Date"
+                    value={certification.certificationDate}
+                    onChange={(e) => handleCertificationChange(index, e)}
+                    className="w-full"
+                  />
+                  <TextInput
+                    name={`expirationDate_${index}`}
+                    type="date"
+                    placeholder="Expiration Date"
+                    value={certification.expirationDate}
+                    onChange={(e) => handleCertificationChange(index, e)}
+                    className="w-full"
+                  />
+                  <Button
+                    color="failure"
+                    className="col-span-full"
+                    onClick={() => removeCertification(index)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button
+                color="success"
+                className="mt-2"
+                onClick={addCertification}
+              >
+                Add Certification
+              </Button>
+            </div>
+            <div className="mb-4 col-span-full">
+              <Button type="submit" gradientDuoTone="cyanToBlue" fullSized>
+                Update Profile
+              </Button>
+            </div>
+            {imageFileError && (
+              <div className="text-red-500 text-sm col-span-full">
+                {imageFileError}
+              </div>
+            )}
+          </div>
+        </form>
       </div>
     </div>
   );

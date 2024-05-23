@@ -23,6 +23,7 @@ const SocketProvider = ({ children }) => {
     // Clean up socket connection on unmount
     return () => {
       newSocket.disconnect();
+      console.log("Socket disconnected");
     };
   }, []);
 

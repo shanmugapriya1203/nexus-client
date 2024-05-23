@@ -46,9 +46,6 @@ const DonateForm = ({ clientSecret }) => {
           setError(null);
           setLoading(false);
           toast.success("Donation successful! Thank you for your generosity.");
-          setTimeout(() => {
-            window.history.back();
-          }, 2000);
         }
       }
     } catch (error) {
@@ -59,6 +56,7 @@ const DonateForm = ({ clientSecret }) => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <h1>Enter Your Card Details</h1>
       <CardElement />
       <Label htmlFor="amount">Amount:</Label>
       <TextInput

@@ -59,11 +59,8 @@ const CommunityPage = () => {
   };
 
   return (
-    <div>
-      <div className="min-h-screen flex flex-col md:flex-row">
-        <div className="">
-          <DashSidebar />
-        </div>
+    <>
+      <div>
         <div className="flex flex-col w-full p-4">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-bold text-green-500 mb-5">
@@ -118,7 +115,7 @@ const CommunityPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 

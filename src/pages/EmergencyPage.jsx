@@ -192,77 +192,72 @@ const EmergencyPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="">
-        <DashSidebar />
+    <div className="flex-grow p-8">
+      <h1 className="text-2xl font-semibold mb-4">Emergencies</h1>
+      <div className="mb-4">
+        <p>
+          "In times of crisis, the character of a community is revealed.
+          Together, we face the challenges, support each other, and emerge
+          stronger."
+        </p>
       </div>
-      <div className="flex-grow p-8">
-        <h1 className="text-2xl font-semibold mb-4">Emergencies</h1>
-        <div className="mb-4">
-          <p>
-            "In times of crisis, the character of a community is revealed.
-            Together, we face the challenges, support each other, and emerge
-            stronger."
-          </p>
+
+      <div className="mb-2" style={{ maxWidth: "300px" }}>
+        <div className="relative">
+          <TextInput
+            id="small"
+            type="text"
+            sizing="sm"
+            placeholder="Search by location"
+            value={searchLocation}
+            onChange={handleChange}
+          />
+          <HiOutlineSearch
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+            onClick={() => fetchIncidentsByLocation(searchLocation)}
+          />
         </div>
-
-        <div className="mb-2" style={{ maxWidth: "300px" }}>
-          <div className="relative">
-            <TextInput
-              id="small"
-              type="text"
-              sizing="sm"
-              placeholder="Search by location"
-              value={searchLocation}
-              onChange={handleChange}
-            />
-            <HiOutlineSearch
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
-              onClick={() => fetchIncidentsByLocation(searchLocation)}
-            />
-          </div>
-        </div>
-
-        {(currentUser.user.role === "emergencyresponder" ||
-          currentUser.user.role === "admin" ||
-          currentUser.user.role === "volunteer") && (
-          <div className="flex justify-end mb-2">
-            <Button
-              className="bg-green-500  text-white font-bold py-1 px-1 rounded"
-              onClick={handleAddIncident}
-            >
-              <HiOutlinePlus className="mr-2" />
-              Add
-            </Button>
-          </div>
-        )}
-
-        <EmergencyList
-          incidents={incidents}
-          handleReadMore={handleReadMore}
-          handleEditIncident={handleEditIncident}
-          handleDelete={handleDelete}
-          currentUser={currentUser}
-        />
-
-        <EmergencyModal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          modalType={modalType}
-          selectedIncident={selectedIncident}
-          newIncident={newIncident}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          handleUpdate={handleUpdate}
-          currentUser={currentUser}
-        />
-
-        <DeleteModal
-          showDeleteModal={showDeleteModal}
-          setShowDeleteModal={setShowDeleteModal}
-          confirmDelete={confirmDelete}
-        />
       </div>
+
+      {(currentUser.user.role === "emergencyresponder" ||
+        currentUser.user.role === "admin" ||
+        currentUser.user.role === "volunteer") && (
+        <div className="flex justify-end mb-2">
+          <Button
+            className="bg-green-500  text-white font-bold py-1 px-1 rounded"
+            onClick={handleAddIncident}
+          >
+            <HiOutlinePlus className="mr-2" />
+            Add
+          </Button>
+        </div>
+      )}
+
+      <EmergencyList
+        incidents={incidents}
+        handleReadMore={handleReadMore}
+        handleEditIncident={handleEditIncident}
+        handleDelete={handleDelete}
+        currentUser={currentUser}
+      />
+
+      <EmergencyModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        modalType={modalType}
+        selectedIncident={selectedIncident}
+        newIncident={newIncident}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleUpdate={handleUpdate}
+        currentUser={currentUser}
+      />
+
+      <DeleteModal
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        confirmDelete={confirmDelete}
+      />
     </div>
   );
 };

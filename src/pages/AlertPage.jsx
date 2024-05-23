@@ -197,126 +197,121 @@ const AlertPage = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="md:w-1/4">
-        <DashSidebar />
+    <div className="flex flex-col p-4 md:p-8 w-full md:w-3/4">
+      <div className="relative">
+        {currentUser.user.role === "admin" && (
+          <Button
+            className="absolute top-0 right-0 mt-4 mb-5 mr-4"
+            onClick={handleOpenModal}
+          >
+            Add Alert
+          </Button>
+        )}
       </div>
-      <div className="flex flex-col p-4 md:p-8 w-full md:w-3/4">
-        <div className="relative">
-          {currentUser.user.role === "admin" && (
-            <Button
-              className="absolute top-0 right-0 mt-4 mr-4"
-              onClick={handleOpenModal}
-            >
-              Add Alert
-            </Button>
-          )}
-        </div>
-        <h1 className="text-2xl font-semibold mb-4">Alerts</h1>
-        <div
-          className="chart-container mx-auto w-full sm:w-2/3 md:w-1/2 lg:w-1/3"
-          style={{ height: "300px" }}
-        >
-          <canvas ref={chartRef}></canvas>
-        </div>
-        <div className="overflow-x-auto mt-5">
-          <Table hoverable className="min-w-full shadow-md">
-            <Table.Head>
-              <Table.HeadCell>Type</Table.HeadCell>
-              <Table.HeadCell>Message</Table.HeadCell>
-              <Table.HeadCell>Location</Table.HeadCell>
-              <Table.HeadCell>Severity</Table.HeadCell>
-              <Table.HeadCell>Status</Table.HeadCell>
-              <Table.HeadCell>Time</Table.HeadCell>
-            </Table.Head>
-            <Table.Body>
-              {currentAlerts.map((alert) => (
-                <Table.Row key={alert.id} className="hover:bg-gray-100">
-                  <Table.Cell className="font-bold">{alert.type}</Table.Cell>
-                  <Table.Cell>{alert.message}</Table.Cell>
-                  <Table.Cell>{alert.location}</Table.Cell>
-                  <Table.Cell>{alert.severity.toUpperCase()}</Table.Cell>
-                  <Table.Cell>{alert.status}</Table.Cell>
-                  <Table.Cell>{formatTimestamp(alert.timestamp)}</Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        </div>
-        <div className="flex justify-center mt-5">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(alerts.length / alertsPerPage)}
-            onPageChange={onPageChange}
-          />
-        </div>
+      <h1 className="text-2xl font-semibold mb-4">Alerts</h1>
+      <div
+        className="chart-container mx-auto w-full sm:w-2/3 md:w-1/2 lg:w-1/3"
+        style={{ height: "300px" }}
+      >
+        <canvas ref={chartRef}></canvas>
+      </div>
+      <div className="overflow-x-auto mt-5">
+        <Table hoverable className="min-w-full shadow-md">
+          <Table.Head>
+            <Table.HeadCell>Type</Table.HeadCell>
+            <Table.HeadCell>Message</Table.HeadCell>
+            <Table.HeadCell>Location</Table.HeadCell>
+            <Table.HeadCell>Severity</Table.HeadCell>
+            <Table.HeadCell>Status</Table.HeadCell>
+            <Table.HeadCell>Time</Table.HeadCell>
+          </Table.Head>
+          <Table.Body>
+            {currentAlerts.map((alert) => (
+              <Table.Row key={alert.id} className="hover:bg-gray-100">
+                <Table.Cell className="font-bold">{alert.type}</Table.Cell>
+                <Table.Cell>{alert.message}</Table.Cell>
+                <Table.Cell>{alert.location}</Table.Cell>
+                <Table.Cell>{alert.severity.toUpperCase()}</Table.Cell>
+                <Table.Cell>{alert.status}</Table.Cell>
+                <Table.Cell>{formatTimestamp(alert.timestamp)}</Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      </div>
+      <div className="flex justify-center mt-5">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={Math.ceil(alerts.length / alertsPerPage)}
+          onPageChange={onPageChange}
+        />
+      </div>
 
-        <Modal show={isModalOpen} onClose={handleCloseModal} size="md">
-          <form onSubmit={handleSubmit}>
-            <Modal.Header>Add Alert</Modal.Header>
-            <Modal.Body>
-              <div className="mb-2">
-                <Label htmlFor="type" value="Type" />
-                <TextInput
-                  id="type"
-                  name="type"
-                  value={formData.type}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <Label htmlFor="message" value="Message" />
-                <TextInput
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <Label htmlFor="location" value="Location" />
-                <TextInput
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-2">
-                <Label htmlFor="severity" value="Severity" />
-                <Select
-                  id="severity"
-                  name="severity"
-                  value={formData.severity}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                </Select>
-              </div>
-              <div className="mb-2">
-                <Label htmlFor="status" value="Status" />
-                <TextInput
-                  id="status"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button type="submit">Submit</Button>
-            </Modal.Footer>
-          </form>
-        </Modal>
-        <ToastContainer />
-      </div>
+      <Modal show={isModalOpen} onClose={handleCloseModal} size="md">
+        <form onSubmit={handleSubmit}>
+          <Modal.Header>Add Alert</Modal.Header>
+          <Modal.Body>
+            <div className="mb-2">
+              <Label htmlFor="type" value="Type" />
+              <TextInput
+                id="type"
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-2">
+              <Label htmlFor="message" value="Message" />
+              <TextInput
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-2">
+              <Label htmlFor="location" value="Location" />
+              <TextInput
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-2">
+              <Label htmlFor="severity" value="Severity" />
+              <Select
+                id="severity"
+                name="severity"
+                value={formData.severity}
+                onChange={handleChange}
+                required
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </Select>
+            </div>
+            <div className="mb-2">
+              <Label htmlFor="status" value="Status" />
+              <TextInput
+                id="status"
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button type="submit">Submit</Button>
+          </Modal.Footer>
+        </form>
+      </Modal>
+      <ToastContainer />
     </div>
   );
 };
