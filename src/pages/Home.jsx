@@ -5,7 +5,7 @@ import {
   RiPhoneLine,
   RiMapPinLine,
 } from "react-icons/ri";
-
+import { FaReact } from "react-icons/fa";
 const Home = () => {
   return (
     <div className="mx-2">
@@ -255,11 +255,17 @@ const Home = () => {
         </div>
       </div>
 
-      <footer className="mt-10 bg-gray-200 flex md:items-center md:justify-between">
-        <div className="p-6 sm:p-8">
+      <footer className="mt-10 bg-gray-200 flex flex-col md:flex-row items-center md:justify-between">
+        <div className="p-6 sm:p-8 hidden sm:block">
           <img src="/nexus3.png" alt="logo" className="h-16" />
         </div>
-        <div className="p-6 sm:p-8 flex sm:flex-row items-center text-center">
+
+        <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-center">
+          <p className="text-center sm:text-left">Made by Sam</p>
+          <FaReact className="text-xl ml-2" />
+        </div>
+
+        <div className="p-6 sm:p-8 flex flex-row items-center justify-center">
           <Link to="/" className="hover:text-gray-400 font-bold px-4">
             Home
           </Link>
