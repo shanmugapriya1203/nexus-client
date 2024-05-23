@@ -6,9 +6,11 @@ import { useSelector } from "react-redux";
 import { SocketContext } from "../context/SocketContext";
 import { toast } from "react-toastify";
 import Logo from "/Nexus.png";
-
+import { useDispatch } from "react-redux";
+import { signoutSuccess } from "../redux/userSlice";
 const Header = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isNewTaskClicked, setIsNewTaskClicked] = useState(false);
@@ -154,44 +156,84 @@ const Header = () => {
   };
 
   return (
-    <header className="text-gray-800 p-4 flex flex-wrap justify-between items-center sticky top-0 bg-white z-10 shadow-md">
-      <div className="flex items-center">
-        <img src={Logo} alt="Logo" className="h-10 mr-2" />
-      </div>
-      <nav
-        className={`${
-          isMobileMenuOpen ? "block" : "hidden"
-        } lg:flex lg:items-center lg:w-auto w-full`}
-      >
-        <Link
-          to="/"
-          className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
-        >
-          Home
-        </Link>
-        <Link
-          to="/alerts"
-          className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
-        >
-          Alerts
-        </Link>
-        <Link
-          to="/dashboard?tab=shelters"
-          className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
-        >
-          Shelters
-        </Link>
-      </nav>
-      <div className="flex items-center gap-2 lg:gap-4">
-        {renderSignupButton()}
-        <button
-          className="lg:hidden text-2xl focus:outline-none"
-          onClick={toggleMobileMenu}
-        >
-          <MdMenu />
-        </button>
-      </div>
-    </header>
+    <>
+      <header className="text-gray-800 p-4 flex flex-wrap justify-between items-center sticky top-0 bg-white z-10 shadow-md">
+        <div className="flex items-center">
+          <img src={Logo} alt="Logo" className="h-10 mr-2" />
+        </div>
+        <nav className="hidden md:flex md:items-center md:w-auto w-full">
+          <Link
+            to="/"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+          >
+            Home
+          </Link>
+          <Link
+            to="/alerts"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+          >
+            Alerts
+          </Link>
+          <Link
+            to="/shelters"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+          >
+            Shelters
+          </Link>
+          {currentUser && (
+            <Link
+              to="/dashboard"
+              className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            >
+              Dashboard
+            </Link>
+          )}
+        </nav>
+        <div className="flex items-center gap-2 lg:gap-4">
+          {renderSignupButton()}
+          <button
+            className="md:hidden text-2xl focus:outline-none"
+            onClick={toggleMobileMenu}
+          >
+            <MdMenu />
+          </button>
+        </div>
+      </header>
+      {isMobileMenuOpen && (
+        <div className="flex flex-col text-center absolute w-full top-[75px] z-10 bg-gray-300">
+          <Link
+            to="/"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            onClick={toggleMobileMenu}
+          >
+            Home
+          </Link>
+          <Link
+            to="/alerts"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            onClick={toggleMobileMenu}
+          >
+            Alerts
+          </Link>
+          <Link
+            to="/shelters"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            onClick={toggleMobileMenu}
+          >
+            Shelters
+          </Link>
+          {currentUser && (
+            <Link
+              to="/dashboard"
+              className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+              onClick={toggleMobileMenu}
+            >
+              Dashboard
+            </Link>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 

@@ -18,7 +18,12 @@ const EditTask = () => {
   useEffect(() => {
     const fetchTaskData = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/api/volunteers/task/${taskId}`);
+        const res = await fetch(`${BASE_URL}/api/volunteers/tasks/${taskId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (res.ok) {
           const taskData = await res.json();
           setFormData({

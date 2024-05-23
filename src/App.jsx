@@ -30,6 +30,8 @@ import DonateSupplies from "./pages/DonateSupplies";
 import ForgotPassword from "./pages/ForgotPassword";
 import ShowEmergencies from "./components/Emergency/ShowEmergencies";
 import HeroPage from "./pages/HeroPage";
+import DashShelters from "./components/Shelters/DashShelters";
+import Contribute from "./pages/ContributePage";
 
 function App() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -61,6 +63,7 @@ function App() {
                 path="/allocate/:incidentId"
                 element={<AllocateResponder />}
               />
+              <Route path="/shelters" element={<DashShelters />} />
               <Route path="/plans" element={<GetPlan />} />
               <Route path="/createplan" element={<CreatePlan />} />
               <Route path="/updateplan" element={<UpdatePlan />} />
@@ -70,6 +73,7 @@ function App() {
               <Route path="/donatemoney" element={<DonateMoney />} />
               <Route path="/donatesupplies" element={<DonateSupplies />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/contribute" element={<Contribute />} />
             </Route>
           ) : null}
         </Routes>

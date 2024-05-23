@@ -11,6 +11,7 @@ import {
   HiX,
   HiMenu,
 } from "react-icons/hi";
+import { FaHandHoldingHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { signoutSuccess } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,30 +26,12 @@ const DashSidebar = () => {
 
   useEffect(() => {}, []);
 
-  const handleSignout = async () => {
-    try {
-      const res = await fetch(`${BASE_URL}/api/user/signout`, {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("Error:", data.message);
-      } else {
-        console.log("Sign-out successful:", data);
-        dispatch(signoutSuccess(data));
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div className="relative md:flex fixed">
+    <div className="relative h-full">
       <button className="md:hidden p-2 text-gray-700" onClick={toggleSidebar}>
         {isSidebarOpen ? <HiX size={24} /> : <HiMenu size={24} />}
       </button>
@@ -66,9 +49,9 @@ const DashSidebar = () => {
           </button>
         </div>
         <Sidebar.Items>
-          <Sidebar.ItemGroup className="flex flex-col gap-1">
+          <Sidebar.ItemGroup className="flex flex-col ">
             <div className="flex items-center justify-between">
-              <Link to="/profile" className="flex-grow">
+              <Link to="/profile" className="flex-grow" onClick={toggleSidebar}>
                 <Sidebar.Item
                   active={activeTab === "profile"}
                   icon={HiUser}
@@ -78,10 +61,10 @@ const DashSidebar = () => {
                 </Sidebar.Item>
               </Link>
             </div>
-            <Link to="/alerts">
+            <Link to="/alerts" onClick={toggleSidebar}>
               <Sidebar.Item icon={HiDocumentText}>Alerts</Sidebar.Item>
             </Link>
-            <Link to="/dashboard?tab=shelters">
+            <Link to="/shelters" onClick={toggleSidebar}>
               <Sidebar.Item
                 active={activeTab === "shelters"}
                 icon={HiOutlineAnnotation}
@@ -90,45 +73,45 @@ const DashSidebar = () => {
               </Sidebar.Item>
             </Link>
 
-            <Link to="/plans">
+            <Link to="/plans" onClick={toggleSidebar}>
               <Sidebar.Item icon={HiArrowSmRight}>Plans</Sidebar.Item>
             </Link>
 
-            <Link to="/emergencies">
+            <Link to="/emergencies" onClick={toggleSidebar}>
               <Sidebar.Item icon={HiOutlineAnnotation}>
                 Emergencies
               </Sidebar.Item>
             </Link>
-            <Link to="/community">
+            <Link to="/community" onClick={toggleSidebar}>
               <Sidebar.Item icon={HiOutlineAnnotation}>Community</Sidebar.Item>
             </Link>
             <Sidebar.ItemGroup title="Donate" className="flex flex-col gap-1">
-              <Link to="/donatemoney">
+              <Link to="/donatemoney" onClick={toggleSidebar}>
                 <Sidebar.Item icon={HiCash}>Donate Money</Sidebar.Item>
               </Link>
-              <Link to="/donatesupplies">
+              <Link to="/donatesupplies" onClick={toggleSidebar}>
                 <Sidebar.Item icon={HiGift}>Donate Supplies</Sidebar.Item>
               </Link>
               {currentUser.user.role === "volunteer" && (
-                <Link to="/tasks">
+                <Link to="/tasks" onClick={toggleSidebar}>
                   <Sidebar.Item icon={HiHeart}>Volunteer</Sidebar.Item>
                 </Link>
               )}
               {currentUser.user.role === "emergencyresponder" && (
-                <Link to="/incidents">
+                <Link to="/incidents" onClick={toggleSidebar}>
                   <Sidebar.Item icon={HiOutlineAnnotation}>
                     Emergencies
                   </Sidebar.Item>
                 </Link>
               )}
+              {currentUser.user.role === "user" && (
+                <Link to="/contribute" onClick={toggleSidebar}>
+                  <Sidebar.Item icon={FaHandHoldingHeart}>
+                    Contribute
+                  </Sidebar.Item>
+                </Link>
+              )}
             </Sidebar.ItemGroup>
-            <Sidebar.Item
-              icon={HiArrowSmRight}
-              className="cursor-pointer"
-              onClick={handleSignout}
-            >
-              Sign Out
-            </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>

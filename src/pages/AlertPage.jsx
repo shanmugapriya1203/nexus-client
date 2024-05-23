@@ -179,7 +179,13 @@ const AlertPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`${BASE_URL}/api/alerts/`, formData);
+      const response = await axios.post(`${BASE_URL}/api/alerts/`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
       if (response.status === 201) {
         toast.success("Alert created successfully!");
         handleCloseModal();
@@ -197,7 +203,7 @@ const AlertPage = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex flex-col p-4 md:p-8 w-full md:w-3/4">
+    <div className="flex flex-col p-4 md:p-8 w-full md:w-3/4 mx-auto">
       <div className="relative">
         {currentUser.user.role === "admin" && (
           <Button
@@ -247,63 +253,67 @@ const AlertPage = () => {
         />
       </div>
 
-      <Modal show={isModalOpen} onClose={handleCloseModal} size="md">
+      <Modal show={isModalOpen} onClose={handleCloseModal} size="lg">
+        {" "}
         <form onSubmit={handleSubmit}>
           <Modal.Header>Add Alert</Modal.Header>
           <Modal.Body>
-            <div className="mb-2">
-              <Label htmlFor="type" value="Type" />
-              <TextInput
-                id="type"
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-2">
-              <Label htmlFor="message" value="Message" />
-              <TextInput
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-2">
-              <Label htmlFor="location" value="Location" />
-              <TextInput
-                id="location"
-                name="location"
-                value={formData.location}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-2">
-              <Label htmlFor="severity" value="Severity" />
-              <Select
-                id="severity"
-                name="severity"
-                value={formData.severity}
-                onChange={handleChange}
-                required
-              >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-              </Select>
-            </div>
-            <div className="mb-2">
-              <Label htmlFor="status" value="Status" />
-              <TextInput
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {" "}
+              <div className="mb-2">
+                <Label htmlFor="type" value="Type" />
+                <TextInput
+                  id="type"
+                  name="type"
+                  value={formData.type}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <Label htmlFor="message" value="Message" />
+                <TextInput
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <Label htmlFor="location" value="Location" />
+                <TextInput
+                  id="location"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-2">
+                <Label htmlFor="severity" value="Severity" />
+                <Select
+                  id="severity"
+                  name="severity"
+                  value={formData.severity}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </Select>
+              </div>
+              <div className="mb-2">
+                <Label htmlFor="status" value="Status" />
+                <TextInput
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -311,6 +321,7 @@ const AlertPage = () => {
           </Modal.Footer>
         </form>
       </Modal>
+
       <ToastContainer />
     </div>
   );
