@@ -38,6 +38,7 @@ const Header = () => {
 
   const handleNewTaskClick = () => {
     setIsNewTaskClicked(true);
+    setShowDropdown(!showDropdown);
   };
 
   const toggleMobileMenu = () => {
@@ -55,6 +56,7 @@ const Header = () => {
       } else {
         console.log("Sign-out successful:", data);
         dispatch(signoutSuccess());
+        setShowDropdown(!showDropdown);
         navigate("/");
       }
     } catch (error) {
