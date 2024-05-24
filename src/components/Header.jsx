@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { SocketContext } from "../context/SocketContext";
 import { toast } from "react-toastify";
 import Logo from "/Nexus.png";
-import { useDispatch } from "react-redux";
 import { signoutSuccess } from "../redux/userSlice";
+import { BASE_URL } from "../api/apiservice";
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -53,7 +54,7 @@ const Header = () => {
         console.log("Error:", data.message);
       } else {
         console.log("Sign-out successful:", data);
-        dispatch(signoutSuccess(data));
+        dispatch(signoutSuccess());
         navigate("/");
       }
     } catch (error) {
@@ -96,13 +97,12 @@ const Header = () => {
               >
                 Profile
               </Link>
-              <Link
-                to="/signout"
+              <span
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer"
                 onClick={handleSignout}
               >
                 Sign Out
-              </Link>
+              </span>
               {(isVolunteerWithAssignedTasks ||
                 isEmergencyResponderWithAssignedIncidents) && (
                 <Link
