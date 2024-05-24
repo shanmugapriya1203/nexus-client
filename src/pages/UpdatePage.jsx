@@ -367,16 +367,12 @@ const UpdateProfile = () => {
                   </Button>
                 </div>
               ))}
-              <Button
-                color="success"
-                className="mt-2"
-                onClick={addCertification}
-              >
+              <Button color="light" className="mt-2" onClick={addCertification}>
                 Add Certification
               </Button>
             </div>
             <div className="mb-4 col-span-full">
-              <Button type="submit" gradientDuoTone="cyanToBlue" fullSized>
+              <Button type="submit" color="success" fullSized>
                 Update Profile
               </Button>
             </div>

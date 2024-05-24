@@ -1,37 +1,53 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SocketProvider } from "./context/SocketContext";
+import { lazy, Suspense } from "react";
+import Spinner from "./components/Spinner";
 import Header from "./components/Header";
-import SignUp from "./components/SignUp";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import UpdatePage from "./pages/UpdatePage";
-import AddShelter from "./components/Shelters/AddShelter";
-import ShowShelter from "./components/Shelters/ShowShelter";
-import Home from "./pages/Home";
-import AllVolunteers from "./components/VolunteerComponent/AllVolunteers";
-import AssignTask from "./components/VolunteerComponent/AssignTask";
-import ShowTask from "./components/VolunteerComponent/ShowTask";
-import AllTasks from "./components/VolunteerComponent/AllTasks";
-import CreateTask from "./components/VolunteerComponent/CreateTask";
-import EditTask from "./components/VolunteerComponent/EditTask";
-import GetPlan from "./components/Plans/GetPlan";
-import CreatePlan from "./components/Plans/CreatePlan";
-import UpdatePlan from "./components/Plans/UpdatePlan";
-import EmergencyPage from "./pages/EmergencyPage";
-import AllocateResponder from "./components/Emergency/AllocateResponder";
-import AlertPage from "./pages/AlertPage";
-import CommunityPage from "./pages/CommunityPage";
-import DonateMoney from "./pages/DonateMoney";
-import DonateSupplies from "./pages/DonateSupplies";
-import ForgotPassword from "./pages/ForgotPassword";
-import ShowEmergencies from "./components/Emergency/ShowEmergencies";
-import HeroPage from "./pages/HeroPage";
-import DashShelters from "./components/Shelters/DashShelters";
-import Contribute from "./pages/ContributePage";
+const SignUp = lazy(() => import("./components/SignUp"));
+const Login = lazy(() => import("./pages/Login"));
+const Home = lazy(() => import("./pages/Home"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const UpdatePage = lazy(() => import("./pages/UpdatePage"));
+const AddShelter = lazy(() => import("./components/Shelters/AddShelter"));
+const ShowShelter = lazy(() => import("./components/Shelters/ShowShelter"));
+const AllVolunteers = lazy(() =>
+  import("./components/VolunteerComponent/AllVolunteers")
+);
+const AssignTask = lazy(() =>
+  import("./components/VolunteerComponent/AssignTask")
+);
+const ShowTask = lazy(() => import("./components/VolunteerComponent/ShowTask"));
+const AllTasks = lazy(() => import("./components/VolunteerComponent/AllTasks"));
+const CreateTask = lazy(() =>
+  import("./components/VolunteerComponent/CreateTask")
+);
+const EditTask = lazy(() => import("./components/VolunteerComponent/EditTask"));
+const GetPlan = lazy(() => import("./components/Plans/GetPlan"));
+const CreatePlan = lazy(() => import("./components/Plans/CreatePlan"));
+const UpdatePlan = lazy(() => import("./components/Plans/UpdatePlan"));
+const EmergencyPage = lazy(() => import("./pages/EmergencyPage"));
+const AllocateResponder = lazy(() =>
+  import("./components/Emergency/AllocateResponder")
+);
+const AlertPage = lazy(() => import("./pages/AlertPage"));
+const CommunityPage = lazy(() => import("./pages/CommunityPage"));
+const DonateMoney = lazy(() => import("./pages/DonateMoney"));
+const DonateSupplies = lazy(() => import("./pages/DonateSupplies"));
+const ShowEmergencies = lazy(() =>
+  import("./components/Emergency/ShowEmergencies")
+);
+const HeroPage = lazy(() => import("./pages/HeroPage"));
+const DashShelters = lazy(() => import("./components/Shelters/DashShelters"));
+const Contribute = lazy(() => import("./pages/ContributePage"));
 
 function App() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -41,42 +57,42 @@ function App() {
       <Router>
         <Header />
         <ToastContainer />
-
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          {currentUser ? (
-            <Route path="/" element={<HeroPage />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/profile" element={<UpdatePage />} />
-              <Route path="/add-shelter" element={<AddShelter />} />
-              <Route path="/shelter/:shelterId" element={<ShowShelter />} />
-              <Route path="/admin/volunteers" element={<AllVolunteers />} />
-              <Route path="/admin/assign-task/:id" element={<AssignTask />} />
-              <Route path="/admin/tasks" element={<AllTasks />} />
-              <Route path="/tasks" element={<ShowTask />} />
-              <Route path="/incidents" element={<ShowEmergencies />} />
-              <Route path="/create-task" element={<CreateTask />} />
-              <Route path="/update-task/:taskId" element={<EditTask />} />
-              <Route
-                path="/allocate/:incidentId"
-                element={<AllocateResponder />}
-              />
-              <Route path="/shelters" element={<DashShelters />} />
-              <Route path="/plans" element={<GetPlan />} />
-              <Route path="/createplan" element={<CreatePlan />} />
-              <Route path="/updateplan" element={<UpdatePlan />} />
-              <Route path="/emergencies" element={<EmergencyPage />} />
-              <Route path="/alerts" element={<AlertPage />} />
-              <Route path="/community" element={<CommunityPage />} />
-              <Route path="/donatemoney" element={<DonateMoney />} />
-              <Route path="/donatesupplies" element={<DonateSupplies />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/contribute" element={<Contribute />} />
-            </Route>
-          ) : null}
-        </Routes>
+        <Suspense fallback={<Spinner />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            {currentUser ? (
+              <Route path="/" element={<HeroPage />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/profile" element={<UpdatePage />} />
+                <Route path="/add-shelter" element={<AddShelter />} />
+                <Route path="/shelter/:shelterId" element={<ShowShelter />} />
+                <Route path="/admin/volunteers" element={<AllVolunteers />} />
+                <Route path="/admin/assign-task/:id" element={<AssignTask />} />
+                <Route path="/admin/tasks" element={<AllTasks />} />
+                <Route path="/tasks" element={<ShowTask />} />
+                <Route path="/incidents" element={<ShowEmergencies />} />
+                <Route path="/create-task" element={<CreateTask />} />
+                <Route path="/update-task/:taskId" element={<EditTask />} />
+                <Route
+                  path="/allocate/:incidentId"
+                  element={<AllocateResponder />}
+                />
+                <Route path="/shelters" element={<DashShelters />} />
+                <Route path="/plans" element={<GetPlan />} />
+                <Route path="/createplan" element={<CreatePlan />} />
+                <Route path="/updateplan" element={<UpdatePlan />} />
+                <Route path="/emergencies" element={<EmergencyPage />} />
+                <Route path="/alerts" element={<AlertPage />} />
+                <Route path="/community" element={<CommunityPage />} />
+                <Route path="/donatemoney" element={<DonateMoney />} />
+                <Route path="/donatesupplies" element={<DonateSupplies />} />
+                <Route path="/contribute" element={<Contribute />} />
+              </Route>
+            ) : null}
+          </Routes>
+        </Suspense>
       </Router>
     </SocketProvider>
   );

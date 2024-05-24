@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import DashSidebar from "../DashSidebar";
 import { BASE_URL } from "../../api/apiservice";
 import { Button, Modal } from "flowbite-react";
-import { FaCoins } from "react-icons/fa"; // Import the gold coin icon
+import { FaCoins } from "react-icons/fa";
 
 const ShowTask = () => {
   const [tasks, setTasks] = useState([]);
@@ -97,6 +97,7 @@ const ShowTask = () => {
   return (
     <>
       <div className="flex-grow p-6">
+        <h1 className="text-3xl font-semibold mb-8">Your Tasks</h1>
         {loading ? (
           <p>Loading task details...</p>
         ) : (

@@ -207,7 +207,8 @@ const AlertPage = () => {
       <div className="relative">
         {currentUser.user.role === "admin" && (
           <Button
-            className="absolute top-0 right-0 mt-4 mb-5 mr-4"
+            className="absolute top-0 right-0 mt-2  sm:mt-4 sm:mb-5 sm:mr-4"
+            size="sm"
             onClick={handleOpenModal}
           >
             Add Alert

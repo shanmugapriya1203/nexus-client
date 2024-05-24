@@ -5,12 +5,14 @@ import { signInStart, signInSuccess, signInFailure } from "../redux/userSlice";
 import { BASE_URL } from "../api/apiservice";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,6 +20,10 @@ const Login = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -41,7 +47,7 @@ const Login = () => {
 
       const data = await res.json();
 
-      if (res.status === 200) {
+      if (res.ok) {
         const { token, user, ...rest } = data;
         if (token) {
           localStorage.setItem("token", token);
@@ -51,7 +57,7 @@ const Login = () => {
         navigate("/dashboard");
       } else {
         dispatch(signInFailure(data.message));
-        toast.error(data.message);
+        toast.error(data.message || "Login failed. Please try again.");
       }
     } catch (error) {
       dispatch(signInFailure("An error occurred while signing in"));
@@ -91,17 +97,29 @@ const Login = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-4 relative">
                 <Label htmlFor="password">Password</Label>
-                <TextInput
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                />
+                <div className="relative">
+                  <TextInput
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full pr-10"
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="focus:outline-none"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="text-right mt-6">
