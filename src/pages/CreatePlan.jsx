@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Label, TextInput, Button, Select } from "flowbite-react";
 import { useSelector } from "react-redux";
-import { BASE_URL } from "../../api/apiservice";
+import { BASE_URL } from "../api/apiservice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
-const UpdatePlan = () => {
-  const [loading, setLoading] = useState(true);
+const CreatePlan = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -54,45 +52,6 @@ const UpdatePlan = () => {
     notes: "",
   });
 
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const response = await fetch(
-          `${BASE_URL}/api/plans/user/${currentUser.user._id}/emergencyplans`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch plans");
-        }
-        const data = await response.json();
-
-        if (data.length > 0) {
-          const firstPlan = data[0];
-          setFormData({
-            _id: firstPlan._id,
-            familyMembers: firstPlan.familyMembers,
-            emergencyContacts: firstPlan.emergencyContacts,
-            evacuationPlan: firstPlan.evacuationPlan,
-            medicalInformation: firstPlan.medicalInformation,
-            notes: firstPlan.notes,
-          });
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching plans:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchPlans();
-  }, [currentUser.user._id]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -100,7 +59,6 @@ const UpdatePlan = () => {
       [name]: value,
     }));
   };
-
   const handleFamilyMemberChange = (index, name, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -170,27 +128,29 @@ const UpdatePlan = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+
     try {
-      const response = await fetch(`${BASE_URL}/api/plans/${formData._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${BASE_URL}/api/plans/user/${currentUser.user._id}/emergencyplan`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to update form data");
+        throw new Error("Failed to submit form data");
       }
-
-      console.log("Form data updated successfully");
-      toast.success("Form data updated successfully");
+      console.log("Form data submitted successfully");
+      toast.success("Form data submitted successfully");
       navigate("/plans");
     } catch (error) {
-      console.error("Error updating form data:", error.message);
-      toast.error("Error updating form data");
+      console.error("Error submitting form data:", error.message);
+      toast.error("Error submitting form data");
     }
   };
 
@@ -321,7 +281,7 @@ const UpdatePlan = () => {
                 id="evacuationType"
                 name="evacuationType"
                 value={formData.evacuationPlan.type}
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleEvacuationChange("type", e.target.value)}
               />
             </div>
             <div>
@@ -381,7 +341,7 @@ const UpdatePlan = () => {
                 id="medicalType"
                 name="medicalType"
                 value={formData.medicalInformation.type}
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleMedicalChange(0, "type", e.target.value)}
               />
             </div>
             <div>
@@ -422,7 +382,6 @@ const UpdatePlan = () => {
             </div>
           </div>
         </div>
-
         {/* Notes */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Notes</h2>
@@ -446,4 +405,4 @@ const UpdatePlan = () => {
   );
 };
 
-export default UpdatePlan;
+export default CreatePlan;

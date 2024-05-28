@@ -12,7 +12,7 @@ import { SocketProvider } from "./context/SocketContext";
 import { lazy, Suspense } from "react";
 import Spinner from "./components/Spinner";
 import Header from "./components/Header";
-const SignUp = lazy(() => import("./components/SignUp"));
+const SignUp = lazy(() => import("./pages/SignUp"));
 const Login = lazy(() => import("./pages/Login"));
 const Home = lazy(() => import("./pages/Home"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
@@ -31,9 +31,9 @@ const CreateTask = lazy(() =>
   import("./components/VolunteerComponent/CreateTask")
 );
 const EditTask = lazy(() => import("./components/VolunteerComponent/EditTask"));
-const GetPlan = lazy(() => import("./components/Plans/GetPlan"));
-const CreatePlan = lazy(() => import("./components/Plans/CreatePlan"));
-const UpdatePlan = lazy(() => import("./components/Plans/UpdatePlan"));
+const GetPlan = lazy(() => import("./pages/GetPlan"));
+const CreatePlan = lazy(() => import("./pages/CreatePlan"));
+const UpdatePlan = lazy(() => import("./pages/UpdatePlan"));
 const EmergencyPage = lazy(() => import("./pages/EmergencyPage"));
 const AllocateResponder = lazy(() =>
   import("./components/Emergency/AllocateResponder")
@@ -46,7 +46,7 @@ const ShowEmergencies = lazy(() =>
   import("./components/Emergency/ShowEmergencies")
 );
 const HeroPage = lazy(() => import("./pages/HeroPage"));
-const DashShelters = lazy(() => import("./components/Shelters/DashShelters"));
+const DashShelters = lazy(() => import("./pages/DashShelters"));
 const Contribute = lazy(() => import("./pages/ContributePage"));
 
 function App() {

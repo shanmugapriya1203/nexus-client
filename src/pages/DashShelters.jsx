@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MdSearch } from "react-icons/md";
 import { TextInput, Card, Button } from "flowbite-react";
 import { useSelector } from "react-redux";
-import { BASE_URL } from "../../api/apiservice";
+import { BASE_URL } from "../api/apiservice";
 import { Link } from "react-router-dom";
 
 const DashShelters = () => {

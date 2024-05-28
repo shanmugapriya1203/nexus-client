@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { TextInput, Label, Button, Select } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
 import { toast } from "react-toastify";
-import NormalUserSignUp from "./../pages/NormalUserSignup";
-import VolunteerSignUp from "./../pages/VolunteerSignup";
-import EmergencyResponderSignUp from "./Emergency/ResponderSignup";
+import NormalUserSignUp from "./NormalUserSignup";
+import VolunteerSignUp from "./VolunteerSignup";
+import EmergencyResponderSignUp from "./ResponderSignup";
 
 const SignUp = ({}) => {
   const navigate = useNavigate();

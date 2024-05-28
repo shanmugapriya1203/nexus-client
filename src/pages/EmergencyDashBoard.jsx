@@ -7,11 +7,11 @@ import {
   FiPhone,
 } from "react-icons/fi";
 import { FaUserCircle } from "react-icons/fa";
-import { BASE_URL } from "../../api/apiservice";
+import { BASE_URL } from "../api/apiservice";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const VolunteerDashboard = () => {
+const EmergencyResponderDashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [totalTasks, setTotalTasks] = useState(0);
   const [completedTasks, setCompletedTasks] = useState(0);
@@ -19,14 +19,20 @@ const VolunteerDashboard = () => {
   const [recentActivities, setRecentActivities] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [emergencyAlerts, setEmergencyAlerts] = useState([]);
+  const [alertsWithoutSlice, setAlertsWithoutSlice] = useState(0);
   const [donations, setDonations] = useState([]);
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        if (currentUser && currentUser.user && currentUser.user.assignedTasks) {
-          const taskIds = currentUser.user.assignedTasks;
+        if (
+          currentUser &&
+          currentUser.user &&
+          currentUser.user.assignedIncidents
+        ) {
+          const taskIds = currentUser.user.assignedIncidents;
           const promises = taskIds.map((taskId) =>
-            fetch(`${BASE_URL}/api/volunteers/task/${taskId}`).then((res) =>
+            fetch(`${BASE_URL}/api/incident/${taskId}`).then((res) =>
               res.json()
             )
           );
@@ -34,7 +40,7 @@ const VolunteerDashboard = () => {
 
           setTotalTasks(tasks.length);
           const completedTaskCount = tasks.filter(
-            (task) => task.status === "completed"
+            (task) => task.status === "Closed"
           ).length;
           setCompletedTasks(completedTaskCount);
           setTotalPoints(completedTaskCount * 10);
@@ -43,15 +49,28 @@ const VolunteerDashboard = () => {
         console.error("Error fetching tasks:", error);
       }
     };
+
     const fetchAlerts = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/alerts`);
         const data = await response.json();
+        setAlertsWithoutSlice(data.length);
         setEmergencyAlerts(data.slice(0, 3));
       } catch (error) {
         console.error("Error fetching alerts:", error);
       }
     };
+
+    const fetchEmergencies = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/incident/`);
+        const data = await response.json();
+        setRecentActivities(data.slice(0, 3));
+      } catch (error) {
+        console.error("Error fetching emergencies:", error);
+      }
+    };
+
     const fetchDonations = async () => {
       try {
         const response = await fetch(`${BASE_URL}/api/donations`);
@@ -61,18 +80,15 @@ const VolunteerDashboard = () => {
         console.error("Error fetching donations:", error);
       }
     };
+
     fetchTasks();
     fetchAlerts();
+    fetchEmergencies();
     fetchDonations();
   }, [currentUser]);
 
   useEffect(() => {
     setTotalPoints(50);
-    setRecentActivities([
-      "Delivered supplies to shelter",
-      "Assisted in evacuation",
-      "Conducted first aid training",
-    ]);
     setUpcomingEvents([
       "Training session on 2024-06-01",
       "Community drill on 2024-06-15",
@@ -114,9 +130,7 @@ const VolunteerDashboard = () => {
           <FiAlertCircle className="text-white text-3xl mr-4" />
           <div>
             <h5 className="text-white text-lg">Emergency Alerts</h5>
-            <p className="text-white text-xl font-bold">
-              {emergencyAlerts.length}
-            </p>
+            <p className="text-white text-xl font-bold">{alertsWithoutSlice}</p>
           </div>
         </div>
       </div>
@@ -124,7 +138,7 @@ const VolunteerDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <Link to="/alerts" className="bg-white p-4 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold mb-2 text-gray-700">
-            Emergency Alerts
+            Recent Alerts
           </h3>
           <ul className="list-disc pl-5 text-red-600">
             {emergencyAlerts.map((alert) => (
@@ -155,12 +169,12 @@ const VolunteerDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow-md">
           <h3 className="text-xl font-semibold mb-2 text-gray-700">
-            Recent Activities
+            Recent Emergencies
           </h3>
           <ul className="list-disc pl-5 text-gray-700">
             {recentActivities.map((activity, index) => (
               <li key={index} className="mb-1">
-                {activity}
+                {activity.description}
               </li>
             ))}
           </ul>
@@ -221,6 +235,7 @@ const VolunteerDashboard = () => {
           </ul>
         </div>
       </div>
+
       <div className="bg-white p-4 rounded-lg shadow-md mb-6">
         <h3 className="text-xl font-semibold mb-2 text-gray-700">Progress</h3>
         <div className="w-full bg-gray-200 rounded-full h-4 mb-2">
@@ -229,12 +244,12 @@ const VolunteerDashboard = () => {
             style={{ width: `${(completedTasks / totalTasks) * 100}%` }}
           ></div>
         </div>
-        <p className="text-gray-700">
-          {completedTasks} out of {totalTasks} tasks completed
+        <p className="text-gray-600">
+          {completedTasks} of {totalTasks} tasks completed
         </p>
       </div>
     </div>
   );
 };
 
-export default VolunteerDashboard;
+export default EmergencyResponderDashboard;

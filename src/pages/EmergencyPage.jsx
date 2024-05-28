@@ -5,7 +5,7 @@ import { HiOutlinePlus } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../api/apiservice";
-import EmergencyList from "./../components/Emergency/EmergencyList";
+import EmergencyList from "./EmergencyList";
 import EmergencyModal from "./../components/Emergency/EmergencyModal";
 import DeleteModal from "./../components/Emergency/DeleteModal";
 import { HiOutlineSearch } from "react-icons/hi";

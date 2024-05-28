@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import AdminDashboard from "../components/AdminDashboard";
+import AdminDashboard from "./AdminDashboard";
 import { useLocation } from "react-router-dom";
-import GetPlan from "../components/Plans/GetPlan";
-import VolunteerDashBoard from "../components/VolunteerComponent/VolunteerDashBoard";
-import EmergencyDashBoard from "../components/Emergency/EmergencyDashBoard";
+import GetPlan from "./GetPlan";
+import VolunteerDashBoard from "./VolunteerDashBoard";
+import EmergencyResponderDashboard from "./EmergencyDashBoard";
 import UserDashboard from "./NormalUserDash";
 
 const Dashboard = () => {
@@ -36,7 +36,7 @@ const Dashboard = () => {
           <VolunteerDashBoard />
         )}
         {currentUser.user.role === "emergencyresponder" &&
-          (!tab || tab === "/") && <EmergencyDashBoard />}
+          (!tab || tab === "/") && <EmergencyResponderDashboard />}
         {currentUser.user.role === "user" && (!tab || tab === "/") && (
           <UserDashboard />
         )}

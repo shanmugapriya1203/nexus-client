@@ -54,7 +54,6 @@ const Header = () => {
       if (!res.ok) {
         console.log("Error:", data.message);
       } else {
-        console.log("Sign-out successful:", data);
         dispatch(signoutSuccess());
         setShowDropdown(!showDropdown);
         navigate("/");

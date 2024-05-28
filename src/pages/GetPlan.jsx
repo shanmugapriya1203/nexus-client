@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { BASE_URL } from "../../api/apiservice";
+import { BASE_URL } from "../api/apiservice";
 import { Button } from "flowbite-react";
 import { FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaEdit, FaArrowLeft } from "react-icons/fa";
-import DashSidebar from "../DashSidebar";
+import DashSidebar from "../components/DashSidebar";
 const GetPlan = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
