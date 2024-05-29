@@ -3,11 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { TextInput, Label, Button, Select } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
 import { toast } from "react-toastify";
-import NormalUserSignUp from "./NormalUserSignup";
 import VolunteerSignUp from "./VolunteerSignup";
-import EmergencyResponderSignUp from "./ResponderSignup";
 
-const SignUp = ({}) => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
@@ -31,7 +29,7 @@ const SignUp = ({}) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     setSubmitted(true);
   };
@@ -80,28 +78,12 @@ const SignUp = ({}) => {
             Sign Up
           </h2>
           {submitted ? (
-            formData.role === "volunteer" ? (
-              <VolunteerSignUp
-                formData={formData}
-                onBack={handleBack}
-                onChange={handleInputChange}
-                onSubmit={handleSignupSubmit}
-              />
-            ) : formData.role === "emergencyresponder" ? (
-              <EmergencyResponderSignUp
-                formData={formData}
-                onBack={handleBack}
-                onChange={handleInputChange}
-                onSubmit={handleSignupSubmit}
-              />
-            ) : formData.role === "user" ? (
-              <NormalUserSignUp
-                formData={formData}
-                onBack={handleBack}
-                onChange={handleInputChange}
-                onSubmit={handleSignupSubmit}
-              />
-            ) : null
+            <VolunteerSignUp
+              formData={formData}
+              onBack={handleBack}
+              onChange={handleInputChange}
+              onSubmit={handleSignupSubmit}
+            />
           ) : (
             <form className="px-8 py-6" onSubmit={handleSubmit}>
               <div className="space-y-4">
@@ -154,10 +136,6 @@ const SignUp = ({}) => {
                   >
                     <option value="">Select Role</option>
                     <option value="volunteer">Volunteer</option>
-                    <option value="emergencyresponder">
-                      Emergency Responder
-                    </option>
-                    <option value="user">Normal User</option>
                   </Select>
                 </div>
               </div>
