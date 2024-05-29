@@ -170,16 +170,10 @@ const Header = () => {
             Home
           </Link>
           <Link
-            to="/alerts"
+            to="/about"
             className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
           >
-            Alerts
-          </Link>
-          <Link
-            to="/shelters"
-            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
-          >
-            Shelters
+            About
           </Link>
           {currentUser && (
             <Link

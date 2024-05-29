@@ -12,9 +12,10 @@ import { SocketProvider } from "./context/SocketContext";
 import { lazy, Suspense } from "react";
 import Spinner from "./components/Spinner";
 import Header from "./components/Header";
+import Home from "./pages/Home";
 const SignUp = lazy(() => import("./pages/SignUp"));
 const Login = lazy(() => import("./pages/Login"));
-const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const UpdatePage = lazy(() => import("./pages/UpdatePage"));
 const AddShelter = lazy(() => import("./components/Shelters/AddShelter"));
@@ -60,6 +61,7 @@ function App() {
         <Suspense fallback={<Spinner />}>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             {currentUser ? (
