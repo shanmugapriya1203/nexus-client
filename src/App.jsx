@@ -13,6 +13,8 @@ import { lazy, Suspense } from "react";
 import Spinner from "./components/Spinner";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+const HomeShelter = lazy(() => import("./pages/HomeShelter"));
+const HomeHospital = lazy(() => import("./pages/HomeHospital"));
 const SignUp = lazy(() => import("./pages/SignUp"));
 const Login = lazy(() => import("./pages/Login"));
 const About = lazy(() => import("./pages/About"));
@@ -64,6 +66,8 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/shelter/:shelterId" element={<HomeShelter />} />
+            <Route path="/hospital/:hospitalId" element={<HomeHospital />} />
             {currentUser ? (
               <Route path="/" element={<HeroPage />}>
                 <Route path="/dashboard" element={<Dashboard />} />

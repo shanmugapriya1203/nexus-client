@@ -1,288 +1,302 @@
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import {
-  RiArrowRightSLine,
-  RiMailLine,
-  RiPhoneLine,
-  RiMapPinLine,
-} from "react-icons/ri";
-import { FaReact } from "react-icons/fa";
+import { HiSearch } from "react-icons/hi";
+import { TextInput, Card, Radio } from "flowbite-react";
+import { useSelector } from "react-redux";
+import { BASE_URL } from "../api/apiservice";
+import { FaPhone, FaFire } from "react-icons/fa";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import debounce from "lodash.debounce";
+
 const Home = () => {
+  const [shelters, setShelters] = useState([]);
+  const [hospitals, setHospitals] = useState([]);
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchType, setSearchType] = useState("shelter");
+
+  const emergencyContacts = useMemo(
+    () => [
+      {
+        name: "Local Police Department",
+        phoneNumber: "100",
+        icon: <FaPhone />,
+        color: "#3B82F6",
+      },
+      {
+        name: "Fire Department",
+        phoneNumber: "104",
+        icon: <FaFire />,
+        color: "#EF4444",
+      },
+      {
+        name: "Ambulance Service",
+        phoneNumber: "108",
+        icon: <FaPhone />,
+        color: "#10B981",
+      },
+      {
+        name: "Emergency Contact Name",
+        phoneNumber: "911",
+        icon: <FaPhone />,
+        color: "#6B7280",
+      },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    if (searchType === "shelter") {
+      fetchShelters();
+    } else {
+      fetchHospitals();
+    }
+  }, [searchType]);
+
+  const fetchShelters = useCallback(async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/shelter/`);
+      if (res.ok) {
+        const data = await res.json();
+        setShelters(data);
+      } else {
+        console.error("Failed to fetch shelters:", res.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching shelters:", error.message);
+    }
+  }, []);
+
+  const fetchHospitals = useCallback(async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/hospital/`);
+      if (res.ok) {
+        const data = await res.json();
+        setHospitals(data);
+      } else {
+        console.error("Failed to fetch hospitals:", res.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching hospitals:", error.message);
+    }
+  }, []);
+
+  const fetchSheltersByLocation = useCallback(async (location) => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/shelter/location/${location}`);
+      if (res.ok) {
+        const data = await res.json();
+        setShelters(data);
+      } else {
+        console.error("Failed to fetch shelters by location:", res.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching shelters by location:", error.message);
+    }
+  }, []);
+
+  const fetchHospitalsByArea = useCallback(async (area) => {
+    try {
+      const res = await fetch(`${BASE_URL}/api/hospital/area/${area}`);
+      if (res.ok) {
+        const data = await res.json();
+        setHospitals(data);
+      } else {
+        console.error("Failed to fetch hospitals by area:", res.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching hospitals by area:", error.message);
+    }
+  }, []);
+
+  const handleSearch = useCallback(() => {
+    if (searchType === "shelter") {
+      if (searchLocation.trim() === "") {
+        fetchShelters();
+      } else {
+        fetchSheltersByLocation(searchLocation);
+      }
+    } else if (searchType === "hospital") {
+      if (searchLocation.trim() === "") {
+        fetchHospitals();
+      } else {
+        fetchHospitalsByArea(searchLocation);
+      }
+    }
+  }, [
+    fetchHospitals,
+    fetchHospitalsByArea,
+    fetchShelters,
+    fetchSheltersByLocation,
+    searchLocation,
+    searchType,
+  ]);
+
+  const debounceSearch = useCallback(debounce(handleSearch, 500), [
+    handleSearch,
+  ]);
+
+  useEffect(() => {
+    debounceSearch();
+    return () => {
+      debounceSearch.cancel();
+    };
+  }, [searchLocation, searchType, debounceSearch]);
+
+  const responsive = useMemo(
+    () => ({
+      superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 4 },
+      desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4 },
+      tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
+      mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
+    }),
+    []
+  );
+
   return (
-    <div className="mx-2">
-      <div className="relative h-72 sm:h-96 xl:h-auto overflow-hidden">
-        <img
-          src="/banner.png"
-          alt="banner"
-          className="object-contain w-full h-full"
-        />
+    <div className="flex flex-col gap-6 p-20 px-4 max-w-6xl mx-auto bg-gray-50">
+      <h1 className="text-green-700 font-bold text-3xl lg:text-6xl">
+        Discover Nexus for your next{" "}
+        <span className="text-green-500">critical</span>
+        <br />
+        disaster management solution
+      </h1>
+      <div className="text-gray-600 text-xs sm:text-sm">
+        Nexus, your reliable partner in disaster management, where every
+        solution is tailored to protect and serve.
+        <br />
+        Explore tools that safeguard, strategies that empower, and the support
+        you need in times of crisis.
       </div>
-
-      {/* first section */}
-      <div className="flex flex-col sm:flex-row md:mt-10 h-full">
-        <div className="w-full sm:w-1/2 p-6 sm:p-8">
-          <div className="rounded-lg h-full">
-            <h2 className="text-3xl text-center md:text-wrap md:text-5xl font-bold my-4">
-              Nexus: Comprehensive Disaster Management Solution
-            </h2>
-          </div>
-        </div>
-        <div className="w-full sm:w-1/2 sm:p-8 flex flex-col justify-center items-center text-2xl">
-          <p className="text-center mb-5 mx-3">
-            Stay safe, informed, and supported during disaster with the power of
-            the Nexus.
-          </p>
-          <div className="flex flex-wrap text-lg">
-            <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
-              Learn More
-            </button>
-            <Link to="/signup">
-              <button className="bg-white text-black py-2 px-4 rounded flex items-center">
-                Sign Up <RiArrowRightSLine className="ml-2" />
-              </button>
-            </Link>
-          </div>
-        </div>
+      <div className="flex justify-center mt-6 gap-4">
+        <label className="mr-2 flex justify-center items-center gap-2">
+          <Radio
+            name="searchType"
+            value="shelter"
+            checked={searchType === "shelter"}
+            onChange={() => setSearchType("shelter")}
+          />
+          Shelters
+        </label>
+        <label className="mr-2 flex justify-center items-center gap-2">
+          <Radio
+            name="searchType"
+            value="hospital"
+            checked={searchType === "hospital"}
+            onChange={() => setSearchType("hospital")}
+          />
+          Hospitals
+        </label>
       </div>
-
-      {/* second section */}
-      <div className="flex sm:flex-row flex-col mt-4">
-        <div className="w-full sm:w-1/2 p-6 sm:p-8 h-full lg:text-xl">
-          <div className="rounded-lg py-8 md:p-0 h-full mt-2">
-            <p className="mb-4 text-2xl font-extrabold">
-              Instant alert for real-time disaster notification
-            </p>
-            <p className="lg:text-xl mb-4">
-              Be the first to know when disaster strikes with our instant alert,
-              future, dot, stay informed and take action to keep yourself and
-              your community safe.
-            </p>
-            <div className="flex flex-col">
-              <div className="flex mb-4">
-                <div className="w-1/2 pr-2">
-                  <h3 className="text-lg font-bold">Stay Safe</h3>
-                  <p className="text-md mb-2">
-                    Receive real-time notifications about approaching disasters
-                    and take necessary precautions
-                  </p>
-                </div>
-                <div className="w-1/2 pl-2">
-                  <h3 className="text-lg font-bold">Work Together</h3>
-                  <p className="text-md mb-2">
-                    Connect with community members and emergency responders to
-                    coordinate efforts and support each other
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="w-full sm:w-1/2 p-6 sm:p-8 h-full hidden md:block">
-          <div className="rounded-lg h-full">
-            <img
-              src="https://media.istockphoto.com/id/1393054902/photo/continuity-crisis-recovery-business-plan-crisis-disaster-response-words.jpg?s=612x612&w=0&k=20&c=rXzyDYmQDFa2nFYerBUyRwd7UB_UJMq5j82-Of3szBA="
-              alt="image"
-              className="object-cover w-full h-full"
-            />
-          </div>
+      <div className="flex justify-center mt-2 relative w-full">
+        <div className="relative w-full max-w-md">
+          <input
+            className="w-full pl-3 pr-10 py-2 border rounded-md"
+            type="text"
+            placeholder={`Search for ${
+              searchType === "shelter" ? "shelters" : "hospitals"
+            }...`}
+            value={searchLocation}
+            onChange={(e) => setSearchLocation(e.target.value)}
+          />
+          <HiSearch
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-2xl cursor-pointer"
+            onClick={handleSearch}
+          />
         </div>
       </div>
 
-      {/* third section */}
-      <div className="flex flex-col sm:flex-row">
-        <div className="w-full sm:w-1/2 p-6 sm:p-8 h-full">
-          <div className="rounded-lg h-full">
-            <img
-              src="https://media.istockphoto.com/id/1367515302/photo/anonymous-people-avatars-in-virtual-space.jpg?s=612x612&w=0&k=20&c=GNg5sT3r1p6pq08tfzVan95FxAPgQWlff4KtFHAffcA="
-              alt="image"
-              className="object-cover w-full h-full"
-            />
+      <h1 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-2 mt-8">
+        {searchType === "shelter" ? "Shelters" : "Hospitals"}
+      </h1>
+
+      {searchType === "shelter" ? (
+        shelters.length === 0 ? (
+          <div className="text-center text-gray-600 mt-4">
+            No shelters found in this location.
           </div>
-        </div>
-        <div className="w-full sm:w-1/2 p-6 sm:p-8 h-full">
-          <div className="rounded-lg py-8 h-full">
-            <h2 className="text-2xl font-bold mb-4">
-              Empowering Communities Through Collaboration: Uniting for
-              Effective Energy Response
-            </h2>
-            <p className="text-lg">
-              The Nexus provides a digital meeting place where community members
-              and emergency responders can easily share information, coordinate
-              efforts, and work together to ensure an effective emergency
-              response.
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <div className="flex sm:flex-row">
-              <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
-                Learn More
-              </button>
-              <Link to="/signup">
-                <button className="bg-white text-black py-2 px-4 rounded flex items-center">
-                  Sign Up <RiArrowRightSLine className="ml-2" />
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col sm:flex-row">
-        <div className="w-full sm:w-1/2 p-6 sm:p-8 h-full">
-          <div className="rounded-lg py-8 h-full">
-            <p className="mb-4 text-2xl font-extrabold">
-              Organizing Emergency Supplies and Shelters for Effective Disaster
-              Management
-            </p>
-            <p className="text-lg mb-4">
-              The Nexus provides a comprehensive resource management system that
-              ensures efficient organization of emergency supplies and shelters.
-              With our platform, you can easily and manage essential resources,
-              making disaster management more effective and streamlined.
-            </p>
-            <div className="flex flex-col">
-              <div className="flex sm:flex-row">
-                <button className="bg-black text-white py-2 px-4 rounded mb-2 sm:mb-0 sm:mr-2">
-                  Learn More
-                </button>
-                <Link to="/signup">
-                  <button className="bg-white text-black py-2 px-4 rounded flex items-center">
-                    Sign Up <RiArrowRightSLine className="ml-2" />
-                  </button>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 ml-4">
+            {shelters.map((shelter) => (
+              <div className="max-w-xs" key={shelter._id}>
+                <Link to={`/shelter/${shelter._id}`}>
+                  <Card className="h-full">
+                    <img
+                      src={shelter.photos[0]}
+                      alt={shelter.name}
+                      className="w-full h-48 object-cover"
+                      loading="lazy"
+                    />
+                    <div className="p-4">
+                      <h5 className="text-xl font-bold tracking-tight text-gray-900">
+                        {shelter.name}
+                      </h5>
+                      <p className="text-sm text-gray-600">
+                        {shelter.location}
+                      </p>
+                    </div>
+                  </Card>
                 </Link>
               </div>
+            ))}
+          </div>
+        )
+      ) : hospitals.length === 0 ? (
+        <div className="text-center text-gray-600 mt-4">
+          No hospitals found in this area.
+        </div>
+      ) : (
+        <Carousel responsive={responsive} containerClass="carousel-container">
+          {hospitals.map((hospital) => (
+            <div className="max-w-xs" key={hospital._id}>
+              <Link to={`/hospital/${hospital._id}`}>
+                <Card
+                  className="max-w-sm h-full"
+                  style={{ marginRight: "15px" }}
+                >
+                  <img
+                    src={hospital.photoUrl}
+                    alt={hospital.name}
+                    className="w-full h-48 object-cover"
+                    loading="lazy"
+                  />
+                  <div className="p-4 h-full">
+                    <h5 className="text-xl font-bold tracking-tight text-gray-900">
+                      {hospital.name}
+                    </h5>
+                    <p className="text-sm text-gray-600">
+                      {hospital.area}, {hospital.city}
+                    </p>
+                  </div>
+                </Card>
+              </Link>
             </div>
+          ))}
+        </Carousel>
+      )}
+
+      <h1 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-2">
+        Emergency Contacts
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 ml-4">
+        {emergencyContacts.map((contact, index) => (
+          <div className="max-w-xs" key={index}>
+            <Card className="h-full">
+              <div className="p-1">
+                <div className="flex items-center mb-2">
+                  <div className="mr-2" style={{ color: contact.color }}>
+                    {contact.icon}
+                  </div>
+                  <h5 className="text-xl font-bold tracking-tight text-gray-900">
+                    {contact.name}
+                  </h5>
+                </div>
+                <p className="text-sm text-gray-600">{contact.phoneNumber}</p>
+              </div>
+            </Card>
           </div>
-        </div>
-        <div className="w-full sm:w-1/2 p-6 sm:p-8 h-full">
-          <div className="rounded-lg h-full">
-            <img
-              src="https://media.istockphoto.com/id/1432208095/photo/army-doctor-playing-with-refugee-children-at-a-community-center.jpg?s=612x612&w=0&k=20&c=T9PU1CGNuf74yzyD3EJZK_5s7fvAo9tSJFTY-aAM04o="
-              alt="image"
-              className="object-cover w-full h-full"
-            />
-          </div>
-        </div>
+        ))}
       </div>
-      <div className="flex flex-col items-center w-full max-w-7xl p-5">
-        <h2 className="text-3xl font-bold mb-6">FAQs</h2>
-        <p className="mb-8">
-          Find answers to common questions about disaster preparedness and
-          platform usage
-        </p>
-        <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
-        <div className="w-full">
-          <div className="mb-4 flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">
-              What is disaster recovery?
-            </h3>
-            <p className="text-sm text-center">
-              Disaster recovery refers to the process of restoring systems,
-              data, and infrastructure after a disaster, ensuring continuity of
-              operations.
-            </p>
-          </div>
-          <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
-
-          <div className="mb-4 flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">
-              How to prepare for disasters?
-            </h3>
-            <p className="text-sm text-center">
-              Disaster preparedness involves creating an emergency plan,
-              assembling a disaster supply kit, and staying informed about
-              potential risks in your area.
-            </p>
-          </div>
-          <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
-
-          <div className="mb-4 flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">How can I contribute?</h3>
-            <p className="text-sm text-center">
-              You can contribute by donating to disaster relief efforts,
-              volunteering your time and skills, and spreading awareness about
-              the platform to help more people stay safe during disasters.
-            </p>
-          </div>
-          <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
-
-          <div className="mb-4 flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">Is the platform free?</h3>
-            <p className="text-sm text-center">
-              Yes, the platform is free to use for both community members and
-              emergency responders. We believe in providing accessible tools for
-              disaster management.
-            </p>
-          </div>
-          <hr className="my-4 mx-auto w-1/2 border-1 border-gray-300" />
-
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl font-bold mb-2">How can I sign up?</h3>
-            <p className="text-sm text-center">
-              To sign up, simply visit our website and follow the registration
-              process. It only takes a few minutes.
-            </p>
-          </div>
-        </div>
-        <h2 className="text-3xl font-bold mb-6 mt-10">Still Have Questions?</h2>
-        <p className="mb-8">Contact us for further assistance</p>
-        <button
-          className="bg-white text-black py-2 px-4 rounded flex items-center border-2"
-          onClick={() => (window.location.href = "mailto:contact@example.com")}
-        >
-          Contact
-        </button>
-      </div>
-      <div className="flex flex-col sm:flex-row h-full">
-        <div className="w-full sm:w-1/2 p-6 sm:p-8">
-          <div className="rounded-lg py-8 h-full">
-            <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
-            <p>Have a question or want to get involved? Contact us today!</p>
-          </div>
-        </div>
-
-        <div className="w-full sm:w-1/2 p-4 sm:p-8 flex flex-col justify-center items-center">
-          <div className="text-lg text-center mb-4 flex items-center gap-2">
-            <RiPhoneLine className="text-1xl mb-2" />
-            <p className="mb-2">+1 123 456 7890</p>
-          </div>
-          <div className="text-lg text-center mb-4 flex items-center gap-2">
-            <RiMailLine className="text-1xl mb-2" />
-            <p className="mb-2">contact@example.com</p>
-          </div>
-          <div className="text-lg text-center mb-4 flex items-center gap-2">
-            <RiMapPinLine className="text-1xl mb-2" />
-            <p className="mb-2">123 Main Street, City, Country</p>
-          </div>
-        </div>
-      </div>
-
-      <footer className="mt-10 bg-gray-200 flex flex-col md:flex-row items-center md:justify-between">
-        <div className="p-6 sm:p-8 hidden sm:block">
-          <img src="/nexus3.png" alt="logo" className="h-16" />
-        </div>
-
-        <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-center">
-          <p className="text-center sm:text-left">Made by Sam</p>
-          <FaReact className="text-xl ml-2" />
-        </div>
-
-        <div className="p-6 sm:p-8 flex flex-row items-center justify-center">
-          <Link to="/" className="hover:text-gray-400 font-bold px-4">
-            Home
-          </Link>
-          <Link
-            to="dashboard?tab=alerts"
-            className="hover:text-gray-400 font-bold px-4"
-          >
-            Alerts
-          </Link>
-          <Link
-            to="dashboard?tab=shelters"
-            className="hover:text-gray-400 font-bold px-4"
-          >
-            Shelters
-          </Link>
-        </div>
-      </footer>
     </div>
   );
 };

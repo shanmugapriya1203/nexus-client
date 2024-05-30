@@ -9,14 +9,6 @@ import { FaReact } from "react-icons/fa";
 const About = () => {
   return (
     <div className="mx-2">
-      <div className="relative h-72 sm:h-96 xl:h-auto overflow-hidden">
-        <img
-          src="/banner.png"
-          alt="banner"
-          className="object-contain w-full h-full"
-        />
-      </div>
-
       {/* first section */}
       <div className="flex flex-col sm:flex-row md:mt-10 h-full">
         <div className="w-full sm:w-1/2 p-6 sm:p-8">
