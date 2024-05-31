@@ -7,13 +7,13 @@ import { BASE_URL } from "../api/apiservice";
 import { FaPhone, FaFire } from "react-icons/fa";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import debounce from "lodash.debounce";
 
 const Home = () => {
   const [shelters, setShelters] = useState([]);
   const [hospitals, setHospitals] = useState([]);
   const [searchLocation, setSearchLocation] = useState("");
   const [searchType, setSearchType] = useState("shelter");
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
 
   const emergencyContacts = useMemo(
     () => [
@@ -132,16 +132,19 @@ const Home = () => {
     searchType,
   ]);
 
-  const debounceSearch = useCallback(debounce(handleSearch, 500), [
-    handleSearch,
-  ]);
-
   useEffect(() => {
-    debounceSearch();
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+    const timeout = setTimeout(() => {
+      handleSearch();
+    }, 500);
+    setDebounceTimeout(timeout);
+
     return () => {
-      debounceSearch.cancel();
+      clearTimeout(timeout);
     };
-  }, [searchLocation, searchType, debounceSearch]);
+  }, [searchLocation, searchType, handleSearch]);
 
   const responsive = useMemo(
     () => ({
