@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Sidebar, SidebarItem } from "flowbite-react";
 import {
   HiArrowSmRight,
@@ -10,8 +10,9 @@ import {
   HiGift,
   HiX,
   HiMenu,
+  HiChevronDown,
+  HiChevronUp,
 } from "react-icons/hi";
-import { FaHandHoldingHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { signoutSuccess } from "../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,14 +21,17 @@ import { BASE_URL } from "../api/apiservice";
 const DashSidebar = () => {
   const [activeTab, setActiveTab] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isVolunteerDropdownOpen, setIsVolunteerDropdownOpen] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {}, []);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleVolunteerDropdown = () => {
+    setIsVolunteerDropdownOpen(!isVolunteerDropdownOpen);
   };
 
   return (
@@ -48,72 +52,90 @@ const DashSidebar = () => {
             <HiX size={24} />
           </button>
         </div>
-        <Sidebar.Items>
-          <Sidebar.ItemGroup className="flex flex-col ">
-            <div className="flex items-center justify-between">
-              <Link to="/profile" className="flex-grow" onClick={toggleSidebar}>
-                <Sidebar.Item
-                  active={activeTab === "profile"}
-                  icon={HiUser}
-                  as="div"
+        <div className="overflow-y-auto max-h-[calc(100vh-4rem)]">
+          <Sidebar.Items>
+            <Sidebar.ItemGroup className="flex flex-col ">
+              <div className="flex items-center justify-between">
+                <Link
+                  to="/profile"
+                  className="flex-grow"
+                  onClick={toggleSidebar}
                 >
-                  Profile
+                  <Sidebar.Item
+                    active={activeTab === "profile"}
+                    icon={HiUser}
+                    as="div"
+                  >
+                    Profile
+                  </Sidebar.Item>
+                </Link>
+              </div>
+              <Link to="/alerts" onClick={toggleSidebar}>
+                <Sidebar.Item icon={HiDocumentText}>Alerts</Sidebar.Item>
+              </Link>
+              <Link to="/shelters" onClick={toggleSidebar}>
+                <Sidebar.Item
+                  active={activeTab === "shelters"}
+                  icon={HiOutlineAnnotation}
+                >
+                  Shelters
                 </Sidebar.Item>
               </Link>
-            </div>
-            <Link to="/alerts" onClick={toggleSidebar}>
-              <Sidebar.Item icon={HiDocumentText}>Alerts</Sidebar.Item>
-            </Link>
-            <Link to="/shelters" onClick={toggleSidebar}>
-              <Sidebar.Item
-                active={activeTab === "shelters"}
-                icon={HiOutlineAnnotation}
-              >
-                Shelters
-              </Sidebar.Item>
-            </Link>
-
-            <Link to="/plans" onClick={toggleSidebar}>
-              <Sidebar.Item icon={HiArrowSmRight}>Plans</Sidebar.Item>
-            </Link>
-
-            <Link to="/emergencies" onClick={toggleSidebar}>
-              <Sidebar.Item icon={HiOutlineAnnotation}>
-                Emergencies
-              </Sidebar.Item>
-            </Link>
-            <Link to="/community" onClick={toggleSidebar}>
-              <Sidebar.Item icon={HiOutlineAnnotation}>Community</Sidebar.Item>
-            </Link>
-            <Sidebar.ItemGroup title="Donate" className="flex flex-col gap-1">
-              <Link to="/donatemoney" onClick={toggleSidebar}>
-                <Sidebar.Item icon={HiCash}>Donate Money</Sidebar.Item>
+              <Link to="/plans" onClick={toggleSidebar}>
+                <Sidebar.Item icon={HiArrowSmRight}>Plans</Sidebar.Item>
               </Link>
-              <Link to="/donatesupplies" onClick={toggleSidebar}>
-                <Sidebar.Item icon={HiGift}>Donate Supplies</Sidebar.Item>
+              <Link to="/emergencies" onClick={toggleSidebar}>
+                <Sidebar.Item icon={HiOutlineAnnotation}>
+                  Emergencies
+                </Sidebar.Item>
+              </Link>
+              <Link to="/community" onClick={toggleSidebar}>
+                <Sidebar.Item icon={HiOutlineAnnotation}>
+                  Community
+                </Sidebar.Item>
               </Link>
               {currentUser.user.role === "volunteer" && (
-                <Link to="/tasks" onClick={toggleSidebar}>
-                  <Sidebar.Item icon={HiHeart}>Volunteer</Sidebar.Item>
-                </Link>
+                <Sidebar.ItemGroup className="flex flex-col gap-1">
+                  <div
+                    className="flex items-center cursor-pointer"
+                    onClick={toggleVolunteerDropdown}
+                  >
+                    <Sidebar.Item icon={HiHeart}>Volunteer</Sidebar.Item>
+                    {isVolunteerDropdownOpen ? (
+                      <HiChevronUp className="ml-auto" />
+                    ) : (
+                      <HiChevronDown className="ml-auto" />
+                    )}
+                  </div>
+                  {isVolunteerDropdownOpen && (
+                    <div className="flex flex-col gap-1 ml-6">
+                      <Link to="/volunteers" onClick={toggleSidebar}>
+                        <Sidebar.Item> Volunteers</Sidebar.Item>
+                      </Link>
+                      <Link to="/allresponders" onClick={toggleSidebar}>
+                        <Sidebar.Item>Responders</Sidebar.Item>
+                      </Link>
+                      <Link to="/tasks" onClick={toggleSidebar}>
+                        <Sidebar.Item>Tasks</Sidebar.Item>
+                      </Link>
+                      <Link to="/create-responder" onClick={toggleSidebar}>
+                        <Sidebar.Item>Create Responder</Sidebar.Item>
+                      </Link>
+                    </div>
+                  )}
+                </Sidebar.ItemGroup>
               )}
-              {currentUser.user.role === "emergencyresponder" && (
-                <Link to="/incidents" onClick={toggleSidebar}>
-                  <Sidebar.Item icon={HiOutlineAnnotation}>
-                    Emergencies
-                  </Sidebar.Item>
+              <Sidebar.ItemGroup title="Donate" className="flex flex-col gap-1">
+                <Link to="/donatemoney" onClick={toggleSidebar}>
+                  <Sidebar.Item icon={HiCash}>Donate Money</Sidebar.Item>
                 </Link>
-              )}
-              {currentUser.user.role === "user" && (
-                <Link to="/contribute" onClick={toggleSidebar}>
-                  <Sidebar.Item icon={FaHandHoldingHeart}>
-                    Contribute
-                  </Sidebar.Item>
+                <Link to="/donatesupplies" onClick={toggleSidebar}>
+                  <Sidebar.Item icon={HiGift}>Donate Supplies</Sidebar.Item>
                 </Link>
-              )}
+              </Sidebar.ItemGroup>
             </Sidebar.ItemGroup>
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
+          </Sidebar.Items>
+        </div>
       </Sidebar>
       {isSidebarOpen && (
         <div
