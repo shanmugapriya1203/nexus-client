@@ -39,9 +39,7 @@ const GetPlan = lazy(() => import("./pages/GetPlan"));
 const CreatePlan = lazy(() => import("./pages/CreatePlan"));
 const UpdatePlan = lazy(() => import("./pages/UpdatePlan"));
 const EmergencyPage = lazy(() => import("./pages/EmergencyPage"));
-const AllocateResponder = lazy(() =>
-  import("./components/Emergency/AllocateResponder")
-);
+
 const AlertPage = lazy(() => import("./pages/AlertPage"));
 const CommunityPage = lazy(() => import("./pages/CommunityPage"));
 const DonateMoney = lazy(() => import("./pages/DonateMoney"));
