@@ -13,6 +13,8 @@ import { lazy, Suspense } from "react";
 import Spinner from "./components/Spinner";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import EmergencyAlert from "./components/EmergencyAlert";
+import ForgotPassword from "./pages/ForgotPassword";
 const HomeShelter = lazy(() => import("./pages/HomeShelter"));
 const HomeHospital = lazy(() => import("./pages/HomeHospital"));
 const SignUp = lazy(() => import("./pages/SignUp"));
@@ -59,12 +61,14 @@ function App() {
       <Router>
         <Header />
         <ToastContainer />
+        <EmergencyAlert />
         <Suspense fallback={<Spinner />}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
             <Route path="/shelter/:shelterId" element={<HomeShelter />} />
             <Route path="/hospital/:hospitalId" element={<HomeHospital />} />
             {currentUser ? (
@@ -95,6 +99,7 @@ function App() {
                 <Route path="/alerts" element={<AlertPage />} />
                 <Route path="/community" element={<CommunityPage />} />
                 <Route path="/donatemoney" element={<DonateMoney />} />
+
                 <Route path="/donatesupplies" element={<DonateSupplies />} />
                 <Route path="/contribute" element={<Contribute />} />
               </Route>

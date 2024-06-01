@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import DashSidebar from "../components/DashSidebar";
 import { Button, TextInput } from "flowbite-react";
-import { HiOutlinePlus } from "react-icons/hi";
+import { HiOutlinePlus, HiOutlineSearch } from "react-icons/hi";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../api/apiservice";
 import EmergencyList from "./EmergencyList";
-import EmergencyModal from "./../components/Emergency/EmergencyModal";
-import DeleteModal from "./../components/Emergency/DeleteModal";
-import { HiOutlineSearch } from "react-icons/hi";
+import EmergencyModal from "../components/Emergency/EmergencyModal";
+import DeleteModal from "../components/Emergency/DeleteModal";
+
 const EmergencyPage = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [incidents, setIncidents] = useState([]);
@@ -105,20 +104,31 @@ const EmergencyPage = () => {
     setShowModal(true);
   };
 
-  const handleChange = (e) => {
+  const handleSearchChange = (e) => {
     setSearchLocation(e.target.value);
+  };
+
+  const handleIncidentChange = (e) => {
+    const { name, value } = e.target;
+    setNewIncident((prevIncident) => ({
+      ...prevIncident,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/incident/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(newIncident),
-      });
+      const response = await fetch(
+        `${BASE_URL}/api/incident/${currentUser.user._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(newIncident),
+        }
+      );
 
       if (response.ok) {
         toast.success("Incident created successfully");
@@ -210,7 +220,7 @@ const EmergencyPage = () => {
             sizing="sm"
             placeholder="Search by location"
             value={searchLocation}
-            onChange={handleChange}
+            onChange={handleSearchChange}
           />
           <HiOutlineSearch
             className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
@@ -247,7 +257,7 @@ const EmergencyPage = () => {
         modalType={modalType}
         selectedIncident={selectedIncident}
         newIncident={newIncident}
-        handleChange={handleChange}
+        handleChange={handleIncidentChange}
         handleSubmit={handleSubmit}
         handleUpdate={handleUpdate}
         currentUser={currentUser}

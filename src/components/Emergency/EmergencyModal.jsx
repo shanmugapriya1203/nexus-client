@@ -60,14 +60,14 @@ const EmergencyModal = ({
             </div>
           </ModalBody>
           <ModalFooter>
-            {currentUser.user.role === "admin" ||
-              (currentUser.user.role === "volunteer" && (
-                <Link to={`/allocate/${selectedIncident._id}`}>
-                  <Button className="w-auto mx-auto" link>
-                    Allocate
-                  </Button>
-                </Link>
-              ))}
+            {(currentUser.user.role === "admin" ||
+              currentUser.user.role === "volunteer") && (
+              <Link to={`/allocate/${selectedIncident._id}`}>
+                <Button className="w-auto mx-auto" link>
+                  Allocate
+                </Button>
+              </Link>
+            )}
           </ModalFooter>
         </>
       )}
