@@ -4,10 +4,57 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Nexus is your go-to platform for XYZ. Explore our features and benefits."
+    />
+    <meta name="keywords" content="Nexus, platform, XYZ, features, benefits" />
+    <meta name="author" content="Your Name" />
     <title>Nexus</title>
+
+    <meta property="og:title" content="Nexus - Discover XYZ Platform" />
+    <meta
+      property="og:description"
+      content="Nexus is your go-to platform for XYZ. Explore our features and benefits."
+    />
+    <meta property="og:image" content="/path/to/your/image.jpg" />
+    <meta property="og:url" content="https://www.yourwebsite.com" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nexus - Discover XYZ Platform" />
+    <meta
+      name="twitter:description"
+      content="Nexus is your go-to platform for XYZ. Explore our features and benefits."
+    />
+    <meta name="twitter:image" content="/path/to/your/image.jpg" />
+    <meta name="twitter:site" content="@yourtwitterhandle" />
+    <meta itemprop="name" content="Nexus - Discover XYZ Platform" />
+    <meta
+      itemprop="description"
+      content="Nexus is your go-to platform for XYZ. Explore our features and benefits."
+    />
+    <meta itemprop="image" content="/path/to/your/image.jpg" />
+    <link rel="canonical" href="https://www.yourwebsite.com" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="root"></div>
+    <main id="root"></main>
+
     <script type="module" src="/src/main.jsx"></script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Nexus",
+        "url": "https://www.yourwebsite.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.yourwebsite.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
   </body>
 </html>
