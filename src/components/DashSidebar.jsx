@@ -115,9 +115,9 @@ const DashSidebar = () => {
                       <Link to="/allresponders" onClick={toggleSidebar}>
                         <Sidebar.Item>Responders</Sidebar.Item>
                       </Link>
-                      <Link to="/tasks" onClick={toggleSidebar}>
+                      {/* <Link to="/tasks" onClick={toggleSidebar}>
                         <Sidebar.Item>Tasks</Sidebar.Item>
-                      </Link>
+                      </Link> */}
                       <Link to="/create-responder" onClick={toggleSidebar}>
                         <Sidebar.Item>Create Responder</Sidebar.Item>
                       </Link>

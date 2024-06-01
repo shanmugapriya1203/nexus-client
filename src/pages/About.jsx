@@ -256,24 +256,6 @@ const About = () => {
           <p className="text-center sm:text-left">Made by Sam</p>
           <FaReact className="text-xl ml-2" />
         </div>
-
-        <div className="p-6 sm:p-8 flex flex-row items-center justify-center">
-          <Link to="/" className="hover:text-gray-400 font-bold px-4">
-            Home
-          </Link>
-          <Link
-            to="dashboard?tab=alerts"
-            className="hover:text-gray-400 font-bold px-4"
-          >
-            Alerts
-          </Link>
-          <Link
-            to="dashboard?tab=shelters"
-            className="hover:text-gray-400 font-bold px-4"
-          >
-            Shelters
-          </Link>
-        </div>
       </footer>
     </div>
   );

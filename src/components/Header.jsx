@@ -83,11 +83,6 @@ const Header = () => {
               alt="Avatar"
               className="w-8 h-8 rounded-full mt-1"
             />
-            {(isVolunteerWithAssignedTasks ||
-              isEmergencyResponderWithAssignedIncidents) &&
-              !isNewTaskClicked && (
-                <span className="absolute top-0 right-0 h-3 w-3 bg-red-500 rounded-full"></span>
-              )}
           </button>
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
@@ -104,31 +99,6 @@ const Header = () => {
               >
                 Sign Out
               </span>
-              {(isVolunteerWithAssignedTasks ||
-                isEmergencyResponderWithAssignedIncidents) && (
-                <Link
-                  to={
-                    currentUser.user.role === "volunteer"
-                      ? "/tasks"
-                      : "/incidents"
-                  }
-                  onClick={handleNewTaskClick}
-                  className="block px-4 py-2 text-red-500 hover:bg-gray-200"
-                >
-                  {currentUser.user.role === "volunteer"
-                    ? currentUser.user.assignedTasks.length
-                    : currentUser.user.assignedIncidents.length}{" "}
-                  New{" "}
-                  {currentUser.user.role === "volunteer" ? "Task" : "Incident"}
-                  {currentUser.user.role === "volunteer"
-                    ? currentUser.user.assignedTasks.length > 1
-                      ? "s"
-                      : ""
-                    : currentUser.user.assignedIncidents.length > 1
-                    ? "s"
-                    : ""}
-                </Link>
-              )}
             </div>
           )}
         </div>
