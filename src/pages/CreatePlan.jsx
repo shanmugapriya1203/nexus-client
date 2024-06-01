@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { BASE_URL } from "../api/apiservice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+
 const CreatePlan = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const CreatePlan = () => {
       [name]: value,
     }));
   };
+
   const handleFamilyMemberChange = (index, name, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -162,7 +164,10 @@ const CreatePlan = () => {
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Family Members</h2>
           {formData.familyMembers.map((member, index) => (
-            <div key={index} className="grid grid-cols-3 gap-4">
+            <div
+              key={index}
+              className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4"
+            >
               <div>
                 <Label htmlFor={`name${index}`}>Name</Label>
                 <TextInput
@@ -210,9 +215,9 @@ const CreatePlan = () => {
         {/* Emergency Contacts */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Emergency Contacts</h2>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {formData.emergencyContacts.map((contact, index) => (
-              <div key={index}>
+              <div key={index} className="mb-4">
                 <Label htmlFor={`emergencyContactName${index}`}>
                   Emergency Contact Name
                 </Label>
@@ -273,7 +278,7 @@ const CreatePlan = () => {
         {/* Evacuation Plan */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Evacuation Plan</h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <div>
               <Label htmlFor="evacuationType">Evacuation Type</Label>
               <TextInput
@@ -306,7 +311,7 @@ const CreatePlan = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="meetingPoint1">Meeting Point 1</Label>
               <TextInput
@@ -333,7 +338,7 @@ const CreatePlan = () => {
         {/* Medical Information */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Medical Information</h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <div>
               <Label htmlFor="medicalType">Medical Type</Label>
               <TextInput
@@ -382,10 +387,11 @@ const CreatePlan = () => {
             </div>
           </div>
         </div>
+
         {/* Notes */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Notes</h2>
-          <div className="col-span-2">
+          <div>
             <Label htmlFor="notes">Notes</Label>
             <TextInput
               type="text"
@@ -397,7 +403,7 @@ const CreatePlan = () => {
           </div>
         </div>
 
-        <Button type="submit" color="primary">
+        <Button type="submit" color="success">
           Submit
         </Button>
       </form>
