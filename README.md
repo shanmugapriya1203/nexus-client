@@ -3,9 +3,6 @@
 
 Nexus is a robust disaster management platform engineered with the MERN stack. Its mission is to empower communities to proactively prepare for, swiftly respond to, and effectively recover from disasters. The frontend is built with React.js to deliver a seamless user experience.
 
-
-
-
 ## Features
 
 - Real-time Alert System: Provides timely alerts and updates about disasters.
@@ -20,6 +17,39 @@ Nexus is a robust disaster management platform engineered with the MERN stack. I
 ## Tech Stack
 
 **Client:** React, Redux, TailwindCSS,FlowBite React,
+**Server:** NodeJS, MongoDB, ExpressJS,WebSocket,Stripe,
+
+## Installation
+
+1. Clone the repository: `git clone <https://github.com/shanmugapriya1203/nexus-client.git>`
+2. Navigate to the project directory: `cd <master>`
+3. Install dependencies: `npm install` or `yarn install`
+
+## Usage
+
+Explain how to use your project here. Provide examples if possible.
+
+## Contributing
+
+If you'd like to contribute, please follow these guidelines:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature`)
+3. Make your changes.
+4. Commit your changes (`git commit -am 'Add new feature'`)
+5. Push to the branch (`git push origin feature`)
+6. Create a pull request.
+
+## License
+
+This project is licensed under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Contact
+
+- Author Name: [Sam]
+- GitHub: [Your GitHub Profile](https://github.com/shanmugapriya1203)
+- Email: [priyamuthukumar1203@gmail.com]
+
 ## Home Page
 ![Home Page](https://github.com/shanmugapriya1203/nexus-client/assets/110707278/1158ac27-4fd5-46c7-a584-1c65ba5e8818)
  ## Shelter Page
