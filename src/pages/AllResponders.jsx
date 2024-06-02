@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { Modal, Button, TextInput } from "flowbite-react";
+
 import { BASE_URL } from "../api/apiservice";
 import {
   FaPhone,
@@ -9,13 +11,20 @@ import {
   FaBriefcase,
   FaUser,
   FaWhatsapp,
+  FaEdit,
+  FaTrash,
 } from "react-icons/fa";
 
 const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const ResponderCard = ({ responder, incidentLocation }) => {
+const ResponderCard = ({
+  responder,
+  incidentLocation,
+  onDeleteClick,
+  onEditClick,
+}) => {
   const locationText =
     responder.location === incidentLocation ? (
       <span className="text-red-500">Same Location</span>
@@ -34,8 +43,10 @@ const ResponderCard = ({ responder, incidentLocation }) => {
     window.open(whatsappLink);
   };
 
+  const currentUser = useSelector((state) => state.user.currentUser);
+
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-white rounded-xl overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
+    <div className="relative bg-gradient-to-r from-blue-50 to-white rounded-xl overflow-hidden shadow-lg transform transition duration-500 hover:scale-105 hover:shadow-2xl">
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">
           {responder.name}
@@ -75,6 +86,20 @@ const ResponderCard = ({ responder, incidentLocation }) => {
             <span>Send WhatsApp Message</span>
           </div>
         )}
+        <div className="absolute top-2 right-2 flex space-x-2">
+          {currentUser && currentUser.user._id === responder.createdBy._id && (
+            <>
+              <FaEdit
+                className="text-gray-500 cursor-pointer"
+                onClick={() => onEditClick(responder)}
+              />
+              <FaTrash
+                className="text-red-500 cursor-pointer"
+                onClick={() => onDeleteClick(responder._id)}
+              />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -82,9 +107,36 @@ const ResponderCard = ({ responder, incidentLocation }) => {
 
 const AllResponders = () => {
   const [responders, setResponders] = useState([]);
-  const { incidentId } = useParams();
   const [incidentLocation, setIncidentLocation] = useState("");
-  const location = useLocation();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [deleteResponderId, setDeleteResponderId] = useState(null);
+  const [editResponder, setEditResponder] = useState(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    mobileNumber: "",
+    location: "",
+    profession: "",
+  });
+  const { incidentId } = useParams();
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  const fetchResponders = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/responder/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch responders");
+      }
+      const data = await response.json();
+      setResponders(data);
+    } catch (error) {
+      toast.error("Error fetching responders");
+    }
+  };
 
   useEffect(() => {
     const fetchIncident = async () => {
@@ -108,25 +160,77 @@ const AllResponders = () => {
   }, [incidentId]);
 
   useEffect(() => {
-    const fetchResponders = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/api/responder/`, {
+    fetchResponders();
+  }, []);
+
+  const handleDeleteClick = (id) => {
+    setDeleteResponderId(id);
+    setShowDeleteModal(true);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteResponderId) return;
+
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/responder/${deleteResponderId}`,
+        {
+          method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch responders");
         }
-        const data = await response.json();
-        setResponders(data);
-      } catch (error) {
-        toast.error("Error fetching responders");
+      );
+      if (!response.ok) {
+        throw new Error("Failed to delete responder");
       }
-    };
+      setShowDeleteModal(false);
+      fetchResponders();
+      toast.success("Responder deleted successfully");
+    } catch (error) {
+      toast.error("Error deleting responder");
+    }
+  };
 
-    fetchResponders();
-  }, []);
+  const handleEditClick = (responder) => {
+    setEditResponder(responder);
+    setEditForm({
+      name: responder.name,
+      mobileNumber: responder.mobileNumber,
+      location: responder.location,
+      profession: responder.profession,
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditSave = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/responder/${editResponder._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(editForm),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update responder");
+      }
+      setShowEditModal(false);
+      fetchResponders();
+      toast.success("Responder updated successfully");
+    } catch (error) {
+      toast.error("Error updating responder");
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -139,9 +243,92 @@ const AllResponders = () => {
             key={responder._id}
             responder={responder}
             incidentLocation={incidentLocation}
+            onDeleteClick={handleDeleteClick}
+            onEditClick={handleEditClick}
           />
         ))}
       </div>
+
+      <Modal show={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        <Modal.Header>Confirm Delete</Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to delete this responder?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color="gray" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button color="red" onClick={handleDelete}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {editResponder && (
+        <Modal show={showEditModal} onClose={() => setShowEditModal(false)}>
+          <Modal.Header>Edit Responder</Modal.Header>
+          <Modal.Body>
+            <form>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Name
+                </label>
+                <TextInput
+                  name="name"
+                  type="text"
+                  value={editForm.name}
+                  onChange={handleEditChange}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Mobile Number
+                </label>
+                <TextInput
+                  name="mobileNumber"
+                  type="text"
+                  value={editForm.mobileNumber}
+                  onChange={handleEditChange}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Location
+                </label>
+                <TextInput
+                  name="location"
+                  type="text"
+                  value={editForm.location}
+                  onChange={handleEditChange}
+                  className="w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Profession
+                </label>
+                <TextInput
+                  name="profession"
+                  type="text"
+                  value={editForm.profession}
+                  onChange={handleEditChange}
+                  className="w-full"
+                />
+              </div>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="gray" onClick={() => setShowEditModal(false)}>
+              Cancel
+            </Button>
+            <Button color="blue" onClick={handleEditSave}>
+              Save
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };

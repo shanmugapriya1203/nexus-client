@@ -130,7 +130,7 @@ const Login = () => {
           </form>
           <div className="text-center mt-4">
             <Link
-              to="/forgot-password"
+              to="/forgotpassword"
               className="text-blue-500 hover:underline"
             >
               Forgot Password?

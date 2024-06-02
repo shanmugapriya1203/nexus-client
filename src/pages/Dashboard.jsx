@@ -29,16 +29,12 @@ const Dashboard = () => {
       <div className="mx-auto">
         {tab === "plans" && <GetPlan />}
 
-        {currentUser.user.role === "admin" && (!tab || tab === "/") && (
-          <AdminDashboard />
-        )}
+        {currentUser.user.role === "admin" ||
+          (currentUser.user.role === "lead" && (!tab || tab === "/") && (
+            <AdminDashboard />
+          ))}
         {currentUser.user.role === "volunteer" && (!tab || tab === "/") && (
           <VolunteerDashBoard />
-        )}
-        {currentUser.user.role === "emergencyresponder" &&
-          (!tab || tab === "/") && <EmergencyResponderDashboard />}
-        {currentUser.user.role === "user" && (!tab || tab === "/") && (
-          <UserDashboard />
         )}
       </div>
     </div>

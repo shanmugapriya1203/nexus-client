@@ -14,6 +14,7 @@ import { BASE_URL } from "../api/apiservice";
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state) => state.user);
   const isAdmin = currentUser && currentUser.user.role === "admin";
+  const isLead = currentUser && currentUser.user.role === "lead";
   const totalVolunteers = 100;
   const totalShelters = 20;
   const totalEmergencyResponders = 50;
@@ -81,7 +82,7 @@ const AdminDashboard = () => {
       try {
         const response = await fetch(`${BASE_URL}/api/incident/`);
         const data = await response.json();
-        setRecentActivities(data.slice(0, 3));
+        setRecentActivities(data);
       } catch (error) {
         console.error("Error fetching emergencies:", error);
       }
@@ -134,7 +135,7 @@ const AdminDashboard = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
-      {isAdmin && (
+      {(isAdmin || isLead) && (
         <div>
           <div className="flex items-center mb-6">
             <FaUserCircle className="text-4xl mr-2 text-blue-500" />
@@ -143,15 +144,30 @@ const AdminDashboard = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <h3 className="text-lg font-semibold mb-2">Manage Shelters</h3>
-              <Link
-                to="/add-shelter"
-                className="text-blue-500 hover:text-blue-700"
-              >
-                Create New Shelter
-              </Link>
-            </div>
+            {isAdmin && (
+              <div className="bg-white rounded-lg shadow-md p-4">
+                <h3 className="text-lg font-semibold mb-2">Manage Shelters</h3>
+                <Link
+                  to="/add-shelter"
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  Create New Shelter
+                </Link>
+              </div>
+            )}
+            {isLead && (
+              <div className="bg-white rounded-lg shadow-md p-4">
+                <h3 className="text-lg font-semibold mb-2">
+                  Manage Responders
+                </h3>
+                <Link
+                  to="/allresponders"
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  View All Responders
+                </Link>
+              </div>
+            )}
             <div className="bg-white rounded-lg shadow-md p-4">
               <h3 className="text-lg font-semibold mb-2">Manage Tasks</h3>
               <Link
@@ -164,7 +180,7 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-lg shadow-md p-4">
               <h3 className="text-lg font-semibold mb-2">Manage Volunteers</h3>
               <Link
-                to="/admin/volunteers"
+                to="/volunteers"
                 className="text-blue-500 hover:text-blue-700"
               >
                 View All Volunteers
@@ -227,7 +243,7 @@ const AdminDashboard = () => {
                   {emergencyAlerts.map((alert) => (
                     <li key={alert._id} className="mb-1 flex items-center">
                       <FiAlertCircle className="inline mr-2" />
-                      {alert.message} {/* Ensure alert.message is a string */}
+                      {alert.message}
                     </li>
                   ))}
                 </ul>

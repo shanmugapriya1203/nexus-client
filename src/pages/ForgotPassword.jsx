@@ -1,20 +1,18 @@
 import React, { useState } from "react";
-import { TextInput, Label, Button } from "flowbite-react";
-import { BASE_URL } from "../api/apiservice";
 import { toast } from "react-toastify";
+import { Button, TextInput, Label, Spinner } from "flowbite-react";
+import { BASE_URL } from "../api/apiservice";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-
-  const handleInputChange = (event) => {
-    setEmail(event.target.value);
-  };
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/user/forgot-password`, {
+      const response = await fetch(`${BASE_URL}/api/user/forgotPassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,44 +20,50 @@ const ForgotPassword = () => {
         body: JSON.stringify({ email }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
+        const data = await response.json();
         toast.success(data.message);
       } else {
-        toast.error(data.message);
+        const errorData = await response.json();
+        toast.error(errorData.message || "Something went wrong");
       }
     } catch (error) {
-      console.error("An error occurred while submitting the form:", error);
-      toast.error("An error occurred while submitting the form");
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-      <h2 className="text-3xl font-extrabold text-gray-900 text-center py-4">
-        Forgot Password
-      </h2>
-      <form className="px-8 py-6" onSubmit={handleSubmit}>
-        <div className="space-y-4">
-          <div className="mb-4">
-            <Label htmlFor="email">Email</Label>
-            <TextInput
-              id="email"
-              name="email"
-              type="email"
-              required
-              placeholder="Email"
-              value={email}
-              onChange={handleInputChange}
-            />
-          </div>
+    <div className="flex justify-center items-center h-screen">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md p-4 bg-white rounded shadow-md"
+      >
+        <h1 className="text-2xl mb-4 text-center">Forgot Password</h1>
+        <div className="mb-4">
+          <Label htmlFor="email" className="block text-sm font-bold mb-2">
+            Email
+          </Label>
+          <TextInput
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full"
+          />
         </div>
-        <div className="text-right mt-6">
-          <Button type="submit" color="success" className="text-white">
-            Submit
-          </Button>
-        </div>
+        <Button type="submit" className="w-full" disabled={loading}>
+          {loading ? (
+            <>
+              <Spinner size="sm" className="mr-2" />
+              Sending...
+            </>
+          ) : (
+            "Send Reset Link"
+          )}
+        </Button>
       </form>
     </div>
   );

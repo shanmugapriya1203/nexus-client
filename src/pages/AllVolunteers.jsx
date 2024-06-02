@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../api/apiservice";
 import { Modal, Button, Pagination } from "flowbite-react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   FaArrowLeft,
@@ -15,7 +16,9 @@ const AllVolunteers = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [volunteersPerPage] = useState(6);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
+  const isLead = currentUser && currentUser.user.role === "lead";
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
@@ -99,16 +102,23 @@ const AllVolunteers = () => {
                   {volunteer.availabilityDropdown}
                 </span>
               </div>
-              {/* <div className="text-md text-gray-600 mb-3 flex items-center">
-                <strong>Assigned Tasks:</strong> {volunteer.assignedTasks.length > 0 &&
-                volunteer.assignedTasks[0].status !== "completed" ? (
-                  <Button color="success" size="xs">Assigned</Button>
-                ) : (
-                  <Link to={`/admin/assign-task/${volunteer._id}`}>
-                    <Button color="dark" size="xs">Assign</Button>
-                  </Link>
-                )}
-              </div> */}
+              {isLead && (
+                <div className="text-md text-gray-600 mb-3 flex items-center">
+                  <strong>Assigned Tasks:</strong>{" "}
+                  {volunteer.assignedTasks.length > 0 &&
+                  volunteer.assignedTasks[0].status !== "completed" ? (
+                    <Button color="success" size="xs">
+                      Assigned
+                    </Button>
+                  ) : (
+                    <Link to={`/admin/assign-task/${volunteer._id}`}>
+                      <Button color="dark" size="xs" className="m-2">
+                        Assign
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ))}

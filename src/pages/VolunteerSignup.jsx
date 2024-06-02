@@ -1,12 +1,10 @@
-// VolunteerSignUp.js
-import React from 'react';
-import { TextInput, Label, Button, Select } from 'flowbite-react';
+import React from "react";
+import { TextInput, Label, Button, Select } from "flowbite-react";
 
-const VolunteerSignUp = ({ formData, onBack, onChange,onSubmit }) => {
+const VolunteerSignUp = ({ formData, onBack, onChange, onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
-    onSubmit()
-    
+    onSubmit();
   };
 
   return (
@@ -39,14 +37,26 @@ const VolunteerSignUp = ({ formData, onBack, onChange,onSubmit }) => {
               />
             </div>
             <div>
-              <Label htmlFor="age">Age</Label>
+              <Label htmlFor="area">Area</Label>
               <TextInput
-                id="age"
-                name="age"
-                type="number"
+                id="area"
+                name="area"
+                type="text"
                 required
-                placeholder="Age"
-                value={formData.age}
+                placeholder="Area"
+                value={formData.area}
+                onChange={onChange}
+              />
+            </div>
+            <div>
+              <Label htmlFor="profession">Profession</Label>
+              <TextInput
+                id="profession"
+                name="profession"
+                type="text"
+                required
+                placeholder="Profession"
+                value={formData.profession}
                 onChange={onChange}
               />
             </div>
@@ -62,24 +72,9 @@ const VolunteerSignUp = ({ formData, onBack, onChange,onSubmit }) => {
                 onChange={onChange}
               />
             </div>
+
             <div>
-              <Label htmlFor="skills">Skills</Label>
-              <Select
-                id="skills"
-                name="skills"
-                className="input-field"
-                value={formData.skills}
-                onChange={onChange}
-              >
-                <option value="">Select Skill</option>
-                <option value="communication">Communication</option>
-                <option value="teamwork">Teamwork</option>
-                <option value="leadership">Leadership</option>
-                <option value="organization">Organization</option>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="availabilityDropdown">Availability Dropdown</Label>
+              <Label htmlFor="availabilityDropdown">Availability</Label>
               <Select
                 id="availabilityDropdown"
                 name="availabilityDropdown"
@@ -94,7 +89,11 @@ const VolunteerSignUp = ({ formData, onBack, onChange,onSubmit }) => {
             </div>
           </div>
           <div className="flex justify-between mt-6">
-            <Button type="button" onClick={onBack} className="bg-gray-300 text-gray-800">
+            <Button
+              type="button"
+              onClick={onBack}
+              className="bg-gray-300 text-gray-800"
+            >
               Back
             </Button>
             <Button type="submit" className="bg-green-400 text-white">

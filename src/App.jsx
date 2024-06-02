@@ -51,7 +51,6 @@ const ShowEmergencies = lazy(() =>
 );
 const HeroPage = lazy(() => import("./pages/HeroPage"));
 const DashShelters = lazy(() => import("./pages/DashShelters"));
-const Contribute = lazy(() => import("./pages/ContributePage"));
 
 function App() {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -101,7 +100,6 @@ function App() {
                 <Route path="/donatemoney" element={<DonateMoney />} />
 
                 <Route path="/donatesupplies" element={<DonateSupplies />} />
-                <Route path="/contribute" element={<Contribute />} />
               </Route>
             ) : null}
           </Routes>

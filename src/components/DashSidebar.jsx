@@ -94,37 +94,34 @@ const DashSidebar = () => {
                   Community
                 </Sidebar.Item>
               </Link>
-              {currentUser.user.role === "volunteer" && (
-                <Sidebar.ItemGroup className="flex flex-col gap-1">
-                  <div
-                    className="flex items-center cursor-pointer"
-                    onClick={toggleVolunteerDropdown}
-                  >
-                    <Sidebar.Item icon={HiHeart}>Volunteer</Sidebar.Item>
-                    {isVolunteerDropdownOpen ? (
-                      <HiChevronUp className="ml-auto" />
-                    ) : (
-                      <HiChevronDown className="ml-auto" />
-                    )}
-                  </div>
-                  {isVolunteerDropdownOpen && (
-                    <div className="flex flex-col gap-1 ml-6">
-                      <Link to="/volunteers" onClick={toggleSidebar}>
-                        <Sidebar.Item> Volunteers</Sidebar.Item>
-                      </Link>
-                      <Link to="/allresponders" onClick={toggleSidebar}>
-                        <Sidebar.Item>Responders</Sidebar.Item>
-                      </Link>
-                      {/* <Link to="/tasks" onClick={toggleSidebar}>
-                        <Sidebar.Item>Tasks</Sidebar.Item>
-                      </Link> */}
-                      <Link to="/create-responder" onClick={toggleSidebar}>
-                        <Sidebar.Item>Create Responder</Sidebar.Item>
-                      </Link>
-                    </div>
+
+              <Sidebar.ItemGroup className="flex flex-col gap-1">
+                <div
+                  className="flex items-center cursor-pointer"
+                  onClick={toggleVolunteerDropdown}
+                >
+                  <Sidebar.Item icon={HiHeart}>Volunteer</Sidebar.Item>
+                  {isVolunteerDropdownOpen ? (
+                    <HiChevronUp className="ml-auto" />
+                  ) : (
+                    <HiChevronDown className="ml-auto" />
                   )}
-                </Sidebar.ItemGroup>
-              )}
+                </div>
+                {isVolunteerDropdownOpen && (
+                  <div className="flex flex-col gap-1 ml-6">
+                    <Link to="/volunteers" onClick={toggleSidebar}>
+                      <Sidebar.Item>Volunteers</Sidebar.Item>
+                    </Link>
+                    <Link to="/allresponders" onClick={toggleSidebar}>
+                      <Sidebar.Item>Responders</Sidebar.Item>
+                    </Link>
+                    <Link to="/create-responder" onClick={toggleSidebar}>
+                      <Sidebar.Item>Create Responder</Sidebar.Item>
+                    </Link>
+                  </div>
+                )}
+              </Sidebar.ItemGroup>
+
               <Sidebar.ItemGroup title="Donate" className="flex flex-col gap-1">
                 <Link to="/donatemoney" onClick={toggleSidebar}>
                   <Sidebar.Item icon={HiCash}>Donate Money</Sidebar.Item>

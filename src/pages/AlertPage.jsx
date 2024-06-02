@@ -203,26 +203,27 @@ const AlertPage = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex flex-col p-4 md:p-8 w-full md:w-3/4 mx-auto">
-      <div className="relative">
+    <div className="flex flex-col p-4 md:p-8 w-full md:w-3/4 mx-auto bg-gray-50 rounded-lg shadow-lg">
+      <div className="relative mb-6">
         {currentUser.user.role === "admin" && (
           <Button
-            className="absolute top-0 right-0 mt-2  sm:mt-4 sm:mb-5 sm:mr-4"
+            className="absolute top-0 right-0 mt-2 sm:mt-4 sm:mb-5 sm:mr-4"
             size="sm"
             onClick={handleOpenModal}
+            color="primary"
           >
             Add Alert
           </Button>
         )}
       </div>
-      <h1 className="text-2xl font-semibold mb-4">Alerts</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Alerts</h1>
       <div
-        className="chart-container mx-auto w-full sm:w-2/3 md:w-1/2 lg:w-1/3"
+        className="chart-container mx-auto w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mb-6"
         style={{ height: "300px" }}
       >
         <canvas ref={chartRef}></canvas>
       </div>
-      <div className="overflow-x-auto mt-5">
+      <div className="overflow-x-auto mb-6">
         <Table hoverable className="min-w-full shadow-md">
           <Table.Head>
             <Table.HeadCell>Type</Table.HeadCell>
@@ -246,7 +247,7 @@ const AlertPage = () => {
           </Table.Body>
         </Table>
       </div>
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center mb-6">
         <Pagination
           currentPage={currentPage}
           totalPages={Math.ceil(alerts.length / alertsPerPage)}
@@ -255,12 +256,10 @@ const AlertPage = () => {
       </div>
 
       <Modal show={isModalOpen} onClose={handleCloseModal} size="lg">
-        {" "}
         <form onSubmit={handleSubmit}>
           <Modal.Header>Add Alert</Modal.Header>
           <Modal.Body>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {" "}
               <div className="mb-2">
                 <Label htmlFor="type" value="Type" />
                 <TextInput
@@ -307,18 +306,26 @@ const AlertPage = () => {
               </div>
               <div className="mb-2">
                 <Label htmlFor="status" value="Status" />
-                <TextInput
+                <Select
                   id="status"
                   name="status"
                   value={formData.status}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="open">Open</option>
+                  <option value="closed">Closed</option>
+                </Select>
               </div>
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button type="submit">Submit</Button>
+            <Button type="submit" color="success">
+              Submit
+            </Button>
+            <Button color="gray" onClick={handleCloseModal}>
+              Cancel
+            </Button>
           </Modal.Footer>
         </form>
       </Modal>
