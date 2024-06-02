@@ -44,14 +44,10 @@ If you'd like to contribute, please follow these guidelines:
 5. Push to the branch (`git push origin feature`)
 6. Create a pull request.
 
-## License
-
-This project is licensed under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
 ## Contact
 
 - Author Name: [Sam]
-- GitHub: [Your GitHub Profile](https://github.com/shanmugapriya1203)
+- GitHub: [(https://github.com/shanmugapriya1203)]
 - Email: [priyamuthukumar1203@gmail.com]
 
 ## Home Page
