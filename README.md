@@ -3,6 +3,9 @@
 
 Nexus is a robust disaster management platform engineered with the MERN stack. Its mission is to empower communities to proactively prepare for, swiftly respond to, and effectively recover from disasters. The frontend is built with React.js to deliver a seamless user experience.
 
+
+![Logo](https://github.com/shanmugapriya1203/nexus-client/assets/110707278/db432c07-1f54-4a2a-aed1-fd06c5ca216f)
+
 ## Features
 
 - Real-time Alert System: Provides timely alerts and updates about disasters.
