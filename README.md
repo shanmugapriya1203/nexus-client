@@ -19,4 +19,5 @@ Nexus is a robust disaster management platform engineered with the MERN stack. I
 - Donation Functionality: Facilitates donations for disaster relief efforts.
 ## Tech Stack
 
-**Client:** React, Redux, TailwindCSS,FlowBite React,
+**Client:** React, Redux, TailwindCSS,FlowBite React,![Home Page](https://github.com/shanmugapriya1203/nexus-client/assets/110707278/1158ac27-4fd5-46c7-a584-1c65ba5e8818)
+
