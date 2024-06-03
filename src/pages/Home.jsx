@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { BASE_URL } from "../api/apiservice";
 import { FaPhone, FaFire, FaMedal, FaReact } from "react-icons/fa";
 import Carousel from "react-multi-carousel";
+import axios from "axios";
 import "react-multi-carousel/lib/styles.css";
 
 const Home = () => {
@@ -14,6 +15,8 @@ const Home = () => {
   const [searchLocation, setSearchLocation] = useState("");
   const [searchType, setSearchType] = useState("shelter");
   const [debounceTimeout, setDebounceTimeout] = useState(null);
+  const [weather, setWeather] = useState(null);
+  const [locationFetched, setLocationFetched] = useState(false);
 
   const emergencyContacts = useMemo(
     () => [
@@ -44,6 +47,7 @@ const Home = () => {
     ],
     []
   );
+
   const HeroesOfTheDay = () => {
     const heroes = [
       {
@@ -93,6 +97,7 @@ const Home = () => {
       </div>
     );
   };
+
   const SafetyTips = () => {
     const safetyTips = [
       {
@@ -130,6 +135,7 @@ const Home = () => {
       </div>
     );
   };
+
   useEffect(() => {
     if (searchType === "shelter") {
       fetchShelters();
@@ -240,6 +246,35 @@ const Home = () => {
     }),
     []
   );
+
+  useEffect(() => {
+    const fetchWeather = async (latitude, longitude) => {
+      try {
+        const apiKey = "90b950dba316f5e49546655bb9ae5df7";
+        const res = await axios.get(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
+        );
+        setWeather(res.data);
+      } catch (error) {
+        console.error("Error fetching weather data:", error.message);
+      }
+    };
+
+    if (!locationFetched && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeather(position.coords.latitude, position.coords.longitude);
+          console.log(position.coords.latitude, position.coords.longitude);
+          setLocationFetched(true);
+        },
+        (error) => {
+          console.error("Error getting location:", error.message);
+        }
+      );
+    }
+  }, [locationFetched]);
+
+  const temperature = weather ? weather.main.temp : null;
 
   return (
     <>
@@ -386,6 +421,37 @@ const Home = () => {
             </div>
           ))}
         </div>
+
+        <div className="weather-widget mt-8">
+          {weather && (
+            <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs mx-auto">
+              <h1 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-4">
+                Current Weather
+              </h1>
+              <div className="flex flex-col items-center">
+                <h2 className="text-xl font-bold mb-2">{weather.name}</h2>
+                <img
+                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                  alt={weather.weather[0].description}
+                  className="w-20 h-20"
+                />
+                <p className="text-sm text-gray-600 capitalize">
+                  {weather.weather[0].description}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Temp: {weather.main.temp}°C
+                </p>
+                <p className="text-sm text-gray-600">
+                  Humidity: {weather.main.humidity}%
+                </p>
+                <p className="text-sm text-gray-600">
+                  Wind: {weather.wind.speed} m/s
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
         <HeroesOfTheDay />
         <SafetyTips />
       </div>
