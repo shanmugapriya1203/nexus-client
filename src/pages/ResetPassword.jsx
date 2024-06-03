@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, TextInput, Label, Spinner } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
 
-const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
+const ResetPassword = () => {
+  const { token } = useParams();
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -12,17 +15,21 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/user/forgotPassword`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        `${BASE_URL}/api/user/resetPassword/${token}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ password }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
+        navigate("/login");
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || "Something went wrong");
@@ -40,16 +47,16 @@ const ForgotPassword = () => {
         onSubmit={handleSubmit}
         className="w-full max-w-md p-4 bg-white rounded shadow-md"
       >
-        <h1 className="text-2xl mb-4 text-center">Forgot Password</h1>
+        <h1 className="text-2xl mb-4 text-center">Reset Password</h1>
         <div className="mb-4">
-          <Label htmlFor="email" className="block text-sm font-bold mb-2">
-            Email
+          <Label htmlFor="password" className="block text-sm font-bold mb-2">
+            New Password
           </Label>
           <TextInput
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
             className="w-full"
           />
@@ -63,10 +70,10 @@ const ForgotPassword = () => {
           {loading ? (
             <>
               <Spinner size="sm" className="mr-2" />
-              Sending...
+              Resetting...
             </>
           ) : (
-            "Send Reset Link"
+            "Reset Password"
           )}
         </Button>
       </form>
@@ -74,4 +81,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

@@ -14,7 +14,8 @@ import Spinner from "./components/Spinner";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import EmergencyAlert from "./components/EmergencyAlert";
-import ForgotPassword from "./pages/ForgotPassword";
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const HomeShelter = lazy(() => import("./pages/HomeShelter"));
 const HomeHospital = lazy(() => import("./pages/HomeHospital"));
 const SignUp = lazy(() => import("./pages/SignUp"));
@@ -68,6 +69,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/resetpassword/:token" element={<ResetPassword />} />
             <Route path="/shelter/:shelterId" element={<HomeShelter />} />
             <Route path="/hospital/:hospitalId" element={<HomeHospital />} />
             {currentUser ? (

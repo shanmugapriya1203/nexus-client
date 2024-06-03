@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import Logo from "/Nexus.png";
 import { signoutSuccess } from "../redux/userSlice";
 import { BASE_URL } from "../api/apiservice";
+
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -77,10 +78,15 @@ const Header = () => {
 
       return (
         <div className="relative">
-          <button onClick={toggleDropdown} className="text-green-800 relative">
+          <button
+            onClick={toggleDropdown}
+            className="text-green-800 relative focus:outline-none"
+            aria-haspopup="true"
+            aria-expanded={showDropdown}
+          >
             <img
               src={currentUser.user.profilePicture}
-              alt="Avatar"
+              alt="User Avatar"
               className="w-8 h-8 rounded-full mt-1"
             />
             {(isVolunteerWithAssignedTasks ||
@@ -90,17 +96,22 @@ const Header = () => {
               )}
           </button>
           {showDropdown && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10">
+            <div
+              className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10"
+              role="menu"
+            >
               <Link
                 to="/profile"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                 onClick={toggleDropdown}
+                role="menuitem"
               >
                 Profile
               </Link>
               <span
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-200 cursor-pointer"
                 onClick={handleSignout}
+                role="menuitem"
               >
                 Sign Out
               </span>
@@ -114,6 +125,7 @@ const Header = () => {
                   }
                   onClick={handleNewTaskClick}
                   className="block px-4 py-2 text-red-500 hover:bg-gray-200"
+                  role="menuitem"
                 >
                   {currentUser.user.role === "volunteer"
                     ? currentUser.user.assignedTasks.length
@@ -138,7 +150,7 @@ const Header = () => {
         return (
           <Link
             to="/login"
-            className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors"
+            className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             Sign In
           </Link>
@@ -147,7 +159,7 @@ const Header = () => {
         return (
           <Link
             to="/signup"
-            className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors"
+            className="bg-green-400 text-green-800 py-2 px-4 rounded-lg hover:bg-green-300 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             Sign Up
           </Link>
@@ -165,20 +177,20 @@ const Header = () => {
         <nav className="hidden md:flex md:items-center md:w-auto w-full">
           <Link
             to="/"
-            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             Home
           </Link>
           <Link
             to="/about"
-            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             About
           </Link>
           {currentUser && (
             <Link
               to="/dashboard"
-              className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+              className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
               Dashboard
             </Link>
@@ -187,8 +199,9 @@ const Header = () => {
         <div className="flex items-center gap-2 lg:gap-4">
           {renderSignupButton()}
           <button
-            className="md:hidden text-2xl focus:outline-none"
+            className="md:hidden text-2xl focus:outline-none focus:ring-2 focus:ring-green-500"
             onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
           >
             <MdMenu />
           </button>
@@ -198,21 +211,21 @@ const Header = () => {
         <div className="flex flex-col text-center absolute w-full top-[75px] z-10 bg-gray-300">
           <Link
             to="/"
-            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             onClick={toggleMobileMenu}
           >
             Home
           </Link>
           <Link
             to="/alerts"
-            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             onClick={toggleMobileMenu}
           >
             Alerts
           </Link>
           <Link
             to="/shelters"
-            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             onClick={toggleMobileMenu}
           >
             Shelters
@@ -220,7 +233,7 @@ const Header = () => {
           {currentUser && (
             <Link
               to="/dashboard"
-              className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2"
+              className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
               onClick={toggleMobileMenu}
             >
               Dashboard

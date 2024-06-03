@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { TextInput, Label, Button, Select } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
 import { toast } from "react-toastify";
@@ -146,6 +146,12 @@ const SignUp = () => {
               </div>
             </form>
           )}
+          <div className="text-center mt-4">
+            <span className="text-gray-700">Have an account? </span>
+            <Link to="/login" className="text-blue-500 hover:underline">
+              Log in
+            </Link>
+          </div>
         </div>
       </div>
     </div>

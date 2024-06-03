@@ -115,7 +115,7 @@ const Home = () => {
         <h1 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-2">
           Safety Tips
         </h1>
-        <div className="bg-white shadow-lg rounded-lg p-6">
+        <div className="bg-white shadow-lg rounded-lg p-2">
           <div className="w-full">
             <ul className="list-disc ml-6">
               {safetyTips.map((tip, index) => (
