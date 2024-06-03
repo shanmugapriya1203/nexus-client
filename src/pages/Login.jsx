@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput, Label, Button } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/userSlice";
@@ -16,6 +16,18 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("token");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -97,7 +109,7 @@ const Login = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <div className="mb-4 relative">
+              <div className="mb-4">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <TextInput
@@ -108,9 +120,9 @@ const Login = () => {
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full pr-10"
+                    className="w-full relative"
                   />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+                  <div className="absolute right-2 inset-y-0 flex items-center cursor-pointer">
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
@@ -134,6 +146,12 @@ const Login = () => {
               className="text-blue-500 hover:underline"
             >
               Forgot Password?
+            </Link>
+          </div>
+          <div className="text-center mt-4">
+            <span className="text-gray-700">Don't have an account? </span>
+            <Link to="/signup" className="text-blue-500 hover:underline">
+              Sign Up
             </Link>
           </div>
         </div>
