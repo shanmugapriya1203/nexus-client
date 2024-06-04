@@ -8,6 +8,7 @@ import { FaPhone, FaFire, FaMedal, FaReact } from "react-icons/fa";
 import Carousel from "react-multi-carousel";
 import axios from "axios";
 import "react-multi-carousel/lib/styles.css";
+import WeatherWidget from "../components/WeatherWidjet";
 
 const Home = () => {
   const [shelters, setShelters] = useState([]);
@@ -264,7 +265,6 @@ const Home = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           fetchWeather(position.coords.latitude, position.coords.longitude);
-          console.log(position.coords.latitude, position.coords.longitude);
           setLocationFetched(true);
         },
         (error) => {
@@ -421,36 +421,10 @@ const Home = () => {
             </div>
           ))}
         </div>
-
-        <div className="weather-widget mt-8">
-          {weather && (
-            <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs mx-auto">
-              <h1 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-4">
-                Current Weather
-              </h1>
-              <div className="flex flex-col items-center">
-                <h2 className="text-xl font-bold mb-2">{weather.name}</h2>
-                <img
-                  src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                  alt={weather.weather[0].description}
-                  className="w-20 h-20"
-                />
-                <p className="text-sm text-gray-600 capitalize">
-                  {weather.weather[0].description}
-                </p>
-                <p className="text-sm text-gray-600">
-                  Temp: {weather.main.temp}°C
-                </p>
-                <p className="text-sm text-gray-600">
-                  Humidity: {weather.main.humidity}%
-                </p>
-                <p className="text-sm text-gray-600">
-                  Wind: {weather.wind.speed} m/s
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
+        <h1 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-2">
+          Current Weather
+        </h1>
+        <WeatherWidget weather={weather} />
 
         <HeroesOfTheDay />
         <SafetyTips />
