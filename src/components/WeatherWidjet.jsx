@@ -35,7 +35,7 @@ const WeatherWidget = ({ weather }) => {
     <div className="weather-widget mt-8 flex justify-center">
       {weather && (
         <div
-          className="shadow-md rounded-lg p-6 text-white flex items-center space-x-6 w-full max-w-xl"
+          className="shadow-md rounded-lg p-6 text-white flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-6 w-full max-w-xl"
           style={{
             backgroundImage: getBackgroundImage(weather.weather[0].main),
             backgroundSize: "cover",
@@ -54,7 +54,7 @@ const WeatherWidget = ({ weather }) => {
             <p className="text-lg capitalize mb-4">
               {weather.weather[0].description}
             </p>
-            <div className="flex flex-row space-x-8">
+            <div className="flex flex-col lg:flex-row lg:space-x-8">
               <div className="flex flex-col items-center">
                 <p className="text-lg font-medium">Temp</p>
                 <p className="text-xl">{weather.main.temp}°C</p>
