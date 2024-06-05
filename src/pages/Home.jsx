@@ -172,13 +172,16 @@ const Home = () => {
       console.error("Error fetching hospitals:", error.message);
     }
   }, []);
-
   const fetchSheltersByLocation = useCallback(async (location) => {
     try {
       const res = await fetch(`${BASE_URL}/api/shelter/location/${location}`);
       if (res.ok) {
         const data = await res.json();
-        setShelters(data);
+        const regex = new RegExp(location.trim(), "i");
+        const filteredData = data.filter((shelter) =>
+          regex.test(shelter.location.trim())
+        );
+        setShelters(filteredData);
       } else {
         console.error("Failed to fetch shelters by location:", res.statusText);
       }
@@ -192,7 +195,11 @@ const Home = () => {
       const res = await fetch(`${BASE_URL}/api/hospital/area/${area}`);
       if (res.ok) {
         const data = await res.json();
-        setHospitals(data);
+        const regex = new RegExp(area.trim(), "i");
+        const filteredData = data.filter((hospital) =>
+          regex.test(hospital.area.trim())
+        );
+        setHospitals(filteredData);
       } else {
         console.error("Failed to fetch hospitals by area:", res.statusText);
       }
@@ -424,7 +431,13 @@ const Home = () => {
         <h1 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-2">
           Current Weather
         </h1>
-        <WeatherWidget weather={weather} />
+        {!locationFetched ? (
+          <div className="text-center text-gray-600 mt-4">
+            Please allow location access to fetch weather information.
+          </div>
+        ) : (
+          <WeatherWidget weather={weather} />
+        )}
 
         <HeroesOfTheDay />
         <SafetyTips />
