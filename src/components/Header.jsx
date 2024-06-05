@@ -77,7 +77,7 @@ const Header = () => {
         currentUser.user.assignedIncidents.length > 0;
 
       return (
-        <div className="relative">
+        <div className="fixed md:relative">
           <button
             onClick={toggleDropdown}
             className="text-green-800 relative focus:outline-none"

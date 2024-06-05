@@ -60,9 +60,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-stretch lg:h-screen mt-10">
+    <div className="flex flex-col lg:flex-row items-stretch  mt-10">
       <div
-        className="w-full lg:w-1/2 bg-center lg:block hidden"
+        className="w-full  h-screen lg:w-1/2 bg-center lg:block hidden"
         style={{
           backgroundImage: "url(/1.png)",
           backgroundSize: "cover",
@@ -146,7 +146,7 @@ const SignUp = () => {
               </div>
             </form>
           )}
-          <div className="text-center mt-4">
+          <div className={`text-center my-4 ${submitted ? "hidden" : ""}`}>
             <span className="text-gray-700">Have an account? </span>
             <Link to="/login" className="text-blue-500 hover:underline">
               Log in

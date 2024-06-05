@@ -8,8 +8,8 @@ const VolunteerSignUp = ({ formData, onBack, onChange, onSubmit }) => {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="max-w-md w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="flex items-center justify-center ">
+      <div className="max-w-md w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden my-10">
         <form className="px-8 py-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
