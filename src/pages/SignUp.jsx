@@ -49,13 +49,14 @@ const SignUp = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Registration failed");
+        const errorData = await response.json(); // Extract error message from response
+        throw new Error(errorData.message || "Registration failed");
       }
       navigate("/login");
       toast.success("Registration successful! Please login.");
     } catch (error) {
       console.error("Registration error:", error);
-      toast.error("Registration failed. Please try again.");
+      toast.error(error.message);
     }
   };
 
