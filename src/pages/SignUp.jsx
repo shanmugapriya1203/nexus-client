@@ -3,34 +3,33 @@ import { useNavigate, Link } from "react-router-dom";
 import { TextInput, Label, Button, Select } from "flowbite-react";
 import { BASE_URL } from "../api/apiservice";
 import { toast } from "react-toastify";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
 import VolunteerSignUp from "./VolunteerSignup";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [submitted, setSubmitted] = useState(false);
+  const [formValues, setFormValues] = useState({});
+
+  const initialValues = {
     username: "",
     email: "",
     password: "",
     role: "",
-    fullName: "",
-    city: "",
-    age: "",
-    profession: "",
-    experience: "",
-    availabilityDropdown: "",
-    mobileNumber: "",
-    profilePicture: "",
-    area: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const validationSchema = Yup.object({
+    username: Yup.string().required("Username is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required"),
+    role: Yup.string().required("Role is required"),
+  });
+
+  const handleSubmit = (values) => {
+    setFormValues(values);
     setSubmitted(true);
   };
 
@@ -38,7 +37,8 @@ const SignUp = () => {
     setSubmitted(false);
   };
 
-  const handleSignupSubmit = async () => {
+  const handleSignupSubmit = async (additionalValues) => {
+    const formData = { ...formValues, ...additionalValues };
     try {
       const response = await fetch(`${BASE_URL}/api/auth/register`, {
         method: "POST",
@@ -49,7 +49,7 @@ const SignUp = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json(); // Extract error message from response
+        const errorData = await response.json();
         throw new Error(errorData.message || "Registration failed");
       }
       navigate("/login");
@@ -61,9 +61,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row items-stretch  mt-10">
+    <div className="flex flex-col lg:flex-row items-stretch mt-10">
       <div
-        className="w-full  h-screen lg:w-1/2 bg-center lg:block hidden"
+        className="w-full h-screen lg:w-1/2 bg-center lg:block hidden"
         style={{
           backgroundImage: "url(/1.png)",
           backgroundSize: "cover",
@@ -80,72 +80,92 @@ const SignUp = () => {
           </h2>
           {submitted ? (
             <VolunteerSignUp
-              formData={formData}
               onBack={handleBack}
-              onChange={handleInputChange}
               onSubmit={handleSignupSubmit}
+              initialValues={{
+                fullName: "",
+                city: "",
+                area: "",
+                profession: "",
+                mobileNumber: "",
+                availabilityDropdown: "",
+              }}
             />
           ) : (
-            <form className="px-8 py-6" onSubmit={handleSubmit}>
-              <div className="space-y-4">
-                <div className="mb-4">
-                  <Label htmlFor="username">Username</Label>
-                  <TextInput
-                    id="username"
-                    name="username"
-                    type="text"
-                    required
-                    placeholder="Username"
-                    value={formData.username}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="mb-4">
-                  <Label htmlFor="email">Email address</Label>
-                  <TextInput
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    placeholder="Email address"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="mb-4">
-                  <Label htmlFor="password">Password</Label>
-                  <TextInput
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="mb-4">
-                  <Label htmlFor="role">Role</Label>
-                  <Select
-                    id="role"
-                    name="role"
-                    className="input-field"
-                    value={formData.role}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Select Role</option>
-                    <option value="volunteer">Volunteer</option>
-                  </Select>
-                </div>
-              </div>
-              <div className="text-right mt-6">
-                <Button type="submit" className="bg-green-400 text-white">
-                  Next
-                </Button>
-              </div>
-            </form>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ errors, touched }) => (
+                <Form className="px-8 py-6">
+                  <div className="space-y-4">
+                    <div className="mb-4">
+                      <Label htmlFor="username">Username</Label>
+                      <Field
+                        id="username"
+                        name="username"
+                        type="text"
+                        as={TextInput}
+                        placeholder="Username"
+                      />
+                      {errors.username && touched.username && (
+                        <div className="text-red-500 text-sm">
+                          {errors.username}
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-4">
+                      <Label htmlFor="email">Email address</Label>
+                      <Field
+                        id="email"
+                        name="email"
+                        type="email"
+                        as={TextInput}
+                        placeholder="Email address"
+                      />
+                      {errors.email && touched.email && (
+                        <div className="text-red-500 text-sm">
+                          {errors.email}
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-4">
+                      <Label htmlFor="password">Password</Label>
+                      <Field
+                        id="password"
+                        name="password"
+                        type="password"
+                        as={TextInput}
+                        placeholder="Password"
+                      />
+                      {errors.password && touched.password && (
+                        <div className="text-red-500 text-sm">
+                          {errors.password}
+                        </div>
+                      )}
+                    </div>
+                    <div className="mb-4">
+                      <Label htmlFor="role">Role</Label>
+                      <Field id="role" name="role" as={Select}>
+                        <option value="">Select Role</option>
+                        <option value="volunteer">Volunteer</option>
+                      </Field>
+                      {errors.role && touched.role && (
+                        <div className="text-red-500 text-sm">
+                          {errors.role}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right mt-6">
+                    <Button type="submit" className="bg-green-400 text-white">
+                      Next
+                    </Button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           )}
           <div className={`text-center my-4 ${submitted ? "hidden" : ""}`}>
             <span className="text-gray-700">Have an account? </span>

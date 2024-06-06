@@ -217,19 +217,13 @@ const Header = () => {
             Home
           </Link>
           <Link
-            to="/alerts"
+            to="/about"
             className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
             onClick={toggleMobileMenu}
           >
-            Alerts
+            About
           </Link>
-          <Link
-            to="/shelters"
-            className="block lg:inline-block hover:text-gray-400 font-bold px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-            onClick={toggleMobileMenu}
-          >
-            Shelters
-          </Link>
+
           {currentUser && (
             <Link
               to="/dashboard"
