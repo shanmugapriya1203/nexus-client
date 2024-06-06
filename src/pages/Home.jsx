@@ -4,7 +4,9 @@ import { HiSearch } from "react-icons/hi";
 import { TextInput, Card, Radio } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { BASE_URL } from "../api/apiservice";
-import { FaPhone, FaFire, FaMedal, FaReact } from "react-icons/fa";
+import { FaPhone, FaFire, FaMedal } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+
 import Carousel from "react-multi-carousel";
 import axios from "axios";
 import "react-multi-carousel/lib/styles.css";
@@ -18,7 +20,7 @@ const Home = () => {
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [weather, setWeather] = useState(null);
   const [locationFetched, setLocationFetched] = useState(false);
-
+  const [news, setNews] = useState([]);
   const emergencyContacts = useMemo(
     () => [
       {
@@ -448,8 +450,61 @@ const Home = () => {
         </div>
 
         <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-center">
-          <p className="text-center sm:text-left">Made by Sam</p>
-          <FaReact className="text-xl ml-2" />
+          <div className="flex space-x-4">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600"
+            >
+              <FaFacebook className="text-xl" />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400"
+            >
+              <FaTwitter className="text-xl" />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-pink-600"
+            >
+              <FaInstagram className="text-xl" />
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-700"
+            >
+              <FaLinkedin className="text-xl" />
+            </a>
+          </div>
+        </div>
+
+        <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-center">
+          <div className="text-center sm:text-left">
+            <p>Contact: (123) 456-7890</p>
+            <p>Email: contact@example.com</p>
+          </div>
+        </div>
+
+        <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-center">
+          <div className="flex flex-col text-center sm:text-left">
+            <a
+              href="/privacy"
+              className="text-gray-600 hover:text-gray-900 mb-1"
+            >
+              Privacy Policy
+            </a>
+            <a href="/terms" className="text-gray-600 hover:text-gray-900">
+              Terms of Service
+            </a>
+          </div>
         </div>
       </footer>
     </>

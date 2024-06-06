@@ -82,7 +82,7 @@ const AdminDashboard = () => {
       try {
         const response = await fetch(`${BASE_URL}/api/incident/`);
         const data = await response.json();
-        setRecentActivities(data);
+        setRecentActivities(data.slice(0, 4));
       } catch (error) {
         console.error("Error fetching emergencies:", error);
       }
@@ -134,7 +134,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
       {(isAdmin || isLead) && (
         <div>
           <div className="flex items-center mb-6">

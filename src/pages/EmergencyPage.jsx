@@ -229,7 +229,7 @@ const EmergencyPage = () => {
         </div>
       </div>
 
-      {(currentUser.user.role === "emergencyresponder" ||
+      {(currentUser.user.role === "lead" ||
         currentUser.user.role === "admin" ||
         currentUser.user.role === "volunteer") && (
         <div className="flex justify-end mb-2">
