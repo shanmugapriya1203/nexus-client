@@ -11,6 +11,7 @@ import Carousel from "react-multi-carousel";
 import axios from "axios";
 import "react-multi-carousel/lib/styles.css";
 import WeatherWidget from "../components/WeatherWidjet";
+import { RiArrowRightSLine } from "react-icons/ri";
 
 const Home = () => {
   const [shelters, setShelters] = useState([]);
@@ -287,7 +288,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-6 p-20 px-4 max-w-6xl mx-auto bg-gray-50">
+      <div className="flex flex-col gap-6 p-20 px-4 max-w-6xl mx-auto">
         <h1 className="text-green-700 font-bold text-3xl lg:text-6xl">
           Discover Nexus for your next{" "}
           <span className="text-green-500">critical</span>
@@ -442,6 +443,29 @@ const Home = () => {
         )}
 
         <HeroesOfTheDay />
+        <div className="flex flex-col sm:flex-row md:mt-10 h-full mt-10">
+          <div className="w-full sm:w-1/2 p-6 sm:p-8">
+            <div className="rounded-lg h-full">
+              <h2 className="text-gray-700 font-bold text-2xl lg:text-4xl mb-2">
+                Become a Volunteer
+              </h2>
+            </div>
+          </div>
+          <div className="w-full sm:w-1/2 sm:p-8 flex flex-col justify-center items-center text-2xl">
+            <p className="text-center mb-5 mx-3">
+              Join our team and make a difference in the community by
+              volunteering.
+            </p>
+            <div className="flex flex-wrap text-lg">
+              <Link to="/signup">
+                <button className="bg-white text-black py-2 px-4 rounded flex items-center">
+                  Sign Up <RiArrowRightSLine className="ml-2" />
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+
         <SafetyTips />
       </div>
       <footer className="mt-10 bg-gray-200 flex flex-col md:flex-row items-center md:justify-between">
