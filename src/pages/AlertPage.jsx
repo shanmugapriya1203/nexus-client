@@ -256,10 +256,12 @@ const AlertPage = () => {
       </div>
 
       <Modal show={isModalOpen} onClose={handleCloseModal} size="lg">
-        <form onSubmit={handleSubmit}>
-          <Modal.Header>Add Alert</Modal.Header>
-          <Modal.Body>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full">
+          <Modal.Header className="text-xl font-semibold">
+            Add Alert
+          </Modal.Header>
+          <Modal.Body className="overflow-y-auto flex-grow p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <div className="mb-2">
                 <Label htmlFor="type" value="Type" />
                 <TextInput
@@ -268,6 +270,7 @@ const AlertPage = () => {
                   value={formData.type}
                   onChange={handleChange}
                   required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-2">
@@ -278,6 +281,7 @@ const AlertPage = () => {
                   value={formData.message}
                   onChange={handleChange}
                   required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-2">
@@ -288,6 +292,7 @@ const AlertPage = () => {
                   value={formData.location}
                   onChange={handleChange}
                   required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 />
               </div>
               <div className="mb-2">
@@ -298,6 +303,7 @@ const AlertPage = () => {
                   value={formData.severity}
                   onChange={handleChange}
                   required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -312,6 +318,7 @@ const AlertPage = () => {
                   value={formData.status}
                   onChange={handleChange}
                   required
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 >
                   <option value="open">Open</option>
                   <option value="closed">Closed</option>
@@ -319,11 +326,19 @@ const AlertPage = () => {
               </div>
             </div>
           </Modal.Body>
-          <Modal.Footer>
-            <Button type="submit" color="success">
+          <Modal.Footer className="flex justify-end space-x-2 p-4">
+            <Button
+              type="submit"
+              color="success"
+              className="bg-green-500 text-white hover:bg-green-600 rounded-md py-2 px-4"
+            >
               Submit
             </Button>
-            <Button color="gray" onClick={handleCloseModal}>
+            <Button
+              color="gray"
+              onClick={handleCloseModal}
+              className="bg-gray-500 text-white hover:bg-gray-600 rounded-md py-2 px-4"
+            >
               Cancel
             </Button>
           </Modal.Footer>
